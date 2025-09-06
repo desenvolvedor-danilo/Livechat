@@ -13,10 +13,10 @@ public class WebSocketConfig  implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry){
         registry.enableSimpleBroker("/topics");
         registry.setApplicationDestinationPrefixes("/app");
-    }
+        }
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
-    registry.addEndpoint("/buildrun-livechat-websocket");
+    registry.addEndpoint("/buildrun-livechat-websocket").setAllowedOrigins("*").withSockJS();
     
     }
 }
