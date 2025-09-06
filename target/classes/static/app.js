@@ -1,8 +1,9 @@
 const stompClient = new StompJs.Client({brokerURL:'ws://'+window.location.host+'/buildrun-livechat-websocket'});
 
 stompClient.onConnect = (frame) => {
+    console.log(location.host)
     setConnected(true);
-    console.log('Connected: ' + frame);
+    console.log('Connected: ' + frame );
     stompClient.subscribe('/topics/livechat', (message) => {
         updateLiveChat(JSON.parse(message.body).content);
     });
