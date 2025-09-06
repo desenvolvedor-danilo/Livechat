@@ -1,11 +1,11 @@
 const stompClient = new StompJs.Client({brokerURL:'wss://'+window.location.host+'/buildrun-livechat-websocket'});
-console.log(location.host)
+const audio = new Audio('/notificacao.mp3')
 stompClient.onConnect = (frame) => {
-    const audio = new Audio('/notificacao.mp3')
+   
     setConnected(true);
 
     if(setConnected){
-    audio.play()
+    audio.play().then(()=>audio.play())
     }
     console.log('Connected: ' + frame );
     stompClient.subscribe('/topics/livechat', (message) => {
@@ -52,6 +52,7 @@ function sendMessage() {
 }
 
 function updateLiveChat(message) {
+    audio.play()
     $("#livechat").append("<tr><td>" + message + "</td></tr>");
 }
 
