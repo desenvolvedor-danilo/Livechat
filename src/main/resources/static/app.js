@@ -1,7 +1,7 @@
 const stompClient = new StompJs.Client({brokerURL:'wss://'+window.location.host+'/buildrun-livechat-websocket'});
 console.log(location.host)
 stompClient.onConnect = (frame) => {
-    const audio = new Audio("/sdcard/notificacao.mp3")
+    const audio = new Audio('/notificacao.mp3')
     setConnected(true);
 
     if(setConnected){
