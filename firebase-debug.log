@@ -1,0 +1,60 @@
+[debug] [2025-10-07T12:44:23.639Z] ----------------------------------------------------------------------
+[debug] [2025-10-07T12:44:23.657Z] Command:       /data/data/com.termux/files/usr/bin/node /data/data/com.termux/files/usr/bin/firebase init hosting
+[debug] [2025-10-07T12:44:23.658Z] CLI Version:   14.18.0
+[debug] [2025-10-07T12:44:23.659Z] Platform:      android
+[debug] [2025-10-07T12:44:23.659Z] Node Version:  v24.7.0
+[debug] [2025-10-07T12:44:23.660Z] Time:          Tue Oct 07 2025 09:44:23 GMT-0300 (Brasilia Standard Time)
+[debug] [2025-10-07T12:44:23.660Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-10-07T12:44:23.680Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-10-07T12:44:23.681Z] > authorizing via signed-in user (danilokelvemeireles45@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /data/data/com.termux/files/home/Documents/living-chatting
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-10-07T12:44:23.692Z] Using project from CLI flag: livechat-ce9c4
+[debug] [2025-10-07T12:44:23.695Z] Checked if tokens are valid: true, expires at: 1759842160260
+[debug] [2025-10-07T12:44:23.696Z] Checked if tokens are valid: true, expires at: 1759842160260
+[debug] [2025-10-07T12:44:23.701Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/livechat-ce9c4 [none]
+[debug] [2025-10-07T12:44:24.261Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/livechat-ce9c4 200
+[debug] [2025-10-07T12:44:24.261Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/livechat-ce9c4 {"projectId":"livechat-ce9c4","projectNumber":"646790522951","displayName":"Livechat","name":"projects/livechat-ce9c4","resources":{"hostingSite":"livechat-ce9c4"},"state":"ACTIVE","etag":"1_a9d33b40-9351-4203-99de-6ecdff45a63c"}
+[info] i  Using project livechat-ce9c4 (Livechat) 
+[info] 
+=== Hosting Setup
+[debug] [2025-10-07T12:44:24.469Z] Checked if tokens are valid: true, expires at: 1759842160260
+[debug] [2025-10-07T12:44:24.469Z] Checked if tokens are valid: true, expires at: 1759842160260
+[debug] [2025-10-07T12:44:24.469Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/livechat-ce9c4 [none]
+[debug] [2025-10-07T12:44:25.132Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/livechat-ce9c4 200
+[debug] [2025-10-07T12:44:25.133Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/livechat-ce9c4 {"projectId":"livechat-ce9c4","projectNumber":"646790522951","displayName":"Livechat","name":"projects/livechat-ce9c4","resources":{"hostingSite":"livechat-ce9c4"},"state":"ACTIVE","etag":"1_a9d33b40-9351-4203-99de-6ecdff45a63c"}
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
+[debug] [2025-10-07T12:45:07.720Z] ExitPromptError: User force closed the prompt with SIGINT
+    at Interface.sigint (/data/data/com.termux/files/usr/lib/node_modules/firebase-tools/node_modules/@inquirer/core/dist/commonjs/lib/create-prompt.js:101:37)
+    at Interface.emit (node:events:508:28)
+    at Interface.emit (node:domain:489:12)
+    at [_ttyWrite] [as _ttyWrite] (node:internal/readline/interface:1315:18)
+    at ReadStream.onkeypress (node:internal/readline/interface:284:20)
+    at ReadStream.emit (node:events:520:35)
+    at ReadStream.emit (node:domain:489:12)
+    at emitKeys (node:internal/readline/utils:371:14)
+    at emitKeys.next (<anonymous>)
+    at ReadStream.onData (node:internal/readline/emitKeypressEvents:64:36)
+[error] 
+[error] Error: An unexpected error has occurred.
