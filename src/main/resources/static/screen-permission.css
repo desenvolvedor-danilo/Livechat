@@ -1,0 +1,160 @@
+:root {
+    /* Paleta de Cores */
+    --color-white: #ffffff;
+    --color-blue-vibrant: #007bff;
+    /* Azul primário */
+    --color-blue-dark: #0056b3;
+    /* Azul para o hover */
+    --color-gray-text: #555;
+    --color-gray-light: #f8f9fa;
+
+    /* Gradiente para o fundo (branco suave) */
+    --background-gradient: linear-gradient(135deg, var(--color-white) 0%, var(--color-gray-light) 100%);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--background-gradient);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.permission-overlay {
+    position: fixed;
+    top: 0;
+    /* display: flex; */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+
+}
+
+.permission-modal {
+    background-color: var(--color-white);
+    padding: 30px;
+    /* display: none; */
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    transform: scale(1);
+    transition: transform 0.3s ease-out;
+}
+
+.icon-container {
+    margin-bottom: 20px;
+}
+
+.icon-container i {
+    font-size: 3rem;
+    color: var(--color-blue-vibrant);
+    background-color: var(--color-gray-light);
+    border-radius: 50%;
+    padding: 15px;
+    display: inline-block;
+}
+
+.modal-title {
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.modal-description {
+    color: var(--color-gray-text);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    /* Pilha de botões em telas pequenas */
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    text-transform: uppercase;
+}
+
+.btn-primary {
+    /* Botão Principal: Azul Vibrante */
+    background-color: var(--color-blue-vibrant);
+    color: var(--color-white);
+    box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-blue-dark);
+    transform: translateY(-2px);
+    /* Efeito de elevação sutil */
+}
+
+.btn-secondary {
+    /* Botão Secundário: Estilo "ghost" ou cinza sutil */
+    background-color: transparent;
+    color: var(--color-gray-text);
+    border: 2px solid #ddd;
+}
+
+.btn-secondary:hover {
+    background-color: #f1f1f1;
+}
+
+.privacy-note {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+@media (min-width: 600px) {
+    .permission-modal {
+        padding: 40px;
+    }
+
+    .modal-title {
+        font-size: 2rem;
+    }
+
+    .button-group {
+        flex-direction: row;
+        /* Botões lado a lado em telas maiores */
+        justify-content: space-between;
+    }
+
+    .btn {
+        flex: 1;
+        /* Distribui o espaço igualmente */
+    }
+
+    /* Em telas maiores, damos um pouco mais de ênfase ao botão principal */
+    .btn-primary {
+        margin-left: 10px;
+    }
+
+    .btn-secondary {
+        margin-right: 10px;
+    }
+}
