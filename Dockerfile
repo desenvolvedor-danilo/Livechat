@@ -1,5 +1,6 @@
 FROM ubuntu:latest
-RUN command apt update 
+COPY . .
+RUN apt-get update 
 RUN apt-get upgrade -y
 RUN apt-get install maven -y
 RUN apt-get install openjdk-21-jdk -y
