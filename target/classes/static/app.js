@@ -1,7 +1,7 @@
-const stompClient = new StompJs.Client({ brokerURL: 'wss://' + window.location.host + '/buildrun-livechat-websocket' });
-// const stompClient = new StompJs.Client({
-// 	webSocketFactory: () => new SockJS(`${window.location.origin}/buildrun-livechat-websocket`)
-// });
+//const stompClient = new StompJs.Client({ brokerURL: 'ws://' + window.location.host + '/buildrun-livechat-websocket' });
+const stompClient = new StompJs.Client({
+	webSocketFactory: () => new SockJS(`${window.location.origin}/buildrun-livechat-websocket`)
+});
 
 const userna = document.getElementById('usuario')
 const pass = document.getElementById('password')
