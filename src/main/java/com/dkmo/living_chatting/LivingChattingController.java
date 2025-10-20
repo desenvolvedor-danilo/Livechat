@@ -29,23 +29,17 @@ public class LivingChattingController {
 
         String user = usersService.findUsersForEmail(message.email());
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                usersService.findAllUsers().forEach(u -> {
-                    if (u.getFcmToken() != null && !u.getEmail().equals(message.email())) {
-                        try {
-                            fcmService.sendMessage(u.getFcmToken(),
-                                    "Nova mensagem de " + user,
-                                    message.message());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+        usersService.findAllUsers().forEach(u -> {
+            if (u.getFcmToken() != null && !u.getEmail().equals(message.email())) {
+                try {
+                    fcmService.sendMessage(u.getFcmToken(),
+                            "Nova mensagem de " + user,
+                            message.message());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-        }).start();
+        });
 
         if (!message.message().equals("")) {
             MessageModel messageModel = new MessageModel();
