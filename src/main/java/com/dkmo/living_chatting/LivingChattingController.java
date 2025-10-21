@@ -29,30 +29,30 @@ public class LivingChattingController {
 
         String user = usersService.findUsersForEmail(message.email());
 
-        // usersService.findAllUsers().forEach(u -> {
-        // if (u.getFcmToken() != null && !u.getEmail().equals(message.email())) {
-        // try {
-        // fcmService.sendMessage(u.getFcmToken(),
-        // "Nova mensagem de " + user,
-        // message.message());
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
-        // }
-        // });
+        usersService.findAllUsers().forEach(u -> {
+            if (u.getFcmToken() != null && !u.getEmail().equals(message.email())) {
+                try {
+                    fcmService.sendMessage(u.getFcmToken(),
+                            "Nova mensagem de " + user,
+                            message.message());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-        // if (!message.message().equals("")) {
-        // MessageModel messageModel = new MessageModel();
-        // messageModel.setEmail(message.email());
-        // messageModel.setTimeStamp(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).getHour()
-        // + ":"
-        // + ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).getMinute());
-        // messageModel.setId(UUID.randomUUID().toString());
-        // messageModel.setUsername(user);
-        // messageModel.setMessage(message.message());
-        // messageRepository.save(messageModel);
-        // }
-        //
+        if (!message.message().equals("")) {
+            MessageModel messageModel = new MessageModel();
+            messageModel.setEmail(message.email());
+            messageModel.setTimeStamp(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).getHour()
+                    + ":"
+                    + ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).getMinute());
+            messageModel.setId(UUID.randomUUID().toString());
+            messageModel.setUsername(user);
+            messageModel.setMessage(message.message());
+            messageRepository.save(messageModel);
+        }
+
         return ChatOutput.builder().idMensagem(message.id()).from(user).content(message.message())
                 .timeStamp(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).getHour() + ":"
                         + ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).getMinute())

@@ -26,44 +26,6 @@ const firebaseConfig = {
 	appId: "1:646790522951:web:da157fffedde43d759e962"
 }
 
-// const hideDiv = () => {
-//     fetch("/users/is-notificated?email="+localStorage.getItem("email"))
-//     .then((res)=>res.json())
-//     .then((dado)=>isNotificated=dado)
-//     .then(()=>{
-//     if(isNotificated){
-//     document.querySelector(".permission-overlay").style.display = "none"   
-//     }
-//  )}
-// }
-// $("#allow-button").click(() => {
-//
-//     firebase.initializeApp(firebaseConfig);
-//     const messaging = firebase.messaging();
-//     Notification.requestPermission().then((permission) => {
-//         if (permission === "granted") {
-//             fetch("/users/allow-notification", { method: "POST", headers: { "Content-Type": "application/json;charset=UTF-8" }, body: JSON.stringify({ "email": localStorage.getItem("email"), "notificated": true }) }).then((res) => console.log(res.text()))
-//             messaging.getToken({ vapidKey: "BA00hc2JI1NUNqmWsqctZp1H3n8lp2I9_4UqDna77-2E9iCWBqmBfhbqLf9YI7bDnvzaItCx69FDm9jfndJ3hxI" })
-//                 .then((currentToken) => {
-//                     if (currentToken) {
-//                         console.log("Token de notificação:", currentToken); // Aqui você envia o token para seu backend (Spring)          
-//                         fetch("/users/save-token",
-//                             {
-//                                 method: "POST", headers: { "Content-Type": "application/json" },
-//                                 body: JSON.stringify({ email: currentEmail, token: currentToken })
-//                             })
-//
-//
-//
-//                     }
-//
-//                 });
-//         }
-//     });
-//
-// })
-//
-//
 stompClient.onConnect = (frame) => {
 	console.log('Connected: ' + frame);
 	stompClient.subscribe('/topics/livechat', (message) => {
@@ -134,28 +96,28 @@ function sendMessage() {
 
 	$("#msg").val("");
 
-	// firebase.initializeApp(firebaseConfig);
-	// const messaging = firebase.messaging();
-	// Notification.requestPermission().then((permission) => {
-	//     if (permission === "granted") {
-	//         fetch("/users/allow-notification", { method: "POST", headers: { "Content-Type": "application/json;charset=UTF-8" }, body: JSON.stringify({ "email": localStorage.getItem("email"), "notificated": true }) }).then((res) => console.log(res.text()))
-	//         messaging.getToken({ vapidKey: "BA00hc2JI1NUNqmWsqctZp1H3n8lp2I9_4UqDna77-2E9iCWBqmBfhbqLf9YI7bDnvzaItCx69FDm9jfndJ3hxI" })
-	//             .then((currentToken) => {
-	//                 if (currentToken) {
-	//                     console.log("Token de notificação:", currentToken); // Aqui você envia o token para seu backend (Spring)          
-	//                     fetch("/users/save-token",
-	//                         {
-	//                             method: "POST", headers: { "Content-Type": "application/json" },
-	//                             body: JSON.stringify({ email: currentEmail, token: currentToken })
-	//                         })
-	//
-	//
-	//
-	//                 }
-	//
-	//             });
-	//     }
-	// });
+	firebase.initializeApp(firebaseConfig);
+	const messaging = firebase.messaging();
+	Notification.requestPermission().then((permission) => {
+		if (permission === "granted") {
+			fetch("/users/allow-notification", { method: "POST", headers: { "Content-Type": "application/json;charset=UTF-8" }, body: JSON.stringify({ "email": localStorage.getItem("email"), "notificated": true }) }).then((res) => console.log(res.text()))
+			messaging.getToken({ vapidKey: "BA00hc2JI1NUNqmWsqctZp1H3n8lp2I9_4UqDna77-2E9iCWBqmBfhbqLf9YI7bDnvzaItCx69FDm9jfndJ3hxI" })
+				.then((currentToken) => {
+					if (currentToken) {
+						console.log("Token de notificação:", currentToken); // Aqui você envia o token para seu backend (Spring)          
+						fetch("/users/save-token",
+							{
+								method: "POST", headers: { "Content-Type": "application/json" },
+								body: JSON.stringify({ email: currentEmail, token: currentToken })
+							})
+
+
+
+					}
+
+				});
+		}
+	});
 
 
 }
