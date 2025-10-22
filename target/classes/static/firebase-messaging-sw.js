@@ -15,14 +15,6 @@ const messaging = firebase.messaging();
 // Quando chegar push em segundo plano
 messaging.onBackgroundMessage(payload => {
 
-	if ('serviceWorker' in navigator) {
-		navigator.serviceWorker.getRegistrations().then(registrations => {
-			for (let registration of registrations) {
-				registration.unregister();
-			}
-		});
-	}
-
 	console.log("[SW] Push recebido:", payload);
 	const notificationTitle = payload.notification.title;
 	const notificationOptions = {
