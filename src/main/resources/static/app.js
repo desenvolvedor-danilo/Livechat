@@ -10,7 +10,6 @@ const userna = document.getElementById('usuario')
 const pass = document.getElementById('password')
 const mail = document.getElementById('email')
 const message = { email: localStorage.getItem("email"), message: '' }
-//let isConnected;
 let messages = new Array()
 let isNotificated;
 let state;
@@ -25,95 +24,38 @@ const firebaseConfig = {
 	messagingSenderId: "646790522951",
 	appId: "1:646790522951:web:da157fffedde43d759e962"
 }
-
-// const hideDiv = () => {
-//     fetch("/users/is-notificated?email="+localStorage.getItem("email"))
-//     .then((res)=>res.json())
-//     .then((dado)=>isNotificated=dado)
-//     .then(()=>{
-//     if(isNotificated){
-//     document.querySelector(".permission-overlay").style.display = "none"   
-//     }
-//  )}
-// }
-// $("#allow-button").click(() => {
-//
-//     firebase.initializeApp(firebaseConfig);
-//     const messaging = firebase.messaging();
-//     Notification.requestPermission().then((permission) => {
-//         if (permission === "granted") {
-//             fetch("/users/allow-notification", { method: "POST", headers: { "Content-Type": "application/json;charset=UTF-8" }, body: JSON.stringify({ "email": localStorage.getItem("email"), "notificated": true }) }).then((res) => console.log(res.text()))
-//             messaging.getToken({ vapidKey: "BA00hc2JI1NUNqmWsqctZp1H3n8lp2I9_4UqDna77-2E9iCWBqmBfhbqLf9YI7bDnvzaItCx69FDm9jfndJ3hxI" })
-//                 .then((currentToken) => {
-//                     if (currentToken) {
-//                         console.log("Token de notificação:", currentToken); // Aqui você envia o token para seu backend (Spring)          
-//                         fetch("/users/save-token",
-//                             {
-//                                 method: "POST", headers: { "Content-Type": "application/json" },
-//                                 body: JSON.stringify({ email: currentEmail, token: currentToken })
-//                             })
-//
-//
-//
-//                     }
-//
-//                 });
-//         }
-//     });
-//
-// })
-//
-//
 stompClient.onConnect = (frame) => {
 	console.log('Connected: ' + frame);
 	stompClient.subscribe('/topics/livechat', (message) => {
-
 		if (!isDuplicate(JSON.parse(message.body))) {
-
 			updateLiveChat(JSON.parse(message.body));
 		}
 	});
 
 };
-
 stompClient.onWebSocketError = (error) => {
 	console.error('Error with websocket', error);
 };
-
 stompClient.onStompError = (frame) => {
 	console.error('Broker reported error: ' + frame.headers['message']);
 	console.error('Additional details: ' + frame.body);
 };
-
 function setConnected(connected) {
 	$("#connect").prop("disabled", connected);
 	$("#disconnect").prop("disabled", !connected);
 	if (connected) {
 		$("#conversation").show();
 		$("#logado").show();
-
 	}
 	else {
 		$('#logado').innerText = ''
 		$('#logado').hide()
-
 		$("#conversation").hide();
-
 	}
-
 }
-
-
-
 function connect() {
-
-
-
 	stompClient.activate();
-
-
 }
-
 function disconnect() {
 	stompClient.deactivate();
 	setConnected(false);
@@ -122,8 +64,6 @@ function disconnect() {
 	pLogado.removeChild(logado)
 	console.log("Disconnected");
 }
-
-
 function sendMessage() {
 	let uuid = crypto.randomUUID()
 	stompClient.publish({
@@ -131,63 +71,43 @@ function sendMessage() {
 		body: JSON.stringify({ 'id': uuid, 'email': message.email, 'message': $("#msg").val() })
 	}
 	);
-
 	$("#msg").val("");
-
-	// firebase.initializeApp(firebaseConfig);
-	// const messaging = firebase.messaging();
-	// Notification.requestPermission().then((permission) => {
-	//     if (permission === "granted") {
-	//         fetch("/users/allow-notification", { method: "POST", headers: { "Content-Type": "application/json;charset=UTF-8" }, body: JSON.stringify({ "email": localStorage.getItem("email"), "notificated": true }) }).then((res) => console.log(res.text()))
-	//         messaging.getToken({ vapidKey: "BA00hc2JI1NUNqmWsqctZp1H3n8lp2I9_4UqDna77-2E9iCWBqmBfhbqLf9YI7bDnvzaItCx69FDm9jfndJ3hxI" })
-	//             .then((currentToken) => {
-	//                 if (currentToken) {
-	//                     console.log("Token de notificação:", currentToken); // Aqui você envia o token para seu backend (Spring)          
-	//                     fetch("/users/save-token",
-	//                         {
-	//                             method: "POST", headers: { "Content-Type": "application/json" },
-	//                             body: JSON.stringify({ email: currentEmail, token: currentToken })
-	//                         })
-	//
-	//
-	//
-	//                 }
-	//
-	//             });
-	//     }
-	// });
+	firebase.initializeApp(firebaseConfig);
+	const messaging = firebase.messaging();
+	Notification.requestPermission().then((permission) => {
+		if (permission === "granted") {
+			fetch("/users/allow-notification", { method: "POST", headers: { "Content-Type": "application/json;charset=UTF-8" }, body: JSON.stringify({ "email": localStorage.getItem("email"), "notificated": true }) }).then((res) => console.log(res.text()))
+			messaging.getToken({ vapidKey: "BA00hc2JI1NUNqmWsqctZp1H3n8lp2I9_4UqDna77-2E9iCWBqmBfhbqLf9YI7bDnvzaItCx69FDm9jfndJ3hxI" })
+				.then((currentToken) => {
+					if (currentToken) {
+						console.log("Token de notificação:", currentToken); // Aqui você envia o token para seu backend (Spring)          
+						fetch("/users/save-token",
+							{
+								method: "POST", headers: { "Content-Type": "application/json" },
+								body: JSON.stringify({ email: currentEmail, token: currentToken })
+							})
 
 
+
+					}
+
+				});
+		}
+	});
 }
 function isDuplicate(msg) {
-
 	return msg.content === ""
-
-
 }
 
 function updateLiveChat(message) {
 	if (isDuplicate(message)) return
-
-
 	let userCurrent = localStorage.getItem("usuario")
-
-
-
-
-
 	if (userCurrent == message.from) {
-
-
 		$("#livechat").append("<div class='msg-received'>" + "<div class='username-received'> ~ " + message.from + "</div>" + message.content + "<div class='timestamp'>" + message.timeStamp + "</div></div>")
 	} else {
-		//  $("#livechat").append("<p id='textodeoutro'>" + message.from + "</p>")
 		$("#livechat").append("<div class='msg-sent'>" + "<div class='username-sent'> ~ " + message.from + "</div>" + message.content + "<div class='timestamp-sent'>" + message.timeStamp + "</div></div>")
 	}
 }
-
-
-
 const handleCadastro = () => {
 
 
@@ -211,13 +131,11 @@ const loadedMessages = () => {
 
 					$("#livechat").append("<div class='msg-received'>" + "<div class='username-received'> ~ " + msg.username + "</div>" + msg.message + "<div class='timestamp'>" + msg.timeStamp + "</div></div>")
 				} else {
-					//  $("#livechat").append("<p id='textodeoutro'>" + message.from + "</p>")
 					$("#livechat").append("<div class='msg-sent'>" + "<div class='username-sent'> ~ " + msg.username + "</div>" + msg.message + "<div class='timestamp-sent'>" + msg.timeStamp + "</div></div>")
 				}
 
 			})
 		})
-
 }
 
 const handleLogin = () => {
@@ -245,21 +163,6 @@ const handleLogin = () => {
 			}
 		})
 }
-// function teste() {
-//     fetch("/users/status?conectado=" + localStorage.getItem("email"))
-//         .then((res) => res.json())
-//         .then((dado) => {
-//             isConnected = dado
-//             if (isConnected) {
-//                 $("#t").append("<button id=users>" + localStorage.getItem("usuario") + "</button><br>")
-//             }
-//         })
-// }
-
-
-
-
-
 $(function () {
 	$("form").on("submit", (e) => e.preventDefault());
 	$("#disconnect").click(() => disconnect());
