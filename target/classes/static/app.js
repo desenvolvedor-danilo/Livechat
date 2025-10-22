@@ -2,6 +2,7 @@
 const stompClient = new StompJs.Client({
 	webSocketFactory: () => new SockJS(`${window.location.origin}/buildrun-livechat-websocket`)
 });
+
 stompClient.heartbeatIncoming = 10000;
 stompClient.heartbeatOutgoing = 10000;
 
@@ -10,6 +11,7 @@ const userna = document.getElementById('usuario')
 const pass = document.getElementById('password')
 const mail = document.getElementById('email')
 const message = { email: localStorage.getItem("email"), message: '' }
+//let isConnected;
 let messages = new Array()
 let isNotificated;
 let state;
