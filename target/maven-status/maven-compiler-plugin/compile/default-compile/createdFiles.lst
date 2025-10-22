@@ -12,7 +12,9 @@ com/dkmo/living_chatting/LivingChattingController.class
 com/dkmo/living_chatting/UserController.class
 com/dkmo/living_chatting/FcmService.class
 com/dkmo/living_chatting/MessageRepository.class
+com/dkmo/living_chatting/LivingChattingController$2.class
 com/dkmo/living_chatting/MessageModel.class
+com/dkmo/living_chatting/LivingChattingController$1.class
 com/dkmo/living_chatting/UsersService.class
 com/dkmo/living_chatting/UsersDto.class
 com/dkmo/living_chatting/WebSocketConfig.class
