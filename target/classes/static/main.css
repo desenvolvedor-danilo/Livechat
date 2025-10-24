@@ -33,7 +33,26 @@ h2 {
 
 .form-group {
     margin-bottom: 15px;
+    margin-top: 15px;
 }
+
+#linkCadastro {
+    text-decoration: none;
+    text-align: center;
+    display: block;
+}
+
+#linkCadastro:active,
+#linkCadastro:link,
+#linkCadastro:visited {
+    color: #4a4ee0;
+    text-shadow: 1px 1px #4a4ee0;
+}
+
+#linkCadastro:hover {
+    scale: 1.2;
+}
+
 
 .form-control {
     width: 100%;

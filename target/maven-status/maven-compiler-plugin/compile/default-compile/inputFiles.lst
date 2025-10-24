@@ -13,5 +13,6 @@
 /data/data/com.termux/files/home/Documents/living-chatting/src/main/java/com/dkmo/living_chatting/UsersDto.java
 /data/data/com.termux/files/home/Documents/living-chatting/src/main/java/com/dkmo/living_chatting/UsersRepository.java
 /data/data/com.termux/files/home/Documents/living-chatting/src/main/java/com/dkmo/living_chatting/UsersService.java
+/data/data/com.termux/files/home/Documents/living-chatting/src/main/java/com/dkmo/living_chatting/WebMvcConfigure.java
 /data/data/com.termux/files/home/Documents/living-chatting/src/main/java/com/dkmo/living_chatting/WebSocketConfig.java
 /data/data/com.termux/files/home/Documents/living-chatting/src/main/java/com/dkmo/living_chatting/userDtoUpdate.java

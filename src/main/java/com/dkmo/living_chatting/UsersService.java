@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,17 +23,20 @@ public class UsersService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public UserModel createUser(UsersDto user) {
-        String id = UUID.randomUUID().toString();
-        System.out.println(id);
-        UserModel userModel = new UserModel();
-        userModel.setEmail(user.email());
-        userModel.setUsuario(user.usuario());
-        userModel.setSenha(user.senha());
-        userModel.setNotificated(false);
-        userModel.setId(id);
-        return usersRepository.save(userModel);
+    public ResponseEntity<UserModel> createUser(UsersDto user) {
+        UserModel usuario = usersRepository.findByEmail(user.email());
 
+        if (usuario == null) {
+            UserModel userModel = new UserModel();
+            userModel.setEmail(user.email());
+            userModel.setUsuario(user.usuario());
+            userModel.setSenha(user.senha());
+            userModel.setNotificated(false);
+            userModel.setId(UUID.randomUUID().toString());
+            usersRepository.save(userModel);
+            return ResponseEntity.status(HttpStatus.OK).body(userModel);
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
     public List<UserModel> findAllUsers() {

@@ -1,13 +1,14 @@
 package com.dkmo.living_chatting;
 
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -15,19 +16,17 @@ public class LivingChattingController {
     @Autowired
     private UsersService usersService;
     @Autowired
-    private SimpMessagingTemplate simpMessagingTemplate;
-    @Autowired
     private FcmService fcmService;
-    int id = 0;
     @Autowired
     private MessageRepository messageRepository;
 
     @MessageMapping("/new-message")
     @SendTo("/topics/livechat")
     public ChatOutput newMessage(MessageDto message) {
-        id++;
-
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         String user = usersService.findUsersForEmail(message.email());
+        LocalTime agora = LocalTime.now(ZoneId.of("America/Sao_Paulo"));
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -64,8 +63,7 @@ public class LivingChattingController {
             }
         }).start();
         return ChatOutput.builder().idMensagem(message.id()).from(user).content(message.message())
-                .timeStamp(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).getHour() + ":"
-                        + ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).getMinute())
+                .timeStamp(agora.format(dateTimeFormatter))
                 .build();
 
     }

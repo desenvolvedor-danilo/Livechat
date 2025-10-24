@@ -2,6 +2,7 @@ package com.dkmo.living_chatting;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class UserController {
     private UsersService usersService;
 
     @PostMapping("/save")
-    public UserModel createUser(@RequestBody UsersDto user) {
+    public ResponseEntity<UserModel> createUser(@RequestBody UsersDto user) {
         return usersService.createUser(user);
 
     }
