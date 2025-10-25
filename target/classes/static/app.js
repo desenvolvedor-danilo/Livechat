@@ -2,9 +2,11 @@ const stompClient = new StompJs.Client({
   webSocketFactory: () => new SockJS(`${window.location.origin}/buildrun-livechat-websocket`)
 });
 
+const hrefCadastro = () => {
+  window.location.href = "/cadastro"
+}
 stompClient.heartbeatIncoming = 10000;
 stompClient.heartbeatOutgoing = 10000;
-
 
 const userna = document.getElementById('usuario')
 const pass = document.getElementById('password')
