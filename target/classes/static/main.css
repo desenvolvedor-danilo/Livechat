@@ -13,7 +13,9 @@ body {
     justify-content: center;
     align-items: center;
 }
-
+.navbar.navbar-expand-lg.navbar-light.bg-light{
+    background-color:#4a4ee0;
+}
 /* Formulários (Login e Cadastro) */
 h2 {
     text-align: center;
@@ -114,6 +116,15 @@ h2 {
     overflow-y: auto;
     background: #f7f7f7;
 }
+
+#chat {
+
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #f7f7f7;
+}
+
 
 .msg-sent,
 .msg-received {

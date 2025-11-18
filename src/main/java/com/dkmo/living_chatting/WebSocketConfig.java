@@ -1,5 +1,4 @@
 package com.dkmo.living_chatting;
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -11,13 +10,15 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/topics");
-        // .setHeartbeatValue(new long[] { 10000, 10000 });
+        registry.enableSimpleBroker("/topics", "/queue");
         registry.setApplicationDestinationPrefixes("/app");
+        registry.setUserDestinationPrefix("/user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/buildrun-livechat-websocket").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/buildrun-livechat-websocket")
+                .setHandshakeHandler(new CustomHandshakerHandler())
+                .setAllowedOriginPatterns("*").withSockJS();
     }
 }

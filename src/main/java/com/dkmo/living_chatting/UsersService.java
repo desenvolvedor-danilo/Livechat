@@ -49,7 +49,7 @@ public class UsersService {
         UserModel userModel = usersRepository.findByEmail(email);
         if (userModel != null && senha.equals(userModel.getSenha())) {
             Query query = new Query(Criteria.where("email").is(email));
-            Update update = new Update().set("isConnected", true);
+            Update update = new Update().set("isConnected", true).set("online", true);
             mongoTemplate.updateFirst(query, update, UserModel.class);
 
             return ResponseDto.builder().usuario(userModel.getUsuario()).email(userModel.getEmail())

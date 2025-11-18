@@ -12,7 +12,7 @@ public class UserModel {
     private String usuario;
     @Indexed(unique = true)
     private String email;
-
+    private boolean online;
     private String senha;
 
     private String fcmToken;
@@ -65,6 +65,14 @@ public class UserModel {
 
     public void setNotificated(boolean notificated) {
         this.notificated = notificated;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
     }
 
 }

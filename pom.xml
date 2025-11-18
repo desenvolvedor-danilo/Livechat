@@ -44,8 +44,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.32</version>
+    <scope>provided</scope>
+</dependency>
 
-   <dependency>
+   <dependency> 
   <groupId>com.google.auth</groupId>
   <artifactId>google-auth-library-oauth2-http</artifactId>
   <version>1.23.0</version>
@@ -54,9 +60,7 @@
      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-websocket</artifactId>
     </dependency>
-   
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -65,5 +69,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

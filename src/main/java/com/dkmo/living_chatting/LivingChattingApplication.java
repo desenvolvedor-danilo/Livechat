@@ -10,7 +10,6 @@ public class LivingChattingApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LivingChattingApplication.class, args);
-
+		System.out.println("teste");
 	}
-
 }

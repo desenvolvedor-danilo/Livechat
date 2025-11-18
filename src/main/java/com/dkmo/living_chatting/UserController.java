@@ -21,7 +21,7 @@ public class UserController {
 
     }
 
-    @GetMapping
+    @GetMapping("/findall")
     public List<UserModel> findAllUsers() {
         return usersService.findAllUsers();
     }
