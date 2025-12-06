@@ -175,6 +175,12 @@ h2 {
     transform: translateY(-50%);
 }
 
+.timestamp-received {
+    text-align: right;
+    font-size: 0.5em;
+    color: #666;
+}
+
 .username-sent {
     color: white;
     font-size: 0.7em;

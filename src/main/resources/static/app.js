@@ -103,10 +103,18 @@ function sendMsgPrivate() {
       body: JSON.stringify({ "to": lastSender, "message": $("#msgPrivate").val() })
     })
   }
-
-  $("#chat").append("<div class='msg-sent'>" + $("#msgPrivate").val() + "</div>")
-  $("#msgPrivate").val("")
-
+  // $("#chat").append("<div class='msg-sent'>" + $("#msgPrivate").val() + "</div>")
+  const now = new Date()
+  const hour = now.getHours().toString().padStart(2, "0")
+  const minutes = now.getMinutes().toString().padStart(2, "0")
+  fetch("/users/find-users/" + localStorage.getItem("email")).
+    then((res) => res.text())
+    .then((dado) => {
+      const name = dado;
+      $("#chat").append("<div class='msg-sent'><div class='username-sent'>" + "~" + name + "</div>" + $('#msgPrivate').val() + "<div class='timestamp-sent'>" + hour + ":" + minutes + "</div></div>")
+    }).then(() =>
+      $("#msgPrivate").val("")
+    )
   firebase.initializeApp(firebaseConfig);
   const messaging = firebase.messaging();
   Notification.requestPermission().then((permission) => {
@@ -168,7 +176,7 @@ function updateLiveChat(message) {
 }
 function privateChat(message) {
   if (isDuplicate(message)) return
-  $("#chat").append("<div class='msg-received'>" + "<div class='username-received'> ~ " + message.user + "</div>" + message.message + "<div class='timestamp'>" + message.timeStamp + "</div></div>")
+  $("#chat").append("<div class='msg-received'>" + "<div class='username-received'> ~ " + message.name + "</div>" + message.message + "<div class='timestamp-received'>" + message.timeStamp + "</div></div>")
   lastSender = message.from
   lastTo = message.to
 }
@@ -227,13 +235,14 @@ const loadedMessagesPrivate = () => {
     .then((data) => {
 
       data.map((msg) => {
-
-        if (msg.to != localStorage.getItem("email")) {
-          $("#chat").append(
-            "<div class='msg-sent'>" + "<div class='username-sent'> ~ " + msg.name + "</div>" + msg.message + "<div class='timestamp'>" + msg.timeStamp + "</div></div>")
-        } else {
-          $("#chat").append(
-            "<div class='msg-received'>" + "<div class='username-received'> ~ " + msg.name + "</div>" + msg.message + "<div class='timestamp'>" + msg.timeStamp + "</div></div>")
+        if (msg.from == localStorage.getItem("email") || msg.to == localStorage.getItem("email")) {
+          if (msg.to != localStorage.getItem("email")) {
+            $("#chat").append(
+              "<div class='msg-sent'>" + "<div class='username-sent'> ~ " + msg.name + "</div>" + msg.message + "<div class='timestamp-sent'>" + msg.timeStamp + "</div></div>")
+          } else {
+            $("#chat").append(
+              "<div class='msg-received'>" + "<div class='username-received'> ~ " + msg.name + "</div>" + msg.message + "<div class='timestamp-received'>" + msg.timeStamp + "</div></div>")
+          }
         }
       })
     })
