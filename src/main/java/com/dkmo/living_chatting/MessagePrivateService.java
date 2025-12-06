@@ -1,0 +1,47 @@
+package com.dkmo.living_chatting;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+@Service
+public class MessagePrivateService {
+  @Autowired
+  private MessagePrivateRepository messagePrivateRepository;  
+  @Autowired
+  private ConversationService conversationService;
+public void saveMessages(Messages message){
+  MessagesPrivate messagesPrivate = new MessagesPrivate(UUID.randomUUID().toString(),message.getTo(), message.getFrom(), message.getMessage(),message.getTimeStamp(),message.getUser(),message.getName());
+    messagesPrivate.setIdConversa(CreateaIdHash.createId(message.getFrom(), message.getTo()));
+        conversationService.Conversation(messagesPrivate);
+
+    messagePrivateRepository.save(messagesPrivate);
+
+  }
+  
+
+  public List<MessagesPrivate> getMessageByTo(String to){
+
+     List<MessagesPrivate> messagesPrivate =  messagePrivateRepository.findByTo(to);
+    messagesPrivate.forEach(msg->{
+     msg.setCount(
+      countByFrom(msg.getFrom()));
+      
+    });
+  return messagesPrivate;
+  }
+  public long countByFrom(String from){
+return  messagePrivateRepository.countByFrom(from);
+    
+}
+
+  public List<MessagesPrivate> findAllMessagesPrivate(String to,String from){
+    List<MessagesPrivate> participantes = messagePrivateRepository.findByParticipantes(to, from);
+    if(participantes != null){
+    return participantes;
+    }  
+    return null; 
+  }
+  
+}

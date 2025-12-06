@@ -1,5 +1,10 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/ChatInput.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/ChatOutput.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/Conversation.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/ConversationController.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/ConversationRepository.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/ConversationService.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/CreateaIdHash.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/CustomHandshakerHandler.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/FcmService.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/LiveChatPrivate.java
@@ -8,6 +13,9 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/MessageController.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/MessageDto.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/MessageModel.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/MessagePrivateController.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/MessagePrivateRepository.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/MessagePrivateService.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/MessageRepository.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/Messages.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/MessagesPrivate.java

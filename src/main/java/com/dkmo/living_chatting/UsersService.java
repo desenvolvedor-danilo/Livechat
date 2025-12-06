@@ -1,6 +1,9 @@
 package com.dkmo.living_chatting;
 
-import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -11,9 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class UsersService {
@@ -28,6 +29,7 @@ public class UsersService {
 
         if (usuario == null) {
             UserModel userModel = new UserModel();
+            userModel.setName(user.name());
             userModel.setEmail(user.email());
             userModel.setUsuario(user.usuario());
             userModel.setSenha(user.senha());
@@ -71,7 +73,7 @@ public class UsersService {
     public String findUsersForEmail(String email) {
         UserModel userModel = usersRepository.findByEmail(email);
         if (userModel != null) {
-            return userModel.getUsuario();
+            return userModel.getName();
         }
         return null;
     }

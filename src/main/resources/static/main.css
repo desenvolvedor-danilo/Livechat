@@ -13,9 +13,11 @@ body {
     justify-content: center;
     align-items: center;
 }
-.navbar.navbar-expand-lg.navbar-light.bg-light{
-    background-color:#4a4ee0;
+
+.navbar.navbar-expand-lg.navbar-light.bg-light {
+    background-color: #4a4ee0;
 }
+
 /* Formulários (Login e Cadastro) */
 h2 {
     text-align: center;
@@ -154,10 +156,23 @@ h2 {
     font-size: 0.7em;
 }
 
-.timestamp {
-    text-align: right;
+.username {
+    display: flex;
+    flex-direction: row;
+}
+
+.timeStamp {
+    /* text-align: right; */
+    width: 15px;
+    height: 15px;
+    display: block;
     color: #666;
-    font-size: 0.5em;
+    /* float: right; */
+    /* font-size: 0.5em; */
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    transform: translateY(-50%);
 }
 
 .username-sent {

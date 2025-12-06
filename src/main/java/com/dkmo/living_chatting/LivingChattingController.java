@@ -3,20 +3,15 @@ package com.dkmo.living_chatting;
 import java.security.Principal;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class LivingChattingController {
@@ -30,11 +25,16 @@ public class LivingChattingController {
 	private SimpMessagingTemplate simpMessagingTemplate;
 	@Autowired
 	private MessageRepository messageRepository;
+	@Autowired
+	private MessagePrivateService messagePrivateService;
+
+
 
 	@MessageMapping("/new-message")
 	@SendTo("/topics/livechat")
 	public ChatOutput newMessage(MessageDto message) {
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 		String user = usersService.findUsersForEmail(message.from());
 		LocalTime agora = LocalTime.now(ZoneId.of("America/Sao_Paulo"));
 
@@ -62,9 +62,7 @@ public class LivingChattingController {
 				if (!message.message().equals("")) {
 					MessageModel messageModel = new MessageModel();
 					messageModel.setEmail(message.from());
-					messageModel.setTimeStamp(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).getHour()
-							+ ":"
-							+ ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).getMinute());
+					messageModel.setTimeStamp(agora.format(dateTimeFormatter));
 					messageModel.setId(UUID.randomUUID().toString());
 					messageModel.setUsername(user);
 					messageModel.setMessage(message.message());
@@ -82,23 +80,25 @@ public class LivingChattingController {
 	@MessageMapping("/chat/private/")
 	public void privateMessage(@Payload Messages message, Principal principal) {
 
-		UserModel user = usersRepository.findByEmail(message.getTo());
+DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    LocalTime now = LocalTime.now(ZoneId.of("America/Sao_Paulo"));
+    message.setTimeStamp(now.format(dateTimeFormatter));
+    UserModel user = usersRepository.findByEmail(message.getTo());
 		if (user.getFcmToken() != null && user.getEmail() != message.getFrom()) {
 			try {
 				fcmService.sendMessage(user.getFcmToken(), "Nova mensagem de: " + user.getUsuario(), message.getMessage());
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-
 		}
-
 		message.setFrom(principal.getName());
 
 		UserModel userModel = usersRepository.findByEmail(message.getFrom());
-
+     
 		message.setUser(userModel.getUsuario());
+	  message.setName(userModel.getName());
+	  System.out.println(message.getName());
+		messagePrivateService.saveMessages(message);
 		simpMessagingTemplate.convertAndSendToUser(message.getTo(), "/queue/message", message);
-
 	}
-
 }

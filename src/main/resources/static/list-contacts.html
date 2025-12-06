@@ -2,57 +2,60 @@
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lista de Contatos</title>
-  <link href="/list-contacts.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Lista de Contatos</title>
+	<link href="/list-contacts.css" rel="stylesheet">
+	<link rel="stylesheet" href="/main.css">
+
+	<link rel="stylesheet" type="" href="/css/css/bootstrap.min.css">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+	<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 </head>
 
 <body>
 
-  <div class="contacts-container" id="contacts">
-    <header class="chat-header">
-      <h2>Usuários Disponíveis</h2>
-    </header>
-    
-    <div id="contactList" class="contact-list">
-      
-      <a href="/" class="contact-item online-contact">
-        <div class="contact-avatar">A</div>
-        <div class="contact-info">
-          <span class="contact-name">Forum</span>
-          <span class="status-indicator online"></span> 
-        </div>
-      </a>
-      <!---->
-      <!-- <a href="private.html?user=bob" class="contact-item"> -->
-      <!--   <div class="contact-avatar">B</div> -->
-      <!--   <div class="contact-info"> -->
-      <!--     <span class="contact-name">Bob Johnson</span> -->
-      <!--     <span class="status-indicator offline"></span>  -->
-      <!--   </div> -->
-      <!-- </a> -->
-      <!---->
-      <!-- <a href="private.html?user=carol" class="contact-item online-contact"> -->
-      <!--   <div class="contact-avatar">C</div> -->
-      <!--   <div class="contact-info"> -->
-      <!--     <span class="contact-name">Carol White</span> -->
-      <!--     <span class="status-indicator online"></span>  -->
-      <!--   </div> -->
-      <!-- </a> -->
-      <!---->
-      </div>
-    
-  </div>
- 
-  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-<script>eruda.init();</script>	
-  <script src="/app.js"></script>
-  </body>
+	<div class="contacts-container" id="contacts">
+		<header class="chat-header">
+			<h2>Usuários Disponíveis</h2>
+			<nav class="navbar navbar-expand-lg navbar-light bg-transparent text-light" id="nav">
+				<div class="container-fluid">
+					<a class="navbar-brand text-white" id="name" href="#"></a>
+					<button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
+						data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+						aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon text-white"></span>
+					</button>
+					<div class="collapse navbar-collapse text-white" id="navbarNavAltMarkup">
+						<div class="navbar-nav text-white">
+							<a class="nav-link active text-white" aria-current="page" href="/login">Login</a>
+							<a class="nav-link text-white" href="/contacts">Contatos</a>
+							<a class="nav-link text-white" href="#">Configurações</a>
+						</div>
+					</div>
+				</div>
+			</nav>
+
+		</header>
+
+		<div id="contactList" class="contact-list">
+
+			<a href="/index.html" class="contact-item online-contact">
+				<div class="contact-avatar">A</div>
+				<div class="contact-info">
+					<span class="contact-name">Geral</span>
+					<span class="status-indicator online"></span>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<script src="/css/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+	<script>eruda.init();</script>
+	<script src="/app.js"></script>
+</body>
 
 </html>
-

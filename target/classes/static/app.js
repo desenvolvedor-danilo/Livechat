@@ -4,31 +4,26 @@ const stompClient = new StompJs.Client({
 });
 
 const hrefCadastro = () => {
-  window.location.href = "/cadastro"
+  window.location.href = "/register"
 }
-stompClient.heartbeatIncoming = 10000;
-stompClient.heartbeatOutgoing = 10000;
 
 const userna = document.getElementById('usuario')
 const pass = document.getElementById('password')
 const mail = document.getElementById('email')
 const message = { email: localStorage.getItem("email"), message: '' }
-//let isConnected;
 let messages = new Array()
 let users = new Array()
+let notify = new Array()
 let targetEmail;
 let isLogado = false;
 let lastSender;
 let isNotificated;
 let state;
 let isNotification = true;
-if (window.location.pathname === "/private.html" && !window.location.search.includes("?user=")) {
-  window.location.href = "/private.html?user=" + localStorage.getItem("email");
-}
-if (localStorage.getItem("email") != null) {
-  document.getElementById("login").textContent = "Logout"
-} else {
-  document.getElementById("login").textContent = "Login"
+let last;
+let lastTo;
+const setNome = (name) => {
+  nome = name;
 }
 const btnConversas = document.getElementById("box-conversas");
 const firebaseConfig = {
@@ -64,6 +59,7 @@ stompClient.onStompError = (frame) => {
   console.error('Broker reported error: ' + frame.headers['message']);
   console.error('Additional details: ' + frame.body);
 };
+
 function setConnected(connected) {
   $("#connect").prop("disabled", connected);
   $("#disconnect").prop("disabled", !connected);
@@ -90,6 +86,7 @@ function disconnect() {
 }
 function sendMsgPrivate() {
   const param = new URLSearchParams(window.location.search).get("user")
+  localStorage.setItem("email-target", param)
   targetEmail = param
   if (targetEmail != localStorage.getItem("email")) {
     stompClient.publish({
@@ -171,14 +168,9 @@ function updateLiveChat(message) {
 }
 function privateChat(message) {
   if (isDuplicate(message)) return
-
-
   $("#chat").append("<div class='msg-received'>" + "<div class='username-received'> ~ " + message.user + "</div>" + message.message + "<div class='timestamp'>" + message.timeStamp + "</div></div>")
-  // else {
-  //   $("#chat").append("<div class='msg-sent'>" + "<div class='username-sent'> ~ " + message.from + "</div>" + message.message + "<div class='timestamp-sent'>" + message.timeStamp + "</div></div>")
-  // }
-
   lastSender = message.from
+  lastTo = message.to
 }
 const handleCadastro = () => {
 
@@ -186,7 +178,7 @@ const handleCadastro = () => {
   fetch("/users/save", {
     headers: { "Content-Type": "application/json; charset=UTF-8" },
     method: 'POST',
-    body: JSON.stringify({ 'email': $("#email").val(), 'senha': $("#password").val(), 'usuario': $("#usuario").val() })
+    body: JSON.stringify({ 'email': $("#email").val(), 'senha': $("#password").val(), 'usuario': $("#usuario").val(), "name": $("#name") })
   }).then((res) => {
     if (res.status == 200) {
       window.location.href = "/login"
@@ -195,6 +187,58 @@ const handleCadastro = () => {
   })
 
 }
+const notifications = () => {
+  fetch("/conversas/private?from=" + localStorage.getItem("email"))
+    .then((res) => res.json())
+    .then((data) => {
+      const lastByUser = {}
+      data.forEach(msg => {
+        lastByUser[msg.id] = msg;
+      });
+      $("#notifications").empty()
+      Object.values(lastByUser).forEach((msg) => {
+        const participante = msg.participantes.filter(part => part !== localStorage.getItem("email"))
+        fetch("/users/find-users/" + participante).
+          then((res) => res.text())
+          .then((dado) => {
+            const name = dado;
+            $("#notifications").append(
+              `<a href="/private.html?user=${participante}" class="contact-item online-contact">
+        
+
+				<div class="contact-avatar"></div>
+				<div class="contact-info">
+
+          <div class="">${name}</div>
+					<span class="contact-name">${msg.lastMessage}</span>
+					<span class="timeStamp">${msg.updatedAt}</span>
+				
+       </div>
+			</a>`
+            )
+          })
+      })
+    })
+}
+const loadedMessagesPrivate = () => {
+  const param = new URLSearchParams(window.location.search).get("user")
+  fetch(`/private-messages/find?to=${param}&from=${localStorage.getItem("email")}`)
+    .then((res) => res.json())
+    .then((data) => {
+
+      data.map((msg) => {
+
+        if (msg.to != localStorage.getItem("email")) {
+          $("#chat").append(
+            "<div class='msg-sent'>" + "<div class='username-sent'> ~ " + msg.name + "</div>" + msg.message + "<div class='timestamp'>" + msg.timeStamp + "</div></div>")
+        } else {
+          $("#chat").append(
+            "<div class='msg-received'>" + "<div class='username-received'> ~ " + msg.name + "</div>" + msg.message + "<div class='timestamp'>" + msg.timeStamp + "</div></div>")
+        }
+      })
+    })
+}
+
 const loadedMessages = () => {
   let userCurrent = localStorage.getItem("usuario")
   fetch("/messages/findall")
@@ -235,16 +279,10 @@ const handleLogin = () => {
 
     .then(() => {
       if (state) {
-        window.location.href = "/list-contacts"
+        window.location.href = "/notifications"
       }
     })
 }
-// if (localStorage.getItem("usuario")) {
-//   document.getElementById("name").textContent = localStorage.getItem("usuario")
-// } else {
-//   document.getElementById("name").textContent = "Chatting"
-// }
-//
 
 const findAllUsers = () => {
   fetch("/users/findall")
@@ -276,6 +314,8 @@ $(function() {
   $("#login").click(() => handleLogin());
   $("document").ready(() => connect())
   $("document").ready(() => findAllUsers())
+  $("document").ready(() => notifications())
   $("#livechat").ready(() => loadedMessages())
+  $("#chat").ready(() => loadedMessagesPrivate())
   $("#sendPrivate").click(() => sendMsgPrivate())
 }); 
