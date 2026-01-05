@@ -18,6 +18,7 @@ public class MessagesPrivate {
   private String message;
   private String timeStamp;
   private String user;
+  private String url;
   private long count;
   private String name;
   private List<String> participantes = new ArrayList<>();
@@ -28,7 +29,7 @@ public class MessagesPrivate {
    * @param message
    * @param timeStamp
    */
-  public MessagesPrivate(String id, String to, String from, String message, String timeStamp,String user,String name) {
+  public MessagesPrivate(String id, String to, String from, String message, String timeStamp,String user,String name,String url) {
     this.id = id;
     this.to = to;
     this.from = from;
@@ -36,6 +37,7 @@ public class MessagesPrivate {
     this.timeStamp = timeStamp;
     this.user = user;
     this.name = name;
+    this.url = url;
     addParticipantes(); 
   }
 private void addParticipantes(){

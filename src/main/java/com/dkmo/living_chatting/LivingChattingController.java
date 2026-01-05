@@ -81,8 +81,7 @@ DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
 	@MessageMapping("/chat/private/")
 	public void privateMessage(@Payload Messages message, Principal principal) {
-
-DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+   	DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
     LocalTime now = LocalTime.now(ZoneId.of("America/Sao_Paulo"));
     message.setTimeStamp(now.format(dateTimeFormatter));
     UserModel user = usersRepository.findByEmail(message.getTo());
@@ -92,18 +91,11 @@ DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
 			}
-		}
+ 		}
 		message.setFrom(principal.getName());
-
-		UserModel userModel = usersRepository.findByEmail(message.getFrom());
-     
+		UserModel userModel = usersRepository.findByEmail(message.getFrom()); 
 		message.setUser(userModel.getUsuario());
 	  message.setName(userModel.getName());
-	  // if(message.getFile()!=null){
-	  // message.setUrlFile(filesService.fileUrl(message.getFile()));
-	  // message.setFile(null);
-	  // }
-	 System.out.println(message.getUrlFile());
 		messagePrivateService.saveMessages(message);
 		simpMessagingTemplate.convertAndSendToUser(message.getTo(), "/queue/message", message);
 	}
