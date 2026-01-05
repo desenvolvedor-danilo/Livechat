@@ -1,3 +1,14 @@
+const currentPage = location.href
+const links = document.querySelectorAll(".nav-link")
+links.forEach((link) => {
+  link.classList.add("text-white")
+  if (link.href === currentPage) {
+    link.classList.add("text-decoration-underline")
+  } else {
+    link.classList.remove("text-decoration-underline")
+  }
+
+})
 let currentEmail = localStorage.getItem("email")
 const stompClient = new StompJs.Client({
   webSocketFactory: () => new SockJS(`${window.location.origin}/buildrun-livechat-websocket?user=${currentEmail}`)
@@ -6,13 +17,17 @@ const stompClient = new StompJs.Client({
 const hrefCadastro = () => {
   window.location.href = "/register"
 }
-
 const userna = document.getElementById('usuario')
 const pass = document.getElementById('password')
 const mail = document.getElementById('email')
+const input = document.getElementById("inputPreview")
+
+const sendFiles = document.getElementById("sendFiles")
+const img = document.getElementById("imagePreview")
 const message = { email: localStorage.getItem("email"), message: '' }
 let messages = new Array()
 let users = new Array()
+let selectFiles = false;
 let notify = new Array()
 let targetEmail;
 let isLogado = false;
@@ -22,6 +37,9 @@ let state;
 let isNotification = true;
 let last;
 let lastTo;
+let photo = ""
+let arquivo = null;
+
 const setNome = (name) => {
   nome = name;
 }
@@ -33,6 +51,69 @@ const firebaseConfig = {
   storageBucket: "livechat-ce9c4.firebasestorage.app",
   messagingSenderId: "646790522951",
   appId: "1:646790522951:web:da157fffedde43d759e962"
+}
+
+const preLoadingPhotoProfile = () => {
+
+  fetch(`http://localhost:8080/users/photo-profile?email=${localStorage.getItem("email")}`).then((res) => res.text())
+    .then((dado) => {
+
+      const img = document.getElementById("imagePreview")
+      if (dado) {
+        img.setAttribute("src", dado)
+      } else {
+        img.setAttribute("src", "https://rozup.ir/view/3716005/default-avatar.png")
+      }
+    })
+
+
+
+
+}
+const inputFiles = async () => {
+  sendFiles.click()
+  sendFiles.addEventListener("change", async (e) => {
+    selectFiles = true;
+    arquivo = e.target.files[0]
+    if (arquivo) {
+
+      // const div = document.getElementById("previa")
+      // const img = document.createElement("img")
+      //
+      // const url = URL.createObjectURL(arquivo)
+      //const formdata = new FormData()
+      formdata.append("File", arquivo)
+      // const uri = await uploadFile(formdata)
+      // div.style.display = "flex"
+      // img.setAttribute("src", url)
+      // img.style.width = "250px"
+      // img.style.height = "250px"
+      // div.appendChild(img)
+      //return uri;
+
+
+    }
+  })
+
+}
+const inputImg = () => {
+  input.click()
+  input.addEventListener("change", (e) => {
+    const arquivo = e.target.files[0]
+    if (arquivo) {
+      const url = URL.createObjectURL(arquivo)
+      const img = document.getElementById("imagePreview")
+      img.setAttribute("src", url)
+
+      formdata.append("email", localStorage.getItem("email"))
+      formdata.append("file", arquivo)
+      fetch("/users/profile", {
+        method: "POST",
+        body: formdata
+      }).then((res) => res.text())
+        .then((data) => console.log(data))
+    }
+  })
 }
 
 stompClient.onConnect = (frame) => {
@@ -73,6 +154,11 @@ function setConnected(connected) {
     $("#conversation").hide();
   }
 }
+async function photoProfile(email) {
+  const url = (await fetch("/users/photo-profile?email=" + email)).text()
+  return url;
+}
+
 function connect() {
   stompClient.activate();
 }
@@ -84,10 +170,21 @@ function disconnect() {
   pLogado.removeChild(logado)
   console.log("Disconnected");
 }
-function sendMsgPrivate() {
+async function sendMsgPrivate() {
   const param = new URLSearchParams(window.location.search).get("user")
   localStorage.setItem("email-target", param)
   targetEmail = param
+  const uri = await uploadFile()
+  if (selectFiles) {
+    stompClient.publish({
+      destination: "/app/chat/private/",
+      body: JSON.stringify({ "to": targetEmail, "urlFile": uri })
+    })
+
+    $("#chat").append(`<div class='msg-sent'><div class='username-sent'></div><img src="${uri}" style="max-width:100%;height:auto;"></div>`)
+
+  }
+  uri = ""
   if (targetEmail != localStorage.getItem("email")) {
     stompClient.publish({
 
@@ -103,7 +200,7 @@ function sendMsgPrivate() {
       body: JSON.stringify({ "to": lastSender, "message": $("#msgPrivate").val() })
     })
   }
-  // $("#chat").append("<div class='msg-sent'>" + $("#msgPrivate").val() + "</div>")
+
   const now = new Date()
   const hour = now.getHours().toString().padStart(2, "0")
   const minutes = now.getMinutes().toString().padStart(2, "0")
@@ -112,8 +209,10 @@ function sendMsgPrivate() {
     .then((dado) => {
       const name = dado;
       $("#chat").append("<div class='msg-sent'><div class='username-sent'>" + "~" + name + "</div>" + $('#msgPrivate').val() + "<div class='timestamp-sent'>" + hour + ":" + minutes + "</div></div>")
-    }).then(() =>
+
+    }).then(() => {
       $("#msgPrivate").val("")
+    }
     )
   firebase.initializeApp(firebaseConfig);
   const messaging = firebase.messaging();
@@ -176,13 +275,18 @@ function updateLiveChat(message) {
 }
 function privateChat(message) {
   if (isDuplicate(message)) return
+  notifications()
+
+
   $("#chat").append("<div class='msg-received'>" + "<div class='username-received'> ~ " + message.name + "</div>" + message.message + "<div class='timestamp-received'>" + message.timeStamp + "</div></div>")
   lastSender = message.from
   lastTo = message.to
+
+  //   $("#chat").append("<div class='msg-received'>" + "<div class='username-received'> ~ " + message.name + "</div>" + message.message + "<div class='timestamp-received'>" + message.timeStamp + "</div></div>")
+  //   lastSender = message.from
+  //   lastTo = message.to
 }
 const handleCadastro = () => {
-
-
   fetch("/users/save", {
     headers: { "Content-Type": "application/json; charset=UTF-8" },
     method: 'POST',
@@ -196,8 +300,10 @@ const handleCadastro = () => {
 
 }
 const notifications = () => {
+
   fetch("/conversas/private?from=" + localStorage.getItem("email"))
     .then((res) => res.json())
+
     .then((data) => {
       const lastByUser = {}
       data.forEach(msg => {
@@ -208,19 +314,16 @@ const notifications = () => {
         const participante = msg.participantes.filter(part => part !== localStorage.getItem("email"))
         fetch("/users/find-users/" + participante).
           then((res) => res.text())
-          .then((dado) => {
+          .then(async (dado) => {
+            const url = await photoProfile(participante)
             const name = dado;
             $("#notifications").append(
               `<a href="/private.html?user=${participante}" class="contact-item online-contact">
-        
-
-				<div class="contact-avatar"></div>
+				<img  class="contact-avatar" src="${url ? url : "https://rozup.ir/view/3716005/default-avatar.png"}" width="25" height="25">
 				<div class="contact-info">
-
           <div class="">${name}</div>
 					<span class="contact-name">${msg.lastMessage}</span>
-					<span class="timeStamp">${msg.updatedAt}</span>
-				
+					<span class="timeStamp">${msg.updatedAt}</span>	
        </div>
 			</a>`
             )
@@ -239,6 +342,7 @@ const loadedMessagesPrivate = () => {
           if (msg.to != localStorage.getItem("email")) {
             $("#chat").append(
               "<div class='msg-sent'>" + "<div class='username-sent'> ~ " + msg.name + "</div>" + msg.message + "<div class='timestamp-sent'>" + msg.timeStamp + "</div></div>")
+
           } else {
             $("#chat").append(
               "<div class='msg-received'>" + "<div class='username-received'> ~ " + msg.name + "</div>" + msg.message + "<div class='timestamp-received'>" + msg.timeStamp + "</div></div>")
@@ -284,6 +388,7 @@ const handleLogin = () => {
     }).then((dado) => {
       localStorage.setItem("email", $("#correio").val())
       localStorage.setItem("usuario", dado.usuario)
+      localStorage.setItem("logado", true)
     }).then(() => connect())
 
     .then(() => {
@@ -292,33 +397,50 @@ const handleLogin = () => {
       }
     })
 }
-
+const uploadFile = async () => {
+  const formdata = new FormData()
+  formdata.append("File", arquivo)
+  const res = await fetch("/files/save", {
+    method: "POST",
+    body: formdata
+  })
+  return await res.text()
+}
+const logout = () => {
+  localStorage.clear()
+  location.href = "/login"
+}
 const findAllUsers = () => {
-  fetch("/users/findall")
-    .then((res) => res.json())
-    .then((dado) =>
-      users = dado)
-    .then(() => {
-      users.map((user) => {
-        if (user.email != localStorage.getItem("email")) {
-          $("#contactList").append(`
+  if (localStorage.getItem("logado")) {
+    fetch("/users/findall")
+      .then((res) => res.json())
+      .then((dado) =>
+        users = dado)
+      .then(() => {
+        users.map((user) => {
+          if (user.email != localStorage.getItem("email")) {
+            $("#contactList").append(`
       <a href="private.html?user=${user.email}" class="contact-item online-contact">
         <div class="contact-avatar">A</div>
         <div class="contact-info">
-          <span class="contact-name">${user.usuario}</span>
-          <span class="status-indicator online"></span> 
+          <span class="contact-name">${user.name}</span>
         </div>
       </a>`)
-        }
-      })
+          }
+        })
 
-    })
+      })
+  }
 }
 
 $(function() {
   $("form").on("submit", (e) => e.preventDefault());
   $("#disconnect").click(() => disconnect());
+  $("#logout").click(() => logout())
+  $('document').ready(() => preLoadingPhotoProfile())
+  $('#hiddenInput').click(() => inputFiles())
   $("#send").click(() => sendMessage());
+  $("#imagePreview").click(() => inputImg())
   $("#cadastro").click(() => handleCadastro());
   $("#login").click(() => handleLogin());
   $("document").ready(() => connect())
@@ -327,4 +449,6 @@ $(function() {
   $("#livechat").ready(() => loadedMessages())
   $("#chat").ready(() => loadedMessagesPrivate())
   $("#sendPrivate").click(() => sendMsgPrivate())
+
+  document.getElementById('profile').addEventListener('load', preLoadingPhotoProfile())
 }); 

@@ -17,7 +17,9 @@
 
 	<div class="contacts-container" id="contacts">
 		<header class="chat-header">
-			<h2>Usuários Disponíveis</h2>
+			<!-- <h2>Usuários Disponíveis</h2> -->
+
+			<h2><img src="/favicon.png" / width="150" height="80"></h2>
 			<nav class="navbar navbar-expand-lg navbar-light bg-transparent text-light" id="nav">
 				<div class="container-fluid">
 					<a class="navbar-brand text-white" id="name" href="#"></a>
@@ -27,35 +29,39 @@
 						<span class="navbar-toggler-icon text-white"></span>
 					</button>
 					<div class="collapse navbar-collapse text-white" id="navbarNavAltMarkup">
-						<div class="navbar-nav text-white">
-							<a class="nav-link active text-white" aria-current="page" href="/login">Login</a>
-							<a class="nav-link text-white" href="/contacts">Contatos</a>
-							<a class="nav-link text-white" href="#">Configurações</a>
+						<div class="navbar-nav">
+
+							<a class="nav-link" aria-current="page" href="/notifications">Notificações</a>
+							<a class="nav-link" href="/contacts">Contatos</a>
+							<a class="nav-link" href="#">Configurações</a>
+
+							<a class="nav-link" aria-current="page" id="logout">Logout</a>
 						</div>
 					</div>
 				</div>
 			</nav>
 
+
 		</header>
 
 		<div id="contactList" class="contact-list">
 
-			<a href="/index.html" class="contact-item online-contact">
-				<div class="contact-avatar">A</div>
-				<div class="contact-info">
-					<span class="contact-name">Geral</span>
-					<span class="status-indicator online"></span>
-				</div>
-			</a>
+			<!-- <a href="/index.html" class="contact-item online-contact"> -->
+			<!-- <div class="contact-avatar">A</div> -->
+			<!-- <div class="contact-info"> -->
+			<!-- <span class="contact-name">Geral</span> -->
+			<!-- <span class="status-indicator online"></span> -->
 		</div>
-	</div>
+		<!-- </a> -->
+		<!-- </div> -->
+		<!-- </div> -->
 
-	<script src="/css/js/bootstrap.bundle.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-	<script>eruda.init();</script>
-	<script src="/app.js"></script>
+		<script src="/css/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+		<script>eruda.init();</script>
+		<script src="/app.js"></script>
 </body>
 
 </html>

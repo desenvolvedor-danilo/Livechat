@@ -27,6 +27,8 @@ public class LivingChattingController {
 	private MessageRepository messageRepository;
 	@Autowired
 	private MessagePrivateService messagePrivateService;
+	@Autowired
+	private FilesService filesService;
 
 
 
@@ -97,7 +99,11 @@ DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
      
 		message.setUser(userModel.getUsuario());
 	  message.setName(userModel.getName());
-	  System.out.println(message.getName());
+	  // if(message.getFile()!=null){
+	  // message.setUrlFile(filesService.fileUrl(message.getFile()));
+	  // message.setFile(null);
+	  // }
+	 System.out.println(message.getUrlFile());
 		messagePrivateService.saveMessages(message);
 		simpMessagingTemplate.convertAndSendToUser(message.getTo(), "/queue/message", message);
 	}

@@ -7,6 +7,8 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/CreateaIdHash.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/CustomHandshakerHandler.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/FcmService.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/FilesController.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/FilesService.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/LiveChatPrivate.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/LivingChattingApplication.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/LivingChattingController.java
@@ -19,12 +21,15 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/MessageRepository.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/Messages.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/MessagesPrivate.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/Recordable.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/ResponseDto.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/SaveFiles.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/UserController.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/UserModel.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/UsersDto.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/UsersRepository.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/UsersService.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/Utils.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/WebMvcConfigure.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/WebSocketConfig.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/userDtoUpdate.java

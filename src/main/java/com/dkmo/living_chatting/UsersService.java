@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -107,5 +108,25 @@ public class UsersService {
     public Boolean userIsNotificated(String email) {
         UserModel userModel = usersRepository.findByEmail(email);
         return userModel.isNotificated();
+    }
+  public String setFotoPerfil(MultipartFile file,String email){
+    UserModel userModel = usersRepository.findByEmail(email);
+    if(userModel != null){
+        
+    Utils setFotoPerfil = new Utils();
+    String url = setFotoPerfil.setPhotoProfile(file);
+    userModel.setPhotoProfile(url);
+    usersRepository.save(userModel);
+     return url;
+    }
+    return null;
+    }
+//    @Cacheable("photos-profiles")
+    public String getFotoPerfil(String email){
+        UserModel userModel = usersRepository.findByEmail(email);
+        if(userModel!=null){
+            return userModel.getPhotoProfile();
+        }
+        return null;
     }
 }
