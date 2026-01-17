@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link href="/main.css" rel="stylesheet">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="stylesheet" type="" href="/css/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+
+<body>
+
+  <div class="chat-container">
+    <header class="chat-header">
+      <h2><img src="/favicon.png" / width="150" height="80"></h2>
+      <nav class="navbar navbar-expand-lg navbar-light bg-transparent text-light" id="nav">
+        <div class="container-fluid">
+          <a class="navbar-brand text-white" id="name" href="#"></a>
+          <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon text-white"></span>
+          </button>
+          <div class="collapse navbar-collapse text-white" id="navbarNavAltMarkup">
+            <div class="navbar-nav text-white">
+
+              <a class="nav-link" href="/notifications">Notificações</a>
+              <a class="nav-link" href="/contacts">Contatos</a>
+              <a class="nav-link" href="/configuration.html">Configurações</a>
+
+              <a class="nav-link" id="logout">Logout</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div id="profile" class="d-flex flex-column gap-3">
+      <a href="#" class="text-decoration-none text-primary fw-bolder fs-2 mt-2 align-self-center">Perfil</a>
+      <input type="file" accept="image/*" class="d-none" id="inputPreview">
+      <img class="align-self-center" id="imagePreview" width="75" height="75">
+    </div>
+
+    <script src="/css/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
+    <script src="/app.js"></script>
+</body>
+
+</html>

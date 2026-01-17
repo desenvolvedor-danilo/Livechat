@@ -75,13 +75,14 @@ const inputFiles = async () => {
   sendFiles.addEventListener("change", async (e) => {
     selectFiles = true;
     arquivo = e.target.files[0]
+
     if (arquivo) {
 
       // const div = document.getElementById("previa")
       // const img = document.createElement("img")
       //
       // const url = URL.createObjectURL(arquivo)
-      //const formdata = new FormData()
+      const formdata = new FormData()
       formdata.append("File", arquivo)
       // const uri = await uploadFile(formdata)
       // div.style.display = "flex"
@@ -105,6 +106,7 @@ const inputImg = () => {
       const img = document.getElementById("imagePreview")
       img.setAttribute("src", url)
 
+      const formdata = new FormData()
       formdata.append("email", localStorage.getItem("email"))
       formdata.append("file", arquivo)
       fetch("/users/profile", {
@@ -174,17 +176,16 @@ async function sendMsgPrivate() {
   const param = new URLSearchParams(window.location.search).get("user")
   localStorage.setItem("email-target", param)
   targetEmail = param
-  const uri = await uploadFile()
-  if (selectFiles) {
-    stompClient.publish({
-      destination: "/app/chat/private/",
-      body: JSON.stringify({ "to": targetEmail, "urlFile": uri })
-    })
-
-    $("#chat").append(`<div class='msg-sent'><div class='username-sent'></div><img src="${uri}" style="max-width:100%;height:auto;"></div>`)
-
-  }
-  uri = ""
+  // const uri = await uploadFile()
+  // if (selectFiles) {
+  //   stompClient.publish({
+  //     destination: "/app/chat/private/",
+  //     body: JSON.stringify({ "to": targetEmail, "urlFile": uri })
+  //   })
+  //
+  //   $("#chat").append(`<div class='msg-sent'><div class='username-sent'></div><img src="${uri}" style="max-width:100%;height:auto;"></div>`)
+  // }
+  // uri = ""
   if (targetEmail != localStorage.getItem("email")) {
     stompClient.publish({
 
@@ -278,7 +279,7 @@ function privateChat(message) {
   notifications()
 
 
-  $("#chat").append("<div class='msg-received'>" + "<div class='username-received'> ~ " + message.name + "</div>" + message.message + "<div class='timestamp-received'>" + message.timeStamp + "</div></div>")
+  $("#chat").append("<div class='msg-received'>" + "<div class='username-received'> ~ " + message.user + "</div>" + message.message + "<div class='timestamp-received'>" + message.createdAt + "</div></div>")
   lastSender = message.from
   lastTo = message.to
 
@@ -287,10 +288,10 @@ function privateChat(message) {
   //   lastTo = message.to
 }
 const handleCadastro = () => {
-  fetch("/users/save", {
+  fetch("/users/create", {
     headers: { "Content-Type": "application/json; charset=UTF-8" },
     method: 'POST',
-    body: JSON.stringify({ 'email': $("#email").val(), 'senha': $("#password").val(), 'usuario': $("#usuario").val(), "name": $("#name") })
+    body: JSON.stringify({ 'email': $("#email").val(), 'password': $("#password").val(), 'username': $("#usuario").val(), "nome": $("#name").val() })
   }).then((res) => {
     if (res.status == 200) {
       window.location.href = "/login"
@@ -336,18 +337,23 @@ const loadedMessagesPrivate = () => {
   fetch(`/private-messages/find?to=${param}&from=${localStorage.getItem("email")}`)
     .then((res) => res.json())
     .then((data) => {
-
+      console.log(data)
       data.map((msg) => {
+
         if (msg.from == localStorage.getItem("email") || msg.to == localStorage.getItem("email")) {
           if (msg.to != localStorage.getItem("email")) {
             $("#chat").append(
-              "<div class='msg-sent'>" + "<div class='username-sent'> ~ " + msg.name + "</div>" + msg.message + "<div class='timestamp-sent'>" + msg.timeStamp + "</div></div>")
+              "<div class='msg-sent'>" + "<div class='username-sent'> ~ " + msg.user + "</div>" + msg.message + "<div class='timestamp-sent'>" + msg.timeStamp + "</div></div>")
+            $("#chat").append(
+              "<div class='msg-sent'>" + "<div class='username-sent'> ~ " + msg.user + "</div>" + msg.message + "<div class='timestamp-sent'>" + msg.timeStamp + "</div></div>")
 
           } else {
             $("#chat").append(
-              "<div class='msg-received'>" + "<div class='username-received'> ~ " + msg.name + "</div>" + msg.message + "<div class='timestamp-received'>" + msg.timeStamp + "</div></div>")
+              "<div class='msg-received'>" + "<div class='username-received'> ~ " + msg.user + "</div>" + msg.message + "<div class='timestamp-received'>" + msg.timeStamp + "</div></div>")
+
           }
         }
+
       })
     })
 }
@@ -373,8 +379,14 @@ const loadedMessages = () => {
 
 const handleLogin = () => {
 
-  fetch('/users/find-by-email?email=' + $('#correio').val(), {
-    headers: { "password": $("#senha").val() }
+  //  fetch('/users/find-by-email?email=' + $('#correio').val(), {
+  //    headers: { "password": $("#senha").val() }
+  fetch("/users/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ "email": $('#correio').val(), "password": $("#senha").val() })
   })
     .then((res) => {
       if (!res.ok) {
@@ -387,7 +399,7 @@ const handleLogin = () => {
 
     }).then((dado) => {
       localStorage.setItem("email", $("#correio").val())
-      localStorage.setItem("usuario", dado.usuario)
+      localStorage.setItem("usuario", dado.nome)
       localStorage.setItem("logado", true)
     }).then(() => connect())
 
@@ -417,13 +429,14 @@ const findAllUsers = () => {
       .then((dado) =>
         users = dado)
       .then(() => {
+        console.log(users)
         users.map((user) => {
           if (user.email != localStorage.getItem("email")) {
             $("#contactList").append(`
       <a href="private.html?user=${user.email}" class="contact-item online-contact">
         <div class="contact-avatar">A</div>
         <div class="contact-info">
-          <span class="contact-name">${user.name}</span>
+          <span class="contact-name">${user.nome}</span>
         </div>
       </a>`)
           }

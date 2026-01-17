@@ -12,12 +12,12 @@ public class MessagePrivateService {
   @Autowired
   private ConversationService conversationService;
 public void saveMessages(Messages message){
-  MessagesPrivate messagesPrivate = new MessagesPrivate(UUID.randomUUID().toString(),message.getTo(), message.getFrom(), message.getMessage(),message.getTimeStamp(),message.getUser(),message.getName());
+  MessagesPrivate messagesPrivate = new MessagesPrivate(UUID.randomUUID().toString(),message.getTo(), message.getFrom(), message.getMessage(),message.getTimeStamp(),message.getUser(),message.getName(),message.getUrlFile());
     messagesPrivate.setIdConversa(CreateaIdHash.createId(message.getFrom(), message.getTo()));
         conversationService.Conversation(messagesPrivate);
 
     messagePrivateRepository.save(messagesPrivate);
-
+ 
   }
   
 
