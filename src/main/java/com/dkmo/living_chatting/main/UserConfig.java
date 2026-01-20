@@ -16,7 +16,7 @@ import com.dkmo.living_chatting.application.usecases.LoadAllUsersUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadMessageUseCase;
 import com.dkmo.living_chatting.application.usecases.LoginPolicyInteractor;
 import com.dkmo.living_chatting.application.usecases.MessageUseCase;
-import com.dkmo.living_chatting.controller.UserDTOMapper;
+import com.dkmo.living_chatting.controller.adapters.UserAdapter;
 import com.dkmo.living_chatting.infrastructure.gateways.LoadUserGateway;
 import com.dkmo.living_chatting.infrastructure.gateways.SendMessage;
 import com.dkmo.living_chatting.infrastructure.gateways.UserEntityMapper;
@@ -38,8 +38,8 @@ public class UserConfig {
     return new UserEntityMapper();
   }
   @Bean 
- public UserDTOMapper userDTOMapper(){
-    return new UserDTOMapper();
+ public UserAdapter userDTOMapper(){
+    return new UserAdapter();
   }
   @Bean 
   public LoginPolicyInteractor loginPolicyInteractor(LoginPolicyGateway gateway){

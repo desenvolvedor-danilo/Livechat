@@ -41,12 +41,10 @@ public class MessagesPrivate {
     this.name = name;
     this.url = url;
     this.participantes = participantes;
-  } 
-// public static MessagesPrivate toMessagePrivate(Message message){
-//   return new MessagesPrivate(null, message.getTo(), message.getFrom(), message.getMessage(),message.getNow(), message.getUser(), null, null,message.getParticipants());
-//   }
+
+  }
 public Message toDomain(){
-  Message messageDomain = Message.create(message, from, to, timeStamp, name);
+  Message messageDomain = Message.create(message, from, to, timeStamp, user);
   return messageDomain;
   }
 }

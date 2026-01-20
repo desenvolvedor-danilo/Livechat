@@ -45,10 +45,12 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/MsgController.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/UserController.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/UserDTOMapper.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/adapters/MessagePrivateAdapter.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/domain/exceptions/InvalidRecipientException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/domain/model/Message.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/domain/model/User.java
-/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/adapters/InstantAdapter.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/adapters/InstantToNormalHour.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/adapters/ListMessagesAdapter.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/adapters/MessageToResponse.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/adapters/MessagesPrivateMappers.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/LoadAllUsers.java

@@ -205,16 +205,8 @@ async function sendMsgPrivate() {
   const now = new Date()
   const hour = now.getHours().toString().padStart(2, "0")
   const minutes = now.getMinutes().toString().padStart(2, "0")
-  fetch("/users/find-users/" + localStorage.getItem("email")).
-    then((res) => res.text())
-    .then((dado) => {
-      const name = dado;
-      $("#chat").append("<div class='msg-sent'><div class='username-sent'>" + "~" + name + "</div>" + $('#msgPrivate').val() + "<div class='timestamp-sent'>" + hour + ":" + minutes + "</div></div>")
-
-    }).then(() => {
-      $("#msgPrivate").val("")
-    }
-    )
+  $("#chat").append("<div class='msg-sent'><div class='username-sent'>" + "~" + localStorage.getItem("usuario") + "</div>" + $('#msgPrivate').val() + "<div class='timestamp-sent'>" + hour + ":" + minutes + "</div></div>")
+  $("#msgPrivate").val("")
   firebase.initializeApp(firebaseConfig);
   const messaging = firebase.messaging();
   Notification.requestPermission().then((permission) => {
@@ -337,19 +329,14 @@ const loadedMessagesPrivate = () => {
   fetch(`/private-messages/find?to=${param}&from=${localStorage.getItem("email")}`)
     .then((res) => res.json())
     .then((data) => {
-      console.log(data)
       data.map((msg) => {
-
         if (msg.from == localStorage.getItem("email") || msg.to == localStorage.getItem("email")) {
           if (msg.to != localStorage.getItem("email")) {
             $("#chat").append(
-              "<div class='msg-sent'>" + "<div class='username-sent'> ~ " + msg.user + "</div>" + msg.message + "<div class='timestamp-sent'>" + msg.timeStamp + "</div></div>")
-            $("#chat").append(
-              "<div class='msg-sent'>" + "<div class='username-sent'> ~ " + msg.user + "</div>" + msg.message + "<div class='timestamp-sent'>" + msg.timeStamp + "</div></div>")
-
+              "<div class='msg-sent'>" + "<div class='username-sent'> ~ " + msg.user + "</div>" + msg.message + "<div class='timestamp-sent'>" + msg.time + "</div></div>")
           } else {
             $("#chat").append(
-              "<div class='msg-received'>" + "<div class='username-received'> ~ " + msg.user + "</div>" + msg.message + "<div class='timestamp-received'>" + msg.timeStamp + "</div></div>")
+              "<div class='msg-received'>" + "<div class='username-received'> ~ " + msg.user + "</div>" + msg.message + "<div class='timestamp-received'>" + msg.time + "</div></div>")
 
           }
         }

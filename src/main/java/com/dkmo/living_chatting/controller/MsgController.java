@@ -16,9 +16,8 @@ public class MsgController {
   public MsgController(MessageUseCase messageUseCase){
     this.messageUseCase= messageUseCase;
   }
-@MessageMapping("/chat/private/")
-public ResponseEntity<?> sendMessage(@Payload CreateMessageRequest message,Principal principal){
-    
+@MessageMapping("/chat/private/") 
+public ResponseEntity<?> sendMessage(@Payload com.dkmo.living_chatting.controller.DTOs.MessageRequestDTO message,Principal principal){    
     messageUseCase.execute(message.message(),principal.getName(),message.to(),message.user());
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }

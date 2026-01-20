@@ -22,8 +22,8 @@ public class SaveMessages implements MessageSaveGateway {
 
   @Override
   public void saveMessage(Message message) {
-    MessagesPrivate messagesPrivate = messagesPrivateMappers.toMessagePrivate(message); 
-    messagePrivateRepository.save(messagesPrivate);
+    MessagesPrivate messagesPrivate = messagesPrivateMappers.toMessagePrivate(message);
+   messagePrivateRepository.save(messagesPrivate);
   }
     
 }

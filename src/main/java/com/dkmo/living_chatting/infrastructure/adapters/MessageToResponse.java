@@ -12,6 +12,5 @@ from, String to,String createdAt,String user,List<String>participants) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm")
     .withZone(ZoneId.of("America/Sao_Paulo"));
     return new MessageToResponse(message.getMessage(),message.getFrom(),message.getTo(),formatter.format(message.getNow()),message.getUser(),message.getParticipants());
-  }
-    
+  }    
 }
