@@ -14,7 +14,7 @@ import lombok.Data;
 public class MessagesPrivate {
   @Id
   private String id;
-//  private String idConversa;
+  private String idConversa;
   private String to;
   private String from;
   private String message;
@@ -31,7 +31,7 @@ public class MessagesPrivate {
    * @param message
    * @param timeStamp
    */
-  public MessagesPrivate(String id, String to, String from, String message, Instant timeStamp,String user,String name,String url,List<String> participantes) {
+  public MessagesPrivate(String id, String to, String from, String message, Instant timeStamp,String user,String name,String url,List<String> participantes,String idConversa) {
     this.id = id;
     this.to = to;
     this.from = from;
@@ -41,10 +41,11 @@ public class MessagesPrivate {
     this.name = name;
     this.url = url;
     this.participantes = participantes;
+    this.idConversa = idConversa;
 
   }
 public Message toDomain(){
-  Message messageDomain = Message.create(message, from, to, timeStamp, user);
+  Message messageDomain = Message.create(message, from, to, timeStamp, user,idConversa);
   return messageDomain;
   }
 }

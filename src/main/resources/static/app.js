@@ -55,12 +55,13 @@ const firebaseConfig = {
 
 const preLoadingPhotoProfile = () => {
 
-  fetch(`http://localhost:8080/users/photo-profile?email=${localStorage.getItem("email")}`).then((res) => res.text())
+  fetch(`http://localhost:8080/users/get-photo-profile?email=${localStorage.getItem("email")}`).then((res) => res.json())
     .then((dado) => {
+      console.log(dado.url)
 
       const img = document.getElementById("imagePreview")
       if (dado) {
-        img.setAttribute("src", dado)
+        img.setAttribute("src", dado.url)
       } else {
         img.setAttribute("src", "https://rozup.ir/view/3716005/default-avatar.png")
       }
@@ -109,7 +110,7 @@ const inputImg = () => {
       const formdata = new FormData()
       formdata.append("email", localStorage.getItem("email"))
       formdata.append("file", arquivo)
-      fetch("/users/profile", {
+      fetch("/users/photo-profile", {
         method: "POST",
         body: formdata
       }).then((res) => res.text())
@@ -157,7 +158,8 @@ function setConnected(connected) {
   }
 }
 async function photoProfile(email) {
-  const url = (await fetch("/users/photo-profile?email=" + email)).text()
+  const url = (await fetch("/users/get-photo-profile?email=" + email)).text()
+  //  console.log(url)
   return url;
 }
 

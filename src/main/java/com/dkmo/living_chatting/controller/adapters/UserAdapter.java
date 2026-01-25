@@ -22,6 +22,6 @@ public List<UserResponseDTO> listToResponse(List<User> user){
   }
 
 public User toUser(UserRequestDTO request){
-    return new User(request.nome(),request.email(),request.password(),request.username());
+    return User.create(request.nome(),request.email(),request.password(),request.username());
   }
 }

@@ -2,21 +2,28 @@ package com.dkmo.living_chatting.main;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import com.dkmo.living_chatting.application.gateway.InstantGateway;
 import com.dkmo.living_chatting.application.gateway.LoadAllUsersGateway;
+import com.dkmo.living_chatting.application.gateway.LoadFileGateway;
 import com.dkmo.living_chatting.application.gateway.LoadMessagesGateway;
 import com.dkmo.living_chatting.application.gateway.LoginPolicyGateway;
 import com.dkmo.living_chatting.application.gateway.MessageGateway;
 import com.dkmo.living_chatting.application.gateway.MessageSaveGateway;
 import com.dkmo.living_chatting.application.gateway.UserGateway;
 import com.dkmo.living_chatting.application.usecases.CreateUserInteractor;
+import com.dkmo.living_chatting.application.usecases.GetPhotoProfileUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadAllUsersUseCase;
+import com.dkmo.living_chatting.application.usecases.LoadFilesUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadMessageUseCase;
 import com.dkmo.living_chatting.application.usecases.LoginPolicyInteractor;
 import com.dkmo.living_chatting.application.usecases.MessageUseCase;
 import com.dkmo.living_chatting.controller.adapters.UserAdapter;
+import com.dkmo.living_chatting.infrastructure.gateways.CreateaIdHash;
+import com.dkmo.living_chatting.infrastructure.gateways.EditUserGatewayImpl;
+import com.dkmo.living_chatting.infrastructure.gateways.LoadFile;
 import com.dkmo.living_chatting.infrastructure.gateways.LoadUserGateway;
 import com.dkmo.living_chatting.infrastructure.gateways.SendMessage;
 import com.dkmo.living_chatting.infrastructure.gateways.UserEntityMapper;
@@ -36,7 +43,7 @@ public class UserConfig {
   @Bean
   public UserEntityMapper userEntityMapper(){
     return new UserEntityMapper();
-  }
+  } 
   @Bean 
  public UserAdapter userDTOMapper(){
     return new UserAdapter();
@@ -53,10 +60,14 @@ return new LoadUserGateway(userEntityMapper, usersRepository);
   public SendMessage sendMessage(SimpMessagingTemplate simpMessagingTemplate){
     return new SendMessage(simpMessagingTemplate);
   }
+  @Bean
+  public CreateaIdHash createaIdHash(){
+    return new CreateaIdHash();
+  }
   @Bean 
 public  MessageUseCase messageUseCase(MessageGateway
-  messageGateway,InstantGateway instantGateway,LoginPolicyGateway loginPolicyGateway,MessageSaveGateway messageSaveGateway){
-    return new MessageUseCase(messageGateway, instantGateway,loginPolicyGateway, messageSaveGateway);
+  messageGateway,InstantGateway instantGateway,LoginPolicyGateway loginPolicyGateway,MessageSaveGateway messageSaveGateway,CreateaIdHash createaIdHash){
+    return new MessageUseCase(messageGateway, instantGateway,loginPolicyGateway, messageSaveGateway,createaIdHash);
 
   }
   @Bean
@@ -67,5 +78,22 @@ public  MessageUseCase messageUseCase(MessageGateway
   @Bean 
   public LoadAllUsersUseCase loadAllUsersUseCase(LoadAllUsersGateway loadAllUsersGateway){
     return new LoadAllUsersUseCase(loadAllUsersGateway);
+  }
+  @Bean
+  EditUserGatewayImpl editUserGatewayImpl(MongoTemplate mongoTemplate){
+    return new EditUserGatewayImpl(mongoTemplate);
+  }
+  @Bean 
+  public LoadFilesUseCase loadFilesUseCase(LoadFileGateway loadFileGateway,LoadUserGateway loadUserGateway,EditUserGatewayImpl
+    editUserGateway){
+  return new LoadFilesUseCase(loadFileGateway, loadUserGateway,editUserGateway);
+  }
+  @Bean
+  public LoadFile loadFileGateway(){
+    return new LoadFile();
+  }
+  @Bean
+  public GetPhotoProfileUseCase getPhotoProfileUseCase(LoginPolicyGateway loginPolicyGateway){
+    return new GetPhotoProfileUseCase(loginPolicyGateway);
   }
 }

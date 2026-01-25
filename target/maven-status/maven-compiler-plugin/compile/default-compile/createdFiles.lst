@@ -8,7 +8,6 @@ com/dkmo/living_chatting/Messages.class
 com/dkmo/living_chatting/LivingChattingApplication.class
 com/dkmo/living_chatting/ConversationRepository.class
 com/dkmo/living_chatting/ChatInput.class
-com/dkmo/living_chatting/WebMvcConfigure.class
 com/dkmo/living_chatting/ResponseDto.class
 com/dkmo/living_chatting/ChatOutput$Builder.class
 com/dkmo/living_chatting/MessageDto.class

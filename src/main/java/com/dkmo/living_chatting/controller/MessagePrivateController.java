@@ -21,8 +21,7 @@ public class MessagePrivateController {
    */
   public MessagePrivateController(LoadMessageUseCase loadMessageUseCase) {
     this.loadMessageUseCase = loadMessageUseCase;
-  }
-
+  } 
   @GetMapping("/find")
   public List<ListMessagesAdapter> getMessages(@RequestParam("to") String to,@RequestParam("from") String from){
   List<Message> messages =   loadMessageUseCase.execute(to, from);

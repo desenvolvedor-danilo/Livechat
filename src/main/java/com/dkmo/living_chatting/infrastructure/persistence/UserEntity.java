@@ -30,10 +30,10 @@ public class UserEntity {
       this.name = name;
       this.email = email;
       this.senha = senha;
-    this.usuario = usuario;
+      this.usuario = usuario;
     }
     public User toDomain(){
-        return new User(name, email,null, usuario);
+        return User.create(name, email,null, usuario);
     }
     
 }
