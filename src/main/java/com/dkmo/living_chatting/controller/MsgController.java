@@ -9,6 +9,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 
 import com.dkmo.living_chatting.application.usecases.MessageUseCase;
+import com.dkmo.living_chatting.controller.DTOs.MessageRequestDTO;
 
 @Controller
 public class MsgController {
@@ -17,7 +18,7 @@ public class MsgController {
     this.messageUseCase= messageUseCase;
   }
 @MessageMapping("/chat/private/") 
-public ResponseEntity<?> sendMessage(@Payload com.dkmo.living_chatting.controller.DTOs.MessageRequestDTO message,Principal principal){    
+public ResponseEntity<?> sendMessage(@Payload MessageRequestDTO message,Principal principal){    
     messageUseCase.execute(message.message(),principal.getName(),message.to(),message.user());
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }

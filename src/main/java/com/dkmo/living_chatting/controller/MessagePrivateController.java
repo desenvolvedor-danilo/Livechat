@@ -24,7 +24,7 @@ public class MessagePrivateController {
   } 
   @GetMapping("/find")
   public List<ListMessagesAdapter> getMessages(@RequestParam("to") String to,@RequestParam("from") String from){
-  List<Message> messages =   loadMessageUseCase.execute(to, from);
+  List<Message> messages = loadMessageUseCase.execute(to, from);
     System.out.println(messages.stream().map(ListMessagesAdapter::convertResponse).toList());
    return messages.stream().map(ListMessagesAdapter::convertResponse).toList();
   }

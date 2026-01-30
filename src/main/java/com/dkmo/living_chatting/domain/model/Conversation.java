@@ -1,5 +1,6 @@
 package com.dkmo.living_chatting.domain.model;
 
+import java.time.Instant;
 import java.util.List;
 
 public class Conversation {
@@ -9,7 +10,7 @@ public class Conversation {
   private String lastMessage;
   private String lastSender;
   private String name;
-  private String updatedAt;
+  private Instant updatedAt;
   
 
   /**
@@ -21,7 +22,7 @@ public class Conversation {
    * @param updatedAt
    */
   private Conversation(String id, List<String> participantes, String lastMessage, String lastSender, String name,
-      String updatedAt) {
+      Instant updatedAt) {
     this.id = id;
     this.participantes = participantes;
     this.lastMessage = lastMessage;
@@ -30,7 +31,7 @@ public class Conversation {
     this.updatedAt = updatedAt;
   }
   public static Conversation create(String id, List<String> participantes, String lastMessage, String lastSender, String name,
-      String updatedAt){
+      Instant updatedAt){
     return new Conversation(id, participantes, lastMessage, lastSender, name, updatedAt);
   }
   /**
@@ -66,7 +67,7 @@ public class Conversation {
   /**
    * @return the updatedAt
    */
-  public String getUpdatedAt() {
+  public Instant getUpdatedAt() {
     return updatedAt;
   }
 

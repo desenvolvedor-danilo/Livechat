@@ -5,10 +5,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
+import com.dkmo.living_chatting.application.gateway.ConversationCreateGateway;
+import com.dkmo.living_chatting.application.gateway.ConversationEditGateway;
+import com.dkmo.living_chatting.application.gateway.ConversationGateway;
+import com.dkmo.living_chatting.application.gateway.ConversationSaveGateway;
 import com.dkmo.living_chatting.application.gateway.InstantGateway;
 import com.dkmo.living_chatting.application.gateway.LoadAllUsersGateway;
 import com.dkmo.living_chatting.application.gateway.LoadFileGateway;
 import com.dkmo.living_chatting.application.gateway.LoadMessagesGateway;
+import com.dkmo.living_chatting.application.gateway.LoadNotificationGateway;
 import com.dkmo.living_chatting.application.gateway.LoginPolicyGateway;
 import com.dkmo.living_chatting.application.gateway.MessageGateway;
 import com.dkmo.living_chatting.application.gateway.MessageSaveGateway;
@@ -18,6 +23,7 @@ import com.dkmo.living_chatting.application.usecases.GetPhotoProfileUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadAllUsersUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadFilesUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadMessageUseCase;
+import com.dkmo.living_chatting.application.usecases.LoadNotificationsUseCase;
 import com.dkmo.living_chatting.application.usecases.LoginPolicyInteractor;
 import com.dkmo.living_chatting.application.usecases.MessageUseCase;
 import com.dkmo.living_chatting.controller.adapters.UserAdapter;
@@ -66,8 +72,9 @@ return new LoadUserGateway(userEntityMapper, usersRepository);
   }
   @Bean 
 public  MessageUseCase messageUseCase(MessageGateway
-  messageGateway,InstantGateway instantGateway,LoginPolicyGateway loginPolicyGateway,MessageSaveGateway messageSaveGateway,CreateaIdHash createaIdHash){
-    return new MessageUseCase(messageGateway, instantGateway,loginPolicyGateway, messageSaveGateway,createaIdHash);
+  messageGateway,InstantGateway instantGateway,LoginPolicyGateway loginPolicyGateway,MessageSaveGateway messageSaveGateway,CreateaIdHash createaIdHash,ConversationGateway conversationGateway,ConversationCreateGateway conversationCreateGateway, ConversationSaveGateway conversationSaveGateway,ConversationEditGateway conversationEditGateway
+){
+    return new MessageUseCase(messageGateway, instantGateway,loginPolicyGateway, messageSaveGateway,createaIdHash,conversationGateway,conversationCreateGateway,conversationSaveGateway,conversationEditGateway);
 
   }
   @Bean
@@ -82,6 +89,10 @@ public  MessageUseCase messageUseCase(MessageGateway
   @Bean
   EditUserGatewayImpl editUserGatewayImpl(MongoTemplate mongoTemplate){
     return new EditUserGatewayImpl(mongoTemplate);
+  }
+  @Bean
+  public LoadNotificationsUseCase loadNotificationsUseCase(LoadNotificationGateway loadNotificationGateway){
+    return new LoadNotificationsUseCase(loadNotificationGateway);
   }
   @Bean 
   public LoadFilesUseCase loadFilesUseCase(LoadFileGateway loadFileGateway,LoadUserGateway loadUserGateway,EditUserGatewayImpl
