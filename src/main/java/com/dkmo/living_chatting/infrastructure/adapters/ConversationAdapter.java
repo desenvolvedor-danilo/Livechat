@@ -7,7 +7,7 @@ public class ConversationAdapter {
 public static ConversationEntity toConversationEntity(Conversation conversation){
 return new ConversationEntity(conversation.getId(),conversation.getParticipantes(),conversation.getLastMessage(),conversation.getLastSender(),conversation.getName(),conversation.getUpdatedAt());
   }
-  public static Conversation toConversation(ConversationEntity conversationEntity){
+  public Conversation toConversation(ConversationEntity conversationEntity){
     return Conversation.create(conversationEntity.getId(), conversationEntity.getParticipantes(), conversationEntity.getLastMessage(), conversationEntity.getName(), conversationEntity.getName(), conversationEntity.getUpdatedAt());
   }
 }

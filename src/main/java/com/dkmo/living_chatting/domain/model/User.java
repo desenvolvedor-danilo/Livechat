@@ -22,7 +22,8 @@ private User(String nome, String email, String senha, String usuario) {
  * @return the nome
  */
 public static User create(String nome,String email,String senha,String usuario){
-    return new User(nome, email, senha, usuario);
+    
+    return new User(nome, null, email, usuario);
   }
 public String nome() {
   return nome;

@@ -6,9 +6,9 @@ import java.util.List;
 
 import com.dkmo.living_chatting.domain.model.Conversation;
 
-public record ConversationResponseDto(String message, List<String> participantes, String updatedAt,String name) {
+public record ConversationResponseDto(String id,String message, List<String> participantes, String updatedAt,String name) {
    public static ConversationResponseDto create(Conversation conversation){
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.of("America/Sao_Paulo")); 
-    return new ConversationResponseDto(conversation.getLastMessage(), conversation.getParticipantes(),formatter.format(conversation.getUpdatedAt()),conversation.getName());
+    return new ConversationResponseDto(conversation.getId(), conversation.getLastMessage(), conversation.getParticipantes(),formatter.format(conversation.getUpdatedAt()),conversation.getName());
   } 
 }

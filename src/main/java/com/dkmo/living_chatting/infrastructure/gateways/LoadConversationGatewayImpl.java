@@ -17,7 +17,8 @@ public class LoadConversationGatewayImpl implements LoadNotificationGateway{
   @Override
   public List<Conversation> loadConversation(String from) {
    List<ConversationEntity> conversationEntity = conversationRepository.findByParticipantes(from);
-   return conversationEntity.stream().map(ConversationAdapter::toConversation).toList();
+   return conversationEntity.stream().map(new
+   ConversationAdapter()::toConversation).toList();
   }
     
 }

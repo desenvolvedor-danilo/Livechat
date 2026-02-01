@@ -24,6 +24,7 @@ import com.dkmo.living_chatting.application.usecases.LoadAllUsersUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadFilesUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadMessageUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadNotificationsUseCase;
+import com.dkmo.living_chatting.application.usecases.LoadUserUseCase;
 import com.dkmo.living_chatting.application.usecases.LoginPolicyInteractor;
 import com.dkmo.living_chatting.application.usecases.MessageUseCase;
 import com.dkmo.living_chatting.controller.adapters.UserAdapter;
@@ -85,6 +86,10 @@ public  MessageUseCase messageUseCase(MessageGateway
   @Bean 
   public LoadAllUsersUseCase loadAllUsersUseCase(LoadAllUsersGateway loadAllUsersGateway){
     return new LoadAllUsersUseCase(loadAllUsersGateway);
+  }
+  @Bean
+  public LoadUserUseCase loadUserUseCase(com.dkmo.living_chatting.application.gateway.LoadUserGateway loadUserGateway){
+    return new LoadUserUseCase(loadUserGateway);
   }
   @Bean
   EditUserGatewayImpl editUserGatewayImpl(MongoTemplate mongoTemplate){

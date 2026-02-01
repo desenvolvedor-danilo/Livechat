@@ -24,7 +24,9 @@ import com.dkmo.living_chatting.application.usecases.GetPhotoProfileInput;
 import com.dkmo.living_chatting.application.usecases.GetPhotoProfileUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadAllUsersUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadFilesUseCase;
+import com.dkmo.living_chatting.application.usecases.LoadUserUseCase;
 import com.dkmo.living_chatting.application.usecases.LoginPolicyInteractor;
+import com.dkmo.living_chatting.controller.DTOs.GetNameUserDto;
 import com.dkmo.living_chatting.controller.DTOs.LoginRequestDTO;
 import com.dkmo.living_chatting.controller.DTOs.PhotoProfileDto;
 import com.dkmo.living_chatting.controller.DTOs.UserRequestDTO;
@@ -35,6 +37,7 @@ import com.dkmo.living_chatting.controller.adapters.UserAdapter;
 import com.dkmo.living_chatting.controller.adapters.UserMapper;
 import com.dkmo.living_chatting.domain.model.FileReference;
 import com.dkmo.living_chatting.domain.model.User;
+import com.dkmo.living_chatting.domain.model.UsersReference;
 
 @RestController
 @RequestMapping("/users")
@@ -46,16 +49,19 @@ public class UserController {
   private final LoadAllUsersUseCase loadAllUsersUseCase;
   private final LoadFilesUseCase loadFilesUseCase;
   private final GetPhotoProfileUseCase getPhotoProfileUseCase;
+  private final LoadUserUseCase
+  loadUserUseCase;
   @Autowired
   private UserMapper userMapper;
   public UserController(CreateUserInteractor createUserInteractor,UserAdapter userDTOMapper,LoginPolicyInteractor loginPolicyInteractor,LoadAllUsersUseCase loadAllUsersUseCase,LoadFilesUseCase
-  loadFilesUseCase,GetPhotoProfileUseCase getPhotoProfileUseCase) {
+  loadFilesUseCase,GetPhotoProfileUseCase getPhotoProfileUseCase,LoadUserUseCase loadUserUseCase) {
     this.createUserInteractor = createUserInteractor;
     this.userDTOMapper = userDTOMapper;
     this.loginUserInteractor = loginPolicyInteractor;
     this.loadAllUsersUseCase = loadAllUsersUseCase;
     this.loadFilesUseCase = loadFilesUseCase;
     this.getPhotoProfileUseCase = getPhotoProfileUseCase;
+    this.loadUserUseCase = loadUserUseCase;
   }
   @PostMapping("/create")
   public UserResponseDTO  create(@RequestBody UserRequestDTO request){
@@ -96,5 +102,10 @@ public PhotoProfileDto getPhotoProfile(@RequestParam(name = "email") String emai
 GetPhotoProfileInput getPhotoProfileInput = new GetPhotoProfileInput(email);
  FileReference fileReference =  getPhotoProfileUseCase.getPhotoProfile(getPhotoProfileInput);
     return new PhotoProfileDto(fileReference.url()); 
-  } 
+  }
+  @GetMapping("/find-users")
+  public GetNameUserDto getNameUserDto(@RequestParam("email") String email){
+    UsersReference usersReference = loadUserUseCase.execute(email);
+    return new GetNameUserDto(usersReference.name(),usersReference.urlPhotoProfile());
+  }
  }  

@@ -19,7 +19,7 @@ public class FindConversation implements ConversationGateway {
   public Conversation findConversation(Message message) {
     try{
   Optional<ConversationEntity> optional = conversationRepository.findById(message.getIdConversa());
-   return ConversationAdapter.toConversation(optional.get());
+   return new ConversationAdapter().toConversation(optional.get());
    }catch(Exception e){
       return null;
     }

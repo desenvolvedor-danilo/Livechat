@@ -300,6 +300,7 @@ const notifications = () => {
     .then((res) => res.json())
 
     .then((data) => {
+      console.log(data)
       const lastByUser = {}
       data.forEach(msg => {
         lastByUser[msg.id] = msg;
@@ -308,24 +309,26 @@ const notifications = () => {
       Object.values(lastByUser).forEach((msg) => {
         console.log(msg)
         const participante = msg.participantes.filter(part => part !== localStorage.getItem("email"))
-        // fetch("/users/find-users/" + participante).
-        //   then((res) => res.text())
-        //   .then(async (dado) => {
-        //     const url = await photoProfile(participante)
-        //     const name = dado;
-        $("#notifications").append(
-          `<a href="/private.html?user=${participante}" class="contact-item online-contact">
-				<img  class="contact-avatar" src=${"https://rozup.ir/view/3716005/default-avatar.png"} width="25" height="25">
+        fetch("/users/find-users?email=" + participante).
+          then((res) => res.json())
+          .then(async (dado) => {
+            // const url = await photoProfile(participante)
+            const name = dado.nome;
+            const url = dado.url
+            $("#notifications").append(
+              `<a href="/private.html?user=${participante}" class="contact-item online-contact">
+				<img  class="contact-avatar" src=${url
+                ? url : "https://rozup.ir/view/3716005/default-avatar.png"} width="25" height="25">
 				<div class="contact-info">
-          <div class="">${msg.name}</div>
+          <div class="">${name}</div>
 					<span class="contact-name">${msg.message}</span>
 					<span class="timeStamp">${msg.updatedAt}</span>	
        </div>
 			</a>`
-        )
+            )
+          })
       })
     })
-  // })
 }
 const loadedMessagesPrivate = () => {
   const param = new URLSearchParams(window.location.search).get("user")
