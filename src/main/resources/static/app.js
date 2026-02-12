@@ -39,7 +39,7 @@ let last;
 let lastTo;
 let photo = ""
 let arquivo = null;
-
+let uri;
 const setNome = (name) => {
   nome = name;
 }
@@ -76,27 +76,22 @@ const inputFiles = async () => {
   sendFiles.addEventListener("change", async (e) => {
     selectFiles = true;
     arquivo = e.target.files[0]
-
-    if (arquivo) {
-
-      // const div = document.getElementById("previa")
-      // const img = document.createElement("img")
-      //
-      // const url = URL.createObjectURL(arquivo)
-      const formdata = new FormData()
-      formdata.append("File", arquivo)
-      // const uri = await uploadFile(formdata)
-      // div.style.display = "flex"
-      // img.setAttribute("src", url)
-      // img.style.width = "250px"
-      // img.style.height = "250px"
-      // div.appendChild(img)
-      //return uri;
-
-
-    }
+    //if (arquivo) {
+    // const div = document.getElementById("previa")
+    // const img = document.createElement("img")
+    //
+    // const url = URL.createObjectURL(arquivo)
+    // const formdata = new FormData()
+    // formdata.append("file", arquivo)
+    // const uri = await uploadFile(formdata)
+    // div.style.display = "flex"
+    // img.setAttribute("src", url)
+    // img.style.width = "250px"
+    // img.style.height = "250px"
+    // div.appendChild(img)
+    //return uri;
+    // }
   })
-
 }
 const inputImg = () => {
   input.click()
@@ -159,7 +154,6 @@ function setConnected(connected) {
 }
 async function photoProfile(email) {
   const url = (await fetch("/users/get-photo-profile?email=" + email)).text()
-  //  console.log(url)
   return url;
 }
 
@@ -175,45 +169,76 @@ function disconnect() {
   console.log("Disconnected");
 }
 async function sendMsgPrivate() {
-  const param = new URLSearchParams(window.location.search).get("user")
-  localStorage.setItem("email-target", param)
-  targetEmail = param
-  // const uri = await uploadFile()
-  // if (selectFiles) {
-  //   stompClient.publish({
-  //     destination: "/app/chat/private/",
-  //     body: JSON.stringify({ "to": targetEmail, "urlFile": uri })
-  //   })
-  //
-  //   $("#chat").append(`<div class='msg-sent'><div class='username-sent'></div><img src="${uri}" style="max-width:100%;height:auto;"></div>`)
-  // }
-  // uri = ""
-  if (targetEmail != localStorage.getItem("email")) {
-    stompClient.publish({
-
-      destination: "/app/chat/private/",
-
-      body: JSON.stringify({ "to": targetEmail, "message": $("#msgPrivate").val() })
-    })
-  } else {
-    stompClient.publish({
-
-      destination: "/app/chat/private/",
-
-      body: JSON.stringify({ "to": lastSender, "message": $("#msgPrivate").val() })
-    })
-  }
 
   const now = new Date()
   const hour = now.getHours().toString().padStart(2, "0")
   const minutes = now.getMinutes().toString().padStart(2, "0")
-  $("#chat").append("<div class='msg-sent'><div class='username-sent'>" + "~" + localStorage.getItem("usuario") + "</div>" + $('#msgPrivate').val() + "<div class='timestamp-sent'>" + hour + ":" + minutes + "</div></div>")
+
+  const param = new URLSearchParams(window.location.search).get("user")
+  localStorage.setItem("email-target", param)
+  targetEmail = param
+
+  //
+
+
+  if (targetEmail != localStorage.getItem("email")) {
+    if (selectFiles) {
+      let uri = await uploadFile()
+      stompClient.publish({
+        destination: "/app/chat/private/",
+        body: JSON.stringify({ "to": targetEmail, "message": null, "urlFile": uri.url })
+      })
+
+      $("#chat").append(`<div class='msg-sent'><div wrap selection in arrow functionss='username-sent'><img src="${uri.url}" style="max-width:100%;height:auto;"></div></div>`)
+      selectFiles = false
+    } else {
+
+      stompClient.publish({
+
+        destination: "/app/chat/private/",
+
+        body: JSON.stringify({ "to": targetEmail, "message": $("#msgPrivate").val(), "urlFile": null })
+      })
+
+      $("#chat").append("<div class='msg-sent'><div class='username-sent'>" + "~" + localStorage.getItem("usuario") + "</div>" + $('#msgPrivate').val() + "<div class='timestamp-sent'>" + hour + ":" + minutes + "</div></div>")
+    }
+
+  } else {
+
+    if (selectFiles) {
+      let uri = await uploadFile()
+      stompClient.publish({
+        destination: "/app/chat/private/",
+        body: JSON.stringify({ "to": targetEmail, "message": null, "urlFile": uri.url })
+      })
+
+      $("#chat").append(`<div class='msg-sent'><div wrap selection in arrow functionss='username-sent'><img src="${uri.url}" style="max-width:100%;height:auto;"></div></div>`)
+      selectFiles = false
+    } else {
+      stompClient.publish({
+
+        destination: "/app/chat/private/",
+
+        body: JSON.stringify({ "to": lastSender, "message": $("#msgPrivate").val(), "urlFile": null })
+      })
+      $("#chat").append("<div class='msg-sent'><div class='username-sent'>" + "~" + localStorage.getItem("usuario") + "</div>" + $('#msgPrivate').val() + "<div class='timestamp-sent'>" + hour + ":" + minutes + "</div></div>")
+    }
+  }
+
+
+
+
+
+
+  // } else {
+  //
+  //   $("#chat").append("<div class='msg-sent'><div class='username-sent'>" + "~" + localStorage.getItem("usuario") + "</div>" + `<img src="${uri.url}" style="max-width:100%;height:auto;">` + "<div class='timestamp-sent'>" + hour + ":" + minutes + "</div></div>")
+  // }
   $("#msgPrivate").val("")
   firebase.initializeApp(firebaseConfig);
   const messaging = firebase.messaging();
   Notification.requestPermission().then((permission) => {
     if (permission === "granted") {
-      fetch("/users/allow-notification", { method: "POST", headers: { "Content-Type": "application/json;charset=UTF-8" }, body: JSON.stringify({ "email": localStorage.getItem("email"), "notificated": true }) }).then((res) => console.log(res.text()))
       messaging.getToken({ vapidKey: "BA00hc2JI1NUNqmWsqctZp1H3n8lp2I9_4UqDna77-2E9iCWBqmBfhbqLf9YI7bDnvzaItCx69FDm9jfndJ3hxI" })
         .then((currentToken) => {
           if (currentToken) {
@@ -240,7 +265,6 @@ function sendMessage() {
   const messaging = firebase.messaging();
   Notification.requestPermission().then((permission) => {
     if (permission === "granted") {
-      fetch("/users/allow-notification", { method: "POST", headers: { "Content-Type": "application/json;charset=UTF-8" }, body: JSON.stringify({ "email": localStorage.getItem("email"), "notificated": true }) }).then((res) => console.log(res.text()))
       messaging.getToken({ vapidKey: "BA00hc2JI1NUNqmWsqctZp1H3n8lp2I9_4UqDna77-2E9iCWBqmBfhbqLf9YI7bDnvzaItCx69FDm9jfndJ3hxI" })
         .then((currentToken) => {
           if (currentToken) {
@@ -271,15 +295,13 @@ function updateLiveChat(message) {
 function privateChat(message) {
   if (isDuplicate(message)) return
   notifications()
+  message.urlFile ?
+    $("#chat").append(`<div class='msg-sent'><div class='username-sent'></div> <img src="${message.urlFile}" style="max-width:100%;height:auto;"></div>`)
+    :
+    $("#chat").append("<div class='msg-received'>" + "<div class='username-received'> ~ " + message.user + "</div>" + message.message + "<div class='timestamp-received'>" + message.createdAt + "</div></div>")
 
-
-  $("#chat").append("<div class='msg-received'>" + "<div class='username-received'> ~ " + message.user + "</div>" + message.message + "<div class='timestamp-received'>" + message.createdAt + "</div></div>")
   lastSender = message.from
   lastTo = message.to
-
-  //   $("#chat").append("<div class='msg-received'>" + "<div class='username-received'> ~ " + message.name + "</div>" + message.message + "<div class='timestamp-received'>" + message.timeStamp + "</div></div>")
-  //   lastSender = message.from
-  //   lastTo = message.to
 }
 const handleCadastro = () => {
   fetch("/users/create", {
@@ -335,18 +357,23 @@ const loadedMessagesPrivate = () => {
   fetch(`/private-messages/find?to=${param}&from=${localStorage.getItem("email")}`)
     .then((res) => res.json())
     .then((data) => {
+
       data.map((msg) => {
         if (msg.from == localStorage.getItem("email") || msg.to == localStorage.getItem("email")) {
-          if (msg.to != localStorage.getItem("email")) {
-            $("#chat").append(
-              "<div class='msg-sent'>" + "<div class='username-sent'> ~ " + msg.user + "</div>" + msg.message + "<div class='timestamp-sent'>" + msg.time + "</div></div>")
-          } else {
-            $("#chat").append(
-              "<div class='msg-received'>" + "<div class='username-received'> ~ " + msg.user + "</div>" + msg.message + "<div class='timestamp-received'>" + msg.time + "</div></div>")
+          if (msg.url) {
+            $("#chat").append(`<div class='msg-sent'><div class='username-sent'></div><img src="${msg.url}" style="max-width:100%;height:auto;"></div>`)
+          } else
+            if (msg.to != localStorage.getItem("email")) {
 
-          }
+              $("#chat").append(
+                `<div class='msg-sent'><div class='username-sent'> ~${msg.user}</div>${msg.message}<div class='timestamp-sent'>${msg.time}</div></div>`)
+            } else {
+              $("#chat").append(
+                `<div class='msg-received'><div class='username-received'> ~${msg.user} </div>${msg.message} <div class='timestamp-received'> ${msg.time}</div></div>`)
+
+
+            }
         }
-
       })
     })
 }
@@ -372,8 +399,6 @@ const loadedMessages = () => {
 
 const handleLogin = () => {
 
-  //  fetch('/users/find-by-email?email=' + $('#correio').val(), {
-  //    headers: { "password": $("#senha").val() }
   fetch("/users/login", {
     method: "POST",
     headers: {
@@ -382,15 +407,20 @@ const handleLogin = () => {
     body: JSON.stringify({ "email": $('#correio').val(), "password": $("#senha").val() })
   })
     .then((res) => {
+
+
       if (!res.ok) {
         state = false
-        alert("Usuário ou senha incorretos")
+
       } else {
         state = true
+        console.log(res.status)
+
         return res.json()
       }
 
     }).then((dado) => {
+      console.log(dado)
       localStorage.setItem("email", $("#correio").val())
       localStorage.setItem("usuario", dado.nome)
       localStorage.setItem("logado", true)
@@ -403,13 +433,16 @@ const handleLogin = () => {
     })
 }
 const uploadFile = async () => {
+  // if (selectFiles) {
   const formdata = new FormData()
-  formdata.append("File", arquivo)
+  formdata.append("file", arquivo)
   const res = await fetch("/files/save", {
     method: "POST",
     body: formdata
   })
-  return await res.text()
+
+  return await res.json()
+  //}
 }
 const logout = () => {
   localStorage.clear()
@@ -454,6 +487,5 @@ $(function() {
   $("#livechat").ready(() => loadedMessages())
   $("#chat").ready(() => loadedMessagesPrivate())
   $("#sendPrivate").click(() => sendMsgPrivate())
-
   document.getElementById('profile').addEventListener('load', preLoadingPhotoProfile())
 }); 

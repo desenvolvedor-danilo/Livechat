@@ -1,11 +1,11 @@
 package com.dkmo.living_chatting.infrastructure.gateways;
 
-import com.dkmo.living_chatting.application.gateway.LoginPolicyGateway;
+import com.dkmo.living_chatting.application.gateway.FindUserGateway;
 import com.dkmo.living_chatting.domain.model.User;
 import com.dkmo.living_chatting.infrastructure.persistence.UserEntity;
 import com.dkmo.living_chatting.infrastructure.repositories.UsersRepository;
 
-public class LoadUserGateway implements LoginPolicyGateway{
+public class LoadUserGateway implements FindUserGateway{
 private final  UserEntityMapper  userEntityMapper;
 private final UsersRepository usersRepository;
 

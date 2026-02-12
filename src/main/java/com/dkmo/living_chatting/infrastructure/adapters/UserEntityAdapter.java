@@ -6,9 +6,10 @@ import com.dkmo.living_chatting.infrastructure.persistence.UserEntity;
 
 public class UserEntityAdapter {
 public static User toUser(UserEntity user){
-    User userCreated = User.create(user.getName(),null, user.getEmail(), user.getUsuario());
+    User userCreated = User.create(user.getName(), user.getEmail(),user.getSenha(), user.getUsuario());
     FileReference fileReference = new FileReference(user.getPhotoProfile());
     userCreated.definePhotoProfile(fileReference);
+    userCreated.defineToken(user.getFcmToken());
     return userCreated;
   }    
 }

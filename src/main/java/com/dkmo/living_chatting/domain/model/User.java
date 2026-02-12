@@ -5,6 +5,7 @@ private String email;
 private String senha;
 private String usuario;
 private FileReference fileReference;
+private String token;
 /**
  * @param nome
  * @param email
@@ -23,7 +24,7 @@ private User(String nome, String email, String senha, String usuario) {
  */
 public static User create(String nome,String email,String senha,String usuario){
     
-    return new User(nome, null, email, usuario);
+    return new User(nome, email, senha, usuario);
   }
 public String nome() {
   return nome;
@@ -52,5 +53,11 @@ this.fileReference = fileReference;
 public FileReference getFileReference() {
   return fileReference;
 }
+public String token(){
+    return token;
+  }
+public void defineToken(String token){
+    this.token = token;
+  }
 
 }

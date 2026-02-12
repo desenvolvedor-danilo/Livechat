@@ -13,6 +13,7 @@ public class ListMessagesAdapter {
     private String message;
     private String time;
     private String user;
+    private String url;
  
 
 /**
@@ -34,6 +35,8 @@ public class ListMessagesAdapter {
 public static ListMessagesAdapter convertResponse(Message message)   {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm")
     .withZone(ZoneId.of("America/Sao_Paulo"));
-    return new ListMessagesAdapter(message.getTo(), message.getFrom(), message.getMessage(), formatter.format(message.getNow()),message.getUser());
+    ListMessagesAdapter listMessagesAdapter = new ListMessagesAdapter(message.getTo(), message.getFrom(), message.getMessage(), formatter.format(message.getNow()),message.getUser());
+    listMessagesAdapter.url = message.getUrlFile()!=null ? message.getUrlFile() : null;
+    return listMessagesAdapter;
   } 
 }

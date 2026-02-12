@@ -33,7 +33,8 @@ public class UserEntity {
       this.usuario = usuario;
     }
     public User toDomain(){
-        return User.create(name, email,null, usuario);
+        return User.create(name, email,senha, usuario);
+        
     }
     
 }

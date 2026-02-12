@@ -13,6 +13,7 @@ UserEntity toEntity(User userDomainObject){
     if(userEntity.getPhotoProfile()!=null){
     user.definePhotoProfile(new FileReference(userEntity.getPhotoProfile()));
     }
+    user.defineToken(userEntity.getFcmToken());
     return user;
   }
 }

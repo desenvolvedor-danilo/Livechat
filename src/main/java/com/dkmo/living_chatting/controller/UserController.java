@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dkmo.living_chatting.application.inputs.PhotoProfileInput;
+import com.dkmo.living_chatting.application.inputs.ImageInput;
 import com.dkmo.living_chatting.application.usecases.CreateUserInteractor;
+import com.dkmo.living_chatting.application.usecases.FcmTokenUseCase;
 import com.dkmo.living_chatting.application.usecases.GetPhotoProfileInput;
 import com.dkmo.living_chatting.application.usecases.GetPhotoProfileUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadAllUsersUseCase;
@@ -29,6 +30,7 @@ import com.dkmo.living_chatting.application.usecases.LoginPolicyInteractor;
 import com.dkmo.living_chatting.controller.DTOs.GetNameUserDto;
 import com.dkmo.living_chatting.controller.DTOs.LoginRequestDTO;
 import com.dkmo.living_chatting.controller.DTOs.PhotoProfileDto;
+import com.dkmo.living_chatting.controller.DTOs.UpdateUserDto;
 import com.dkmo.living_chatting.controller.DTOs.UserRequestDTO;
 import com.dkmo.living_chatting.controller.DTOs.UserProfileResponseDto;
 
@@ -51,10 +53,11 @@ public class UserController {
   private final GetPhotoProfileUseCase getPhotoProfileUseCase;
   private final LoadUserUseCase
   loadUserUseCase;
+  private final FcmTokenUseCase fcmTokenUseCase;
   @Autowired
   private UserMapper userMapper;
   public UserController(CreateUserInteractor createUserInteractor,UserAdapter userDTOMapper,LoginPolicyInteractor loginPolicyInteractor,LoadAllUsersUseCase loadAllUsersUseCase,LoadFilesUseCase
-  loadFilesUseCase,GetPhotoProfileUseCase getPhotoProfileUseCase,LoadUserUseCase loadUserUseCase) {
+  loadFilesUseCase,GetPhotoProfileUseCase getPhotoProfileUseCase,LoadUserUseCase loadUserUseCase,FcmTokenUseCase fcmTokenUseCase) {
     this.createUserInteractor = createUserInteractor;
     this.userDTOMapper = userDTOMapper;
     this.loginUserInteractor = loginPolicyInteractor;
@@ -62,6 +65,7 @@ public class UserController {
     this.loadFilesUseCase = loadFilesUseCase;
     this.getPhotoProfileUseCase = getPhotoProfileUseCase;
     this.loadUserUseCase = loadUserUseCase;
+    this.fcmTokenUseCase = fcmTokenUseCase;
   }
   @PostMapping("/create")
   public UserResponseDTO  create(@RequestBody UserRequestDTO request){
@@ -74,8 +78,10 @@ public class UserController {
   public ResponseEntity<UserResponseDTO> login(@RequestBody LoginRequestDTO request) throws InvalidCredentialsException,CredentialNotFoundException{
   try{
    User user = loginUserInteractor.execute(request.email(), request.password());
+      System.out.println(request.password());
       return ResponseEntity.ok(userDTOMapper.toResponse(user));
     }catch(Exception e){
+      System.out.println(e.getMessage());
      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     } 
   }
@@ -89,11 +95,10 @@ public class UserController {
     return ResponseEntity.noContent().build();
     }    
   }
-  @PostMapping("/photo-profile") 
+@PostMapping("/photo-profile") 
 public UserProfileResponseDto updatePhotoProfile(@RequestParam(name = "file")MultipartFile multipartFile,@RequestParam(name = "email")String email)throws IOException{ 
-   PhotoProfileInput profileInput = new PhotoProfileInput(multipartFile.getBytes(),email, multipartFile.getOriginalFilename());
+   ImageInput profileInput = new ImageInput(multipartFile.getBytes(),email, multipartFile.getOriginalFilename(),"uploads/photos-profiles/");
    FileReference fileReference = loadFilesUseCase.execute(profileInput);
-    System.out.println(fileReference.url());
     return userMapper.toUserProfileResponseDto(fileReference);
   }
 
@@ -107,5 +112,9 @@ GetPhotoProfileInput getPhotoProfileInput = new GetPhotoProfileInput(email);
   public GetNameUserDto getNameUserDto(@RequestParam("email") String email){
     UsersReference usersReference = loadUserUseCase.execute(email);
     return new GetNameUserDto(usersReference.name(),usersReference.urlPhotoProfile());
+  }
+  @PostMapping("/save-token")
+  public void setToken(@RequestBody UpdateUserDto updateUserDto){
+  fcmTokenUseCase.execute(updateUserDto.email(), updateUserDto.token());
   }
  }  

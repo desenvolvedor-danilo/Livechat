@@ -9,17 +9,22 @@ import com.dkmo.living_chatting.application.gateway.ConversationCreateGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationEditGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationSaveGateway;
+import com.dkmo.living_chatting.application.gateway.FcmTokenGateway;
+import com.dkmo.living_chatting.application.gateway.FindUserGateway;
+import com.dkmo.living_chatting.application.gateway.GenerateIdGateway;
 import com.dkmo.living_chatting.application.gateway.InstantGateway;
 import com.dkmo.living_chatting.application.gateway.LoadAllUsersGateway;
 import com.dkmo.living_chatting.application.gateway.LoadFileGateway;
 import com.dkmo.living_chatting.application.gateway.LoadMessagesGateway;
 import com.dkmo.living_chatting.application.gateway.LoadNotificationGateway;
-import com.dkmo.living_chatting.application.gateway.LoginPolicyGateway;
 import com.dkmo.living_chatting.application.gateway.MessageGateway;
 import com.dkmo.living_chatting.application.gateway.MessageSaveGateway;
+import com.dkmo.living_chatting.application.gateway.NotificationGateway;
 import com.dkmo.living_chatting.application.gateway.UserGateway;
 import com.dkmo.living_chatting.application.usecases.CreateUserInteractor;
+import com.dkmo.living_chatting.application.usecases.FcmTokenUseCase;
 import com.dkmo.living_chatting.application.usecases.GetPhotoProfileUseCase;
+import com.dkmo.living_chatting.application.usecases.ImagesUseCases;
 import com.dkmo.living_chatting.application.usecases.LoadAllUsersUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadFilesUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadMessageUseCase;
@@ -44,6 +49,10 @@ public class UserConfig {
   return new CreateUserInteractor(userGateway);
   }
   @Bean
+  public ImagesUseCases imagesUseCases(LoadFileGateway loadFileGateway){
+    return new ImagesUseCases(loadFileGateway);
+  }
+  @Bean
   public UserGateway userGateway(UsersRepository usersRepository,UserEntityMapper userEntityMapper){
     return new UserRepositoryGateway(usersRepository, userEntityMapper);
   }
@@ -56,7 +65,7 @@ public class UserConfig {
     return new UserAdapter();
   }
   @Bean 
-  public LoginPolicyInteractor loginPolicyInteractor(LoginPolicyGateway gateway){
+  public LoginPolicyInteractor loginPolicyInteractor(FindUserGateway gateway){
   return new LoginPolicyInteractor(gateway);
   }
   @Bean
@@ -73,15 +82,19 @@ return new LoadUserGateway(userEntityMapper, usersRepository);
   }
   @Bean 
 public  MessageUseCase messageUseCase(MessageGateway
-  messageGateway,InstantGateway instantGateway,LoginPolicyGateway loginPolicyGateway,MessageSaveGateway messageSaveGateway,CreateaIdHash createaIdHash,ConversationGateway conversationGateway,ConversationCreateGateway conversationCreateGateway, ConversationSaveGateway conversationSaveGateway,ConversationEditGateway conversationEditGateway
+  messageGateway,InstantGateway instantGateway,FindUserGateway loginPolicyGateway,MessageSaveGateway messageSaveGateway,CreateaIdHash createaIdHash,ConversationGateway conversationGateway,ConversationCreateGateway conversationCreateGateway, ConversationSaveGateway conversationSaveGateway,ConversationEditGateway conversationEditGateway,NotificationGateway notificationGateway,GenerateIdGateway generateIdGateway
 ){
-    return new MessageUseCase(messageGateway, instantGateway,loginPolicyGateway, messageSaveGateway,createaIdHash,conversationGateway,conversationCreateGateway,conversationSaveGateway,conversationEditGateway);
+    return new MessageUseCase(messageGateway, instantGateway,loginPolicyGateway, messageSaveGateway,createaIdHash,conversationGateway,conversationCreateGateway,conversationSaveGateway,conversationEditGateway,notificationGateway, generateIdGateway);
 
   }
   @Bean
   public LoadMessageUseCase loadMessageUseCase(LoadMessagesGateway loadMessagesGateway){
     return new LoadMessageUseCase(loadMessagesGateway);
 
+  }
+  @Bean 
+  public FcmTokenUseCase fcmTokenUseCase(FcmTokenGateway fcmTokenGateway){
+  return new FcmTokenUseCase(fcmTokenGateway); 
   }
   @Bean 
   public LoadAllUsersUseCase loadAllUsersUseCase(LoadAllUsersGateway loadAllUsersGateway){
@@ -109,7 +122,7 @@ public  MessageUseCase messageUseCase(MessageGateway
     return new LoadFile();
   }
   @Bean
-  public GetPhotoProfileUseCase getPhotoProfileUseCase(LoginPolicyGateway loginPolicyGateway){
+  public GetPhotoProfileUseCase getPhotoProfileUseCase(FindUserGateway loginPolicyGateway){
     return new GetPhotoProfileUseCase(loginPolicyGateway);
   }
 }

@@ -2,6 +2,7 @@ package com.dkmo.living_chatting.infrastructure.persistence;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -45,8 +46,7 @@ public class MessagesPrivate {
 
   }
 public Message toDomain(){
-  Message messageDomain = Message.create(message, from, to, timeStamp, user,idConversa);
-  return messageDomain;
+  return  Message.create(UUID.fromString(id), message, from, to, timeStamp, user,idConversa,url);
   }
 }
 

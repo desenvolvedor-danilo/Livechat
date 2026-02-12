@@ -10,15 +10,14 @@ import com.dkmo.living_chatting.application.gateway.LoadFileGateway;
 import com.dkmo.living_chatting.infrastructure.exceptions.FileStorageException;
 
 public class LoadFile implements LoadFileGateway{
-private final String URI = "uploads/photos-profiles/";
-private final String BASE_URL = "http://localhost:8080/photos-profiles/";
+private final String BASE_URL = "http://localhost:8080/";
 
   @Override
-  public String loadFile(byte[] file,String originalFileName) {
+  public String loadFile(byte[] file,String originalFileName,String folder) {
     try{
-   Path path = Paths.get(URI+originalFileName);
+   Path path = Paths.get(folder+originalFileName);
     Files.write(path,file);
-      return BASE_URL+originalFileName;
+      return BASE_URL+folder+originalFileName;
     }catch(IOException io){
     throw new FileStorageException();
     }
