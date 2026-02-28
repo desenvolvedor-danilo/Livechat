@@ -69,9 +69,9 @@ public MessageUseCase(MessageGateway messageGateway, InstantGateway instantGatew
     if(conversation==null){ 
     conversation = conversationCreateGateway.createConversation(msg);
    conversationSaveGateway.saveConversation(conversation); 
-    }
+    }else{
       conversationEditGateway.editConversation(conversation, msg);
-    
+    }
     if(recipient.token()==null){
       throw new NotificationUnauthorizedException();
     }

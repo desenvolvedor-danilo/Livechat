@@ -9,13 +9,16 @@ import com.dkmo.living_chatting.domain.model.User;
 
 public class UserAdapter {
 public UserResponseDTO toResponse(User user){
-    return new UserResponseDTO(user.email(),user.nome());
+    return new UserResponseDTO(user.email(),user.nome(),user.getFileReference().url());
   }
 
 public List<UserResponseDTO> listToResponse(List<User> user){
     List<UserResponseDTO> createUserResponse = new ArrayList<>();
     user.forEach(usuario->{
-      UserResponseDTO response = new UserResponseDTO(usuario.email(), usuario.nome());
+      
+      UserResponseDTO response = new
+      UserResponseDTO(usuario.email(), usuario.nome(),usuario.getFileReference().url());
+
       createUserResponse.add(response);
     });
     return createUserResponse;

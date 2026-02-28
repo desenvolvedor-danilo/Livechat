@@ -20,7 +20,6 @@ public class MsgController {
 @MessageMapping("/chat/private/") 
 public ResponseEntity<?> sendMessage(@Payload MessageRequestDTO message,Principal principal){    
     messageUseCase.execute(message.message(),principal.getName(),message.to(),message.user(),message.urlFile());
-    System.out.println(message.urlFile());
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }
 }

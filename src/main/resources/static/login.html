@@ -14,15 +14,15 @@
 
 <body>
   <div id="main-content" class="card-form">
-    <form>
+    <form action="/users/login" method="post">
       <h2>Login</h2>
       <div class="form-group">
-        <input type="email" id="correio" placeholder="Digite seu email" class="form-control">
+        <input type="email" id="correio" placeholder="Digite seu email" class="form-control" name="email">
       </div>
       <div class="form-group">
-        <input type="password" id="senha" placeholder="Digite sua senha" class="form-control">
+        <input type="password" id="senha" placeholder="Digite sua senha" class="form-control" name="password">
       </div>
-      <button id="login" class="btn btn-connect" type="button">Entrar</button>
+      <button id="login" class="btn btn-connect" type="submit">Entrar</button>
     </form>
     <div class="form-group">
       <a href="#" id="linkCadastro" onclick="hrefCadastro()">Não tem uma conta? Inscreva-se</a>

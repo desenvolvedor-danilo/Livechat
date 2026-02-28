@@ -19,7 +19,7 @@ public class EditConversation implements ConversationEditGateway {
   @Override
   public void editConversation(Conversation conversation, Message message) {
    Query query = new Query(Criteria.where("id").is(conversation.getId()));
-    Update update = new Update().set("lastMessage", message.getMessage()).set("updateAt", message.getNow());
+    Update update = new Update().set("lastMessage", message.getMessage()).set("updatedAt", message.getNow());
     mongoTemplate.updateFirst(query, update, ConversationEntity.class);
   }
     

@@ -1,0 +1,264 @@
+/* ================= NAV ================= */
+
+const currentPage = window.location.href;
+const links = document.querySelectorAll('.nav-link');
+
+links.forEach((link) => {
+  link.classList.add('text-white');
+
+  if (link.href === currentPage) {
+    link.classList.add('text-decoration-underline');
+  } else {
+    link.classList.remove('text-decoration-underline');
+  }
+});
+
+/* ================= STORAGE ================= */
+
+const currentEmail = localStorage.getItem('email');
+
+/* ================= WEBSOCKET ================= */
+
+const stompClient = new StompJs.Client({
+  webSocketFactory: () =>
+    new SockJS(
+      `${window.location.origin}/buildrun-livechat-websocket?user=${currentEmail}`,
+    ),
+});
+
+/* ================= VARIÁVEIS ================= */
+
+let messages = [];
+let users = [];
+let selectFiles = false;
+let targetEmail;
+let lastSender;
+let lastTo;
+let state;
+let arquivo = null;
+
+/* ================= FIREBASE ================= */
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyBcRyd7KPNzebG-KDkqOgW2XHub6OTndWo',
+  authDomain: 'livechat-ce9c4.firebaseapp.com',
+  projectId: 'livechat-ce9c4',
+  storageBucket: 'livechat-ce9c4.firebasestorage.app',
+  messagingSenderId: '646790522951',
+  appId: '1:646790522951:web:da157fffedde43d759e962',
+};
+
+/* ================= FOTO PERFIL ================= */
+
+const preLoadingPhotoProfile = async () => {
+  try {
+    const res = await fetch(
+      `/users/get-photo-profile?email=${localStorage.getItem('email')}`,
+    );
+
+    const dado = await res.json();
+    const img = document.getElementById('imagePreview');
+
+    img.setAttribute(
+      'src',
+      dado?.url ||
+      'https://rozup.ir/view/3716005/default-avatar.png',
+    );
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+/* ================= CONEXÃO ================= */
+
+const connect = () => stompClient.activate();
+
+const disconnect = () => {
+  stompClient.deactivate();
+  console.log('Disconnected');
+};
+
+/* ================= LOGIN ================= */
+
+const handleLogin = async () => {
+  try {
+    const res = await fetch('/users/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: $('#correio').val(),
+        password: $('#senha').val(),
+      }),
+    });
+    localStorage.setItem("authorization", btoa(`${$('#correio').val()}:${$('#senha').val()}`))
+    state = res.ok;
+
+    if (!state) return;
+
+    const dado = await res.text();
+
+    localStorage.setItem('email', $('#correio').val());
+    localStorage.setItem('usuario', dado.nome);
+    localStorage.setItem('logado', true);
+
+    connect();
+    window.location.href = '/notifications';
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+/* ================= ENVIO MENSAGEM GLOBAL ================= */
+
+const sendMessage = () => {
+  const uuid = crypto.randomUUID();
+
+  stompClient.publish({
+    destination: '/app/new-message',
+    body: JSON.stringify({
+      id: uuid,
+      from: localStorage.getItem('email'),
+      message: $('#msg').val(),
+    }),
+  });
+
+  $('#msg').val('');
+};
+
+/* ================= ENVIO PRIVADO ================= */
+
+const sendMsgPrivate = async () => {
+  const now = new Date();
+  const hour = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+
+  const param = new URLSearchParams(window.location.search).get('user');
+  localStorage.setItem('email-target', param);
+  targetEmail = param;
+
+  if (targetEmail === localStorage.getItem('email')) {
+    targetEmail = lastSender;
+  }
+
+  let uri = null;
+
+  if (selectFiles) {
+    uri = await uploadFile();
+    selectFiles = false;
+  }
+
+  stompClient.publish({
+    destination: '/app/chat/private/',
+    body: JSON.stringify({
+      to: targetEmail,
+      message: uri ? null : $('#msgPrivate').val(),
+      urlFile: uri?.url || null,
+    }),
+  });
+
+  $('#chat').append(`
+    <div class='msg-sent'>
+      <div class='username-sent'>~${localStorage.getItem('usuario')}</div>
+      ${uri
+      ? `<img src="${uri.url}" style="max-width:100%;height:auto;">`
+      : $('#msgPrivate').val()
+    }
+      <div class='timestamp-sent'>${hour}:${minutes}</div>
+    </div>
+  `);
+
+  $('#msgPrivate').val('');
+};
+
+/* ================= CARREGAMENTO MENSAGENS ================= */
+
+const loadedMessages = async () => {
+  const userCurrent = localStorage.getItem('usuario');
+
+  const res = await fetch('/messages/findall');
+  messages = await res.json();
+
+  messages.forEach((msg) => {
+    if (!msg.message) return;
+
+    const type =
+      userCurrent === msg.username ? 'msg-received' : 'msg-sent';
+
+    $('#livechat').append(`
+      <div class='${type}'>
+        <div class='username-${type.includes('received') ? 'received' : 'sent'}'>
+          ~ ${msg.username}
+        </div>
+        ${msg.message}
+        <div class='timestamp'>${msg.timeStamp}</div>
+      </div>
+    `);
+  });
+};
+
+/* ================= UPLOAD ================= */
+
+const uploadFile = async () => {
+  const formdata = new FormData();
+  formdata.append('file', arquivo);
+
+  const res = await fetch('/files/save', {
+    method: 'POST',
+    body: formdata,
+  });
+
+  return res.json();
+};
+
+/* ================= LOGOUT ================= */
+
+const logout = () => {
+  localStorage.clear();
+  window.location.href = '/login';
+};
+
+/* ================= USERS ================= */
+
+const email = 'theo03@gmail.com';
+const senha = 'danilo';
+
+const findAllUsers = async () => {
+  if (!localStorage.getItem('logado')) return;
+
+  const res = await fetch('/users/findall', {
+    headers: {
+      Authorization: `Basic ${btoa(`${email}:${senha}`)}`,
+    },
+  });
+
+  users = await res.json();
+
+  users.forEach((user) => {
+    if (user.email === localStorage.getItem('email')) return;
+
+    $('#contactList').append(`
+      <a href="private.html?user=${user.email}" class="contact-item online-contact">
+        <div class="contact-avatar">A</div>
+        <div class="contact-info">
+          <span class="contact-name">${user.nome}</span>
+        </div>
+      </a>
+    `);
+  });
+};
+
+/* ================= INIT ================= */
+
+$(function init() {
+  $('form').on('submit', (e) => e.preventDefault());
+  $('#disconnect').click(disconnect);
+  $('#logout').click(logout);
+  $('#login').click(handleLogin);
+  $('#send').click(sendMessage);
+  $('#sendPrivate').click(sendMsgPrivate);
+
+  preLoadingPhotoProfile();
+  connect();
+  findAllUsers();
+  loadedMessages();
+});

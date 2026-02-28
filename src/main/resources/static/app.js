@@ -21,7 +21,6 @@ const userna = document.getElementById('usuario')
 const pass = document.getElementById('password')
 const mail = document.getElementById('email')
 const input = document.getElementById("inputPreview")
-
 const sendFiles = document.getElementById("sendFiles")
 const img = document.getElementById("imagePreview")
 const message = { email: localStorage.getItem("email"), message: '' }
@@ -37,9 +36,10 @@ let state;
 let isNotification = true;
 let last;
 let lastTo;
-let photo = ""
+let photo = "";
 let arquivo = null;
 let uri;
+const header = { "Authorization": "Basic " + localStorage.getItem("authorization") };
 const setNome = (name) => {
   nome = name;
 }
@@ -76,21 +76,6 @@ const inputFiles = async () => {
   sendFiles.addEventListener("change", async (e) => {
     selectFiles = true;
     arquivo = e.target.files[0]
-    //if (arquivo) {
-    // const div = document.getElementById("previa")
-    // const img = document.createElement("img")
-    //
-    // const url = URL.createObjectURL(arquivo)
-    // const formdata = new FormData()
-    // formdata.append("file", arquivo)
-    // const uri = await uploadFile(formdata)
-    // div.style.display = "flex"
-    // img.setAttribute("src", url)
-    // img.style.width = "250px"
-    // img.style.height = "250px"
-    // div.appendChild(img)
-    //return uri;
-    // }
   })
 }
 const inputImg = () => {
@@ -153,7 +138,7 @@ function setConnected(connected) {
   }
 }
 async function photoProfile(email) {
-  const url = (await fetch("/users/get-photo-profile?email=" + email)).text()
+  const url = (await fetch("/users/get-photo-profile?email=" + email, { headers: header })).text()
   return url;
 }
 
@@ -177,9 +162,6 @@ async function sendMsgPrivate() {
   const param = new URLSearchParams(window.location.search).get("user")
   localStorage.setItem("email-target", param)
   targetEmail = param
-
-  //
-
 
   if (targetEmail != localStorage.getItem("email")) {
     if (selectFiles) {
@@ -305,12 +287,14 @@ function privateChat(message) {
 }
 const handleCadastro = () => {
   fetch("/users/create", {
-    headers: { "Content-Type": "application/json; charset=UTF-8" },
+    headers: {
+      "Content-Type": "application/json; charset=UTF-8"
+    },
     method: 'POST',
     body: JSON.stringify({ 'email': $("#email").val(), 'password': $("#password").val(), 'username': $("#usuario").val(), "nome": $("#name").val() })
   }).then((res) => {
     if (res.status == 200) {
-      window.location.href = "/login"
+      window.location.href = "/login.html"
     }
     console.log(res.status);
   })
@@ -318,7 +302,13 @@ const handleCadastro = () => {
 }
 const notifications = () => {
 
-  fetch("/conversas/private?from=" + localStorage.getItem("email"))
+  fetch("/conversas/private?from=" + localStorage.getItem("email"), {
+    method: "GET",
+    headers: {
+      "Authorization": "Basic " + localStorage.getItem("authorization"),
+      "Content-Type": "application/json"
+    }
+  })
     .then((res) => res.json())
 
     .then((data) => {
@@ -331,10 +321,11 @@ const notifications = () => {
       Object.values(lastByUser).forEach((msg) => {
         console.log(msg)
         const participante = msg.participantes.filter(part => part !== localStorage.getItem("email"))
-        fetch("/users/find-users?email=" + participante).
+        fetch("/users/find-users?email=" + participante, {
+          headers: { "Authorization": "Basic " + localStorage.getItem("authorization") }
+        }).
           then((res) => res.json())
           .then(async (dado) => {
-            // const url = await photoProfile(participante)
             const name = dado.nome;
             const url = dado.url
             $("#notifications").append(
@@ -354,7 +345,7 @@ const notifications = () => {
 }
 const loadedMessagesPrivate = () => {
   const param = new URLSearchParams(window.location.search).get("user")
-  fetch(`/private-messages/find?to=${param}&from=${localStorage.getItem("email")}`)
+  fetch(`/private-messages/find?to=${param}&from=${localStorage.getItem("email")}`, { headers: header })
     .then((res) => res.json())
     .then((data) => {
 
@@ -401,27 +392,25 @@ const handleLogin = () => {
 
   fetch("/users/login", {
     method: "POST",
+
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({ "email": $('#correio').val(), "password": $("#senha").val() })
   })
     .then((res) => {
-
-
       if (!res.ok) {
         state = false
 
       } else {
         state = true
-        console.log(res.status)
-
         return res.json()
       }
 
     }).then((dado) => {
       console.log(dado)
       localStorage.setItem("email", $("#correio").val())
+      localStorage.setItem("authorization", dado.token)
       localStorage.setItem("usuario", dado.nome)
       localStorage.setItem("logado", true)
     }).then(() => connect())
@@ -431,18 +420,16 @@ const handleLogin = () => {
         window.location.href = "/notifications"
       }
     })
+
 }
 const uploadFile = async () => {
-  // if (selectFiles) {
   const formdata = new FormData()
   formdata.append("file", arquivo)
   const res = await fetch("/files/save", {
     method: "POST",
     body: formdata
   })
-
   return await res.json()
-  //}
 }
 const logout = () => {
   localStorage.clear()
@@ -450,16 +437,21 @@ const logout = () => {
 }
 const findAllUsers = () => {
   if (localStorage.getItem("logado")) {
-    fetch("/users/findall")
+    fetch("/users/findall", {
+      method: "GET",
+      headers: header
+    })
       .then((res) => res.json())
       .then((dado) =>
         users = dado)
       .then(() => {
         users.map((user) => {
+          console.log("nome: " + user.nome)
+          console.log("foto: " + user.url)
           if (user.email != localStorage.getItem("email")) {
             $("#contactList").append(`
       <a href="private.html?user=${user.email}" class="contact-item online-contact">
-        <div class="contact-avatar">A</div>
+        <img class="contact-avatar" src="${user.url !== null ? user.url : "https://rozup.ir/view/3716005/default-avatar.png"}">
         <div class="contact-info">
           <span class="contact-name">${user.nome}</span>
         </div>
