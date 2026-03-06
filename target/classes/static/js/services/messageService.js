@@ -1,3 +1,6 @@
+//import { listenMessages, requestPermission } from "../config_firebase/messagesFirebase.js";
+import { listenMessages, requestPermission } from "../config_firebase/messagesFirebase.js";
+import { getCurrentTime } from "../utils/helpers.js";
 import { uploadFile } from "./fileService.js";
 
 let targetEmail;
@@ -13,10 +16,6 @@ export const setSelectFiles = (value) => {
 };
 
 export const sendMsgPrivate = async (stompClient) => {
-  const now = new Date();
-  const hour = now.getHours().toString().padStart(2, '0');
-  const minutes = now.getMinutes().toString().padStart(2, '0');
-
   const param = new URLSearchParams(window.location.search).get('user');
   localStorage.setItem('email-target', param);
   targetEmail = param;
@@ -26,7 +25,6 @@ export const sendMsgPrivate = async (stompClient) => {
   }
 
   let uri = null;
-
   if (selectFiles) {
     uri = await uploadFile();
     selectFiles = false;
@@ -48,9 +46,16 @@ export const sendMsgPrivate = async (stompClient) => {
       ? `<img src="${uri.url}" style="max-width:100%;height:auto;">`
       : $('#msgPrivate').val()
     }
-      <div class='timestamp-sent'>${hour}:${minutes}</div>
+      <div class='timestamp-sent'>${getCurrentTime().hour}:${getCurrentTime().minutes}</div>
     </div>
   `);
 
   $('#msgPrivate').val('');
+  try {
+    requestPermission().then((token) => console.log(token))
+    listenMessages((payload) => console.log(payload.notification.body))
+  } catch (error) {
+    console.log(error.message)
+  }
+
 };

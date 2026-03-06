@@ -34,6 +34,7 @@ public UploadsFilesController(ImagesUseCases imagesUseCases) {
 public UserProfileResponseDto messageImageUpload(@RequestParam(name = "file")MultipartFile multipartFile) throws IOException{ 
    ImageInput profileInput = new ImageInput(multipartFile.getBytes(),null, multipartFile.getOriginalFilename(),"imagens/");
    FileReference fileReference = imagesUseCases.execute(profileInput);
+    System.out.println(fileReference.url());
     return userMapper.toUserProfileResponseDto(fileReference);
   }
 }

@@ -1,10 +1,16 @@
+import { header } from "../utils/headers.js";
+import { setSelectFiles } from "./messageService.js";
+
+
 let arquivo = null;
-let selectFiles = false;
+//let selectFiles = false;
 
 export const inputFiles = (sendFiles) => {
   sendFiles.click();
   sendFiles.addEventListener("change", (e) => {
-    selectFiles = true;
+    //selectFiles = true
+    setSelectFiles(true);
+    //  console.log(selectFiles)
     arquivo = e.target.files[0];
   });
 };
@@ -14,7 +20,10 @@ export const uploadFile = async () => {
   formdata.append("file", arquivo);
   const res = await fetch("/files/save", {
     method: "POST",
-    body: formdata
+    body: formdata,
+    headers: header()
   });
-  return await res.json();
+  const uri = await res.json();
+  return uri;
 };
+export const input = document.getElementById("sendFiles");

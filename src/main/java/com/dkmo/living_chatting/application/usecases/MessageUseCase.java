@@ -75,7 +75,10 @@ public MessageUseCase(MessageGateway messageGateway, InstantGateway instantGatew
     if(recipient.token()==null){
       throw new NotificationUnauthorizedException();
     }
-
-    notificationGateway.sendNotification(recipient.token(), "Nova mensagem de: " +sender.nome(), message);
+    if(message!=null){
+    notificationGateway.sendNotification(recipient.token(), "Nova mensagem de: " +sender.nome(),message);
+    }else{
+    notificationGateway.sendNotification(recipient.token(), "Nova foto de: " +sender.nome(),null);
+    }
   }
 } 

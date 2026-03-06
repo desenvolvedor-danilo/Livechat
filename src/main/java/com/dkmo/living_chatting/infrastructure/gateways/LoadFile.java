@@ -5,14 +5,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.springframework.cache.annotation.Cacheable;
 
 import com.dkmo.living_chatting.application.gateway.LoadFileGateway;
 import com.dkmo.living_chatting.infrastructure.exceptions.FileStorageException;
 
 public class LoadFile implements LoadFileGateway{
 private final String BASE_URL = "http://localhost:8080/";
-
+  
   @Override
+  // @Cacheable
   public String loadFile(byte[] file,String originalFileName,String folder) {
     try{
    Path path = Paths.get(folder+originalFileName);

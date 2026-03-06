@@ -2,7 +2,7 @@ import { header } from "../utils/headers.js";
 export const notifications = () => {
   fetch("/conversas/private?from=" + localStorage.getItem("email"), {
     method: "GET",
-    headers: header()
+    headers: { "Authorization": header().Authorization }
   })
     .then((res) => res.json())
     .then((data) => {

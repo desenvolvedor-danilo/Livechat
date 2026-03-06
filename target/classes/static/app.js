@@ -54,11 +54,8 @@ const firebaseConfig = {
 }
 
 const preLoadingPhotoProfile = () => {
-
-  fetch(`http://localhost:8080/users/get-photo-profile?email=${localStorage.getItem("email")}`).then((res) => res.json())
+  fetch(`/users/get-photo-profile?email=${localStorage.getItem("email")}`, { headers: header }).then((res) => res.json())
     .then((dado) => {
-      console.log(dado.url)
-
       const img = document.getElementById("imagePreview")
       if (dado) {
         img.setAttribute("src", dado.url)
@@ -98,6 +95,7 @@ const inputImg = () => {
     }
   })
 }
+
 
 stompClient.onConnect = (frame) => {
 
@@ -427,7 +425,8 @@ const uploadFile = async () => {
   formdata.append("file", arquivo)
   const res = await fetch("/files/save", {
     method: "POST",
-    body: formdata
+    body: formdata,
+    headers: h
   })
   return await res.json()
 }
@@ -446,12 +445,10 @@ const findAllUsers = () => {
         users = dado)
       .then(() => {
         users.map((user) => {
-          console.log("nome: " + user.nome)
-          console.log("foto: " + user.url)
           if (user.email != localStorage.getItem("email")) {
             $("#contactList").append(`
       <a href="private.html?user=${user.email}" class="contact-item online-contact">
-        <img class="contact-avatar" src="${user.url !== null ? user.url : "https://rozup.ir/view/3716005/default-avatar.png"}">
+        <img class=" contact-avatar" src="${user.url !== null ? user.url : "https://rozup.ir/view/3716005/default-avatar.png"}">
         <div class="contact-info">
           <span class="contact-name">${user.nome}</span>
         </div>

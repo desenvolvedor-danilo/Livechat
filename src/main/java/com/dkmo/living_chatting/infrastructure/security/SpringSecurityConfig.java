@@ -42,6 +42,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http, Authentication
     .requestMatchers("/app/chat/private").permitAll()
    
     .requestMatchers("/private.html").permitAll()
+    .requestMatchers("/configuration.html").permitAll()
+    .requestMatchers("/icons/**").permitAll()
     .requestMatchers("/buildrun-livechat-websocket/**").permitAll()
     .requestMatchers("/contacts", "/list-contacts.html").permitAll()
     .requestMatchers("/app.js").permitAll()

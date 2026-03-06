@@ -35,3 +35,4 @@ livechat-ce9c4-firebase-adminsdk-fbsvc-3f6b921c50.json
 .env
 imagens/
 uploads/
+src/main/resources/static/js/config/firebase.js

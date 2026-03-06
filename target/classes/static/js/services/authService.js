@@ -1,3 +1,5 @@
+import { storage } from "../utils/storage.js";
+
 export const handleCadastro = () => {
   fetch("/users/create", {
     headers: { "Content-Type": "application/json; charset=UTF-8" },
@@ -20,18 +22,22 @@ export const handleLogin = () => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      email: $('#correio').val(),
-      password: $("#senha").val()
+      "email": $('#correio').val(),
+      "password": $("#senha").val()
     })
   })
     .then((res) => {
-      if (!res.ok) return;
-      return res.text();
+      if (!res.ok) {
+        console.log(res.json())
+      }
+      return res.json();
     })
     .then((dado) => {
-      localStorage.setItem("email", $("#correio").val());
-      localStorage.setItem("authorization", dado);
-      localStorage.setItem("logado", true);
+      console.log(dado)
+      storage.set("email", $("#correio").val());
+      storage.set("authorization", dado.token);
+      storage.set("usuario", dado.nome);
+      storage.set("logado", true);
       window.location.href = "/notifications";
     });
 };

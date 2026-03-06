@@ -2,7 +2,9 @@ import { header } from "../utils/headers.js"
 
 export const allMessagesPrivate = () => {
   const param = new URLSearchParams(window.location.search).get("user")
-  fetch(`/private-messages/find?to=${param}&from=${localStorage.getItem("email")}`, { headers: header() })
+  fetch(`/private-messages/find?to=${param}&from=${localStorage.getItem("email")}`, {
+    headers: { "Authorization": header().Authorization }
+  })
     .then((res) => res.json())
     .then((data) => {
 
