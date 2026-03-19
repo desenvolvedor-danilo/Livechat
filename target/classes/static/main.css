@@ -213,6 +213,12 @@ h2 {
     transform: translateY(-50%);
 }
 
+#error {
+    text-align: center;
+    padding: 3px;
+    color: red;
+}
+
 .timestamp-received {
     text-align: right;
     font-size: 0.5em;

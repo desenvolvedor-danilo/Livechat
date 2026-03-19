@@ -18,7 +18,9 @@ public static User toUser(UserEntity user){
 
 public static UserEntity toUserEntity(User user){
     UserEntity userCreated = new UserEntity(user.nome(),user.email(),user.senha(),user.usuario());
+    if(user.getFileReference()!=null){
     userCreated.setPhotoProfile(user.getFileReference().url());
+    }
     return userCreated;
   }    
 }

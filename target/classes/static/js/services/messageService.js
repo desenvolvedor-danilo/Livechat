@@ -2,6 +2,7 @@
 import { listenMessages, requestPermission } from "../config_firebase/messagesFirebase.js";
 import { getCurrentTime } from "../utils/helpers.js";
 import { uploadFile } from "./fileService.js";
+import { notifications } from "./notificationService.js";
 
 let targetEmail;
 let lastSender;
@@ -51,6 +52,7 @@ export const sendMsgPrivate = async (stompClient) => {
   `);
 
   $('#msgPrivate').val('');
+  notifications()
   try {
     requestPermission().then((token) => console.log(token))
     listenMessages((payload) => console.log(payload.notification.body))

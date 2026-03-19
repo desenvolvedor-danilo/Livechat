@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.dkmo.living_chatting.application.gateway.AuthorizationGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationCreateGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationEditGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationGateway;
@@ -27,10 +28,12 @@ import com.dkmo.living_chatting.application.gateway.MessageGateway;
 import com.dkmo.living_chatting.application.gateway.MessageSaveGateway;
 import com.dkmo.living_chatting.application.gateway.NotificationGateway;
 import com.dkmo.living_chatting.application.gateway.UserGateway;
+import com.dkmo.living_chatting.application.gateway.ValidateTokenGateway;
 import com.dkmo.living_chatting.application.usecases.ConverterBase64;
 import com.dkmo.living_chatting.application.usecases.CreateUserInteractor;
 import com.dkmo.living_chatting.application.usecases.FcmTokenUseCase;
 import com.dkmo.living_chatting.application.usecases.FindUserDetailsByEmail;
+import com.dkmo.living_chatting.application.usecases.GenerateTokenUseCase;
 import com.dkmo.living_chatting.application.usecases.GetPhotoProfileUseCase;
 import com.dkmo.living_chatting.application.usecases.ImagesUseCases;
 import com.dkmo.living_chatting.application.usecases.LoadAllUsersUseCase;
@@ -39,6 +42,7 @@ import com.dkmo.living_chatting.application.usecases.LoadMessageUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadNotificationsUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadUserUseCase;
 import com.dkmo.living_chatting.application.usecases.MessageUseCase;
+import com.dkmo.living_chatting.application.usecases.ValidateTokenUseCase;
 import com.dkmo.living_chatting.controller.adapters.UserAdapter;
 import com.dkmo.living_chatting.infrastructure.gateways.ConverterBase64Impl;
 import com.dkmo.living_chatting.infrastructure.gateways.CreateaIdHash;
@@ -53,8 +57,8 @@ import com.dkmo.living_chatting.infrastructure.repositories.UsersRepository;
 @Configuration
 public class UserConfig {
     @Bean
-  public CreateUserInteractor createUseCase(UserGateway userGateway,EncryptPasswordGateway encryptPasswordGateway){
-  return new CreateUserInteractor(userGateway,encryptPasswordGateway);
+  public CreateUserInteractor createUseCase(UserGateway userGateway,EncryptPasswordGateway encryptPasswordGateway,GenerateIdGateway generateIdGateway){
+  return new CreateUserInteractor(userGateway,encryptPasswordGateway,generateIdGateway);
   }
   @Bean
   public ImagesUseCases imagesUseCases(LoadFileGateway loadFileGateway){
@@ -72,10 +76,18 @@ public class UserConfig {
  public UserAdapter userDTOMapper(){
     return new UserAdapter();
   }
-  // @Bean 
-  // public LoginPolicyInteractor loginPolicyInteractor(FindUserGateway gateway){
-  // return new LoginPolicyInteractor(gateway);
-  // }
+
+  @Bean 
+  public GenerateTokenUseCase generateTokenUseCase (FindUserGateway gateway, AuthorizationGateway authorizationGateway){
+  return new GenerateTokenUseCase(authorizationGateway,gateway);
+  }
+ 
+  @Bean
+  public ValidateTokenUseCase validateTokenUseCase(ValidateTokenGateway validateTokenGateway){
+    return new ValidateTokenUseCase(validateTokenGateway);
+  }
+
+
   @Bean
   public ConverterBase64 converterBase64(EncryptBase64Gateway encryptBase64Gateway){
   return new ConverterBase64(encryptBase64Gateway);

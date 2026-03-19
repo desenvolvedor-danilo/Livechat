@@ -4,6 +4,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/NotificationUnauthorizedException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/NullObjectException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/UserNotFoundExceptions.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/AuthorizationGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/ConversationCreateGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/ConversationEditGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/ConversationGateway.java
@@ -14,6 +15,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/EncryptPasswordGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/FcmTokenGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/FindUserGateway.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/GenerateCookieGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/GenerateIdGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/ImagesGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/InstantGateway.java
@@ -26,6 +28,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/MessageSaveGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/NotificationGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/UserGateway.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/ValidateTokenGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/ValidationGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/inputs/ImageInput.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/inputs/InputCreateUser.java
@@ -33,6 +36,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/CreateUserInteractor.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/FcmTokenUseCase.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/FindUserDetailsByEmail.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/GenerateTokenUseCase.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/GetPhotoProfileInput.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/GetPhotoProfileUseCase.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/ImagesUseCases.java
@@ -44,6 +48,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/LoginPolicyInteractor.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/MessageUseCase.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/NotificationUserUseCase.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/ValidateTokenUseCase.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/ConversationController.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/DTOs/ConversationResponseDto.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/DTOs/GetNameUserDto.java
@@ -63,6 +68,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/adapters/UserMapper.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/domain/exceptions/EmptyMessageException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/domain/exceptions/InvalidRecipientException.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/domain/model/AbstractAuthorization.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/domain/model/Conversation.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/domain/model/FileReference.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/domain/model/Message.java
@@ -78,7 +84,9 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/adapters/UserEntityAdapter.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/exceptions/FileStorageException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/filter/FilterRequests.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/AuthorizationImpl.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/ConverterBase64Impl.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/CookieGatewayImpl.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/CreateConversation.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/CreateaIdHash.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/EditConversation.java
@@ -100,6 +108,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/SendMessage.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/UserEntityMapper.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/UserRepositoryGateway.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/ValidateTokenImpl.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/persistence/ConversationEntity.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/persistence/MessagesPrivate.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/persistence/UserEntity.java

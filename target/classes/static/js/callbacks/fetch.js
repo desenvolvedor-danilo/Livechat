@@ -1,14 +1,30 @@
 
-export const postData = (target, headers, body) => {
+export const postData = (target, body) => {
   fetch(target, {
     method: "POST",
-    headers: { Authorization: headers, "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
     body: JSON.stringify(body)
   }).then((res) => console.log(res.status))
 }
-export const getData = async (target, headers, nameParam, valueParam) => {
-  const res = await fetch(`${target}?${nameParam}=${valueParam}`, {
-    headers: { Authorization: headers }
+export const getData = async (target, nameParam = "", valueParam = "") => {
+  let url = ""
+  if (nameParam && valueParam) {
+    url += `?${nameParam}=${valueParam}`
+    console.log(url)
+  }
+  const res = await fetch(`${target}${url}`, {
+    // headers: { Authorization: headers }
+    credentials: "include"
   })
-  return res.json()
+  return parseResponse(res)
+}
+const parseResponse = async (res) => {
+  const contentType = res.headers.get("content-type")
+  if (contentType?.includes("application/json")) {
+    return res.json()
+  } else {
+    return res.text()
+  }
+
 }

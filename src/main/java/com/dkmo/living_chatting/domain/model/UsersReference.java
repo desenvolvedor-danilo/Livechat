@@ -11,7 +11,7 @@ public String name() {
   return name;
 }
 public String urlPhotoProfile(){
-    return urlPhotoProfile;
+    return urlPhotoProfile != null ? urlPhotoProfile : null;
   }
 
 /**

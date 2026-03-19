@@ -6,7 +6,9 @@ import com.dkmo.living_chatting.infrastructure.persistence.UserEntity;
 
 public class UserEntityMapper {
 UserEntity toEntity(User userDomainObject){
-   return new UserEntity(userDomainObject.nome(),   userDomainObject.email(), userDomainObject.senha(),userDomainObject.usuario());
+   UserEntity userEntity = new UserEntity(userDomainObject.nome(),   userDomainObject.email(), userDomainObject.senha(),userDomainObject.usuario());
+    userEntity.setId(userDomainObject.id().toString());
+    return userEntity;
   }   
   User toDomain(UserEntity userEntity){
     User user = User.create(userEntity.getName(), userEntity.getEmail(), userEntity.getSenha(), userEntity.getUsuario());

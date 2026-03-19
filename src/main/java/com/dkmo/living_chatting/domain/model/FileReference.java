@@ -11,5 +11,8 @@ private final String url;
   public String url() {
     return url;
   }
+ public static FileReference Empty(){
+    return new FileReference(null);
+  } 
 
 }

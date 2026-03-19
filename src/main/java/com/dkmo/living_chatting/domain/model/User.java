@@ -1,5 +1,9 @@
 package com.dkmo.living_chatting.domain.model;
+
+import java.util.UUID;
+
 public class User{
+private UUID id;
 private String nome; 
 private String email; 
 private String senha;
@@ -17,7 +21,7 @@ private User(String nome, String email, String senha, String usuario) {
   this.email = email;
   this.senha = senha;
   this.usuario = usuario;
-  this.fileReference = null;
+  this.fileReference = FileReference.Empty();
 }
 /**
  * @return the nome
@@ -25,6 +29,13 @@ private User(String nome, String email, String senha, String usuario) {
 public static User create(String nome,String email,String senha,String usuario){
     
     return new User(nome, email, senha, usuario);
+  }
+
+  public void defineId(UUID id){
+    this.id = id;
+  }
+public UUID id(){
+    return id;
   }
 public String nome() {
   return nome;
@@ -48,7 +59,7 @@ public String usuario() {
   return usuario;
 }
 public void definePhotoProfile(FileReference fileReference){
-this.fileReference = fileReference;
+this.fileReference = fileReference != null ?  fileReference : FileReference.Empty();
 }
 public FileReference getFileReference() {
   return fileReference;

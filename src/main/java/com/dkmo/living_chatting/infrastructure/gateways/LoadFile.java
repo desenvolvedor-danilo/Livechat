@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.springframework.cache.annotation.Cacheable;
 
 import com.dkmo.living_chatting.application.gateway.LoadFileGateway;
 import com.dkmo.living_chatting.infrastructure.exceptions.FileStorageException;

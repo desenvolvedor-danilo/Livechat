@@ -1,16 +1,19 @@
+import { getData } from "../callbacks/fetch.js";
+import { doFilter } from "../callbacks/filter.js";
+import { showNotifications } from "../ui/notificationsComponent.js";
 import { header } from "../utils/headers.js";
-export const notifications = () => {
-  fetch("/conversas/private?from=" + localStorage.getItem("email"), {
-    method: "GET",
-    headers: { "Authorization": header().Authorization }
+import { storage } from "../utils/storage.js";
+export const notifications = async () => {
+  const currentUser = storage.get("email");
+  const message = document.getElementById("notifications")
+  const notifications = await getData("/conversas/private", header().Authorization, "from", currentUser)
+  const lastByUser = {}
+  notifications.forEach((notify) => {
+    lastByUser[notify.id] = notify
   })
-    .then((res) => res.json())
-    .then((data) => {
-      $("#notifications").empty();
-      data.forEach((msg) => {
-        $("#notifications").append(`
-          <div>${msg.message}</div>
-        `);
-      });
-    });
+  Object.values(lastByUser).forEach(async (msg) => {
+    const participante = doFilter(msg.participantes, currentUser)
+    const user = await getData("/users/find-users", header().Authorization, "email", participante)
+    message.appendChild(showNotifications(participante, user.url, user.nome, msg.message, msg.updatedAt))
+  })
 };

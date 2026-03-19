@@ -60,7 +60,7 @@ const preLoadingPhotoProfile = () => {
       if (dado) {
         img.setAttribute("src", dado.url)
       } else {
-        img.setAttribute("src", "https://rozup.ir/view/3716005/default-avatar.png")
+        img.setAttribute("src", "/icons/avatar.png")
       }
     })
 
@@ -476,5 +476,4 @@ $(function() {
   $("#livechat").ready(() => loadedMessages())
   $("#chat").ready(() => loadedMessagesPrivate())
   $("#sendPrivate").click(() => sendMsgPrivate())
-  document.getElementById('profile').addEventListener('load', preLoadingPhotoProfile())
 }); 

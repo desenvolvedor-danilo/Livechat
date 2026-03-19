@@ -17,7 +17,7 @@ public List<UserResponseDTO> listToResponse(List<User> user){
     user.forEach(usuario->{
       
       UserResponseDTO response = new
-      UserResponseDTO(usuario.email(), usuario.nome(),usuario.getFileReference().url());
+      UserResponseDTO(usuario.email(), usuario.nome(), usuario.getFileReference().url());
 
       createUserResponse.add(response);
     });

@@ -3,7 +3,6 @@ import { firebaseConfig } from "../config/firebase.js";
 
 
 
-
 // export function connectFirebase(config) {
 //
 //   firebase.initializeApp(config);

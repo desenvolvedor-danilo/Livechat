@@ -18,10 +18,6 @@ public LoginPolicyInteractor(FindUserGateway loginPolicyGateway) {
 }
 public User execute(String email,String password)throws UserNotFoundExceptions,InvalidCredentialsException{
     User user = loginPolicyGateway.findByEmail(email);
-
-    if(user==null){
-      throw new UserNotFoundExceptions();
-    }
     if(!user.senha().equals(password)){
       throw new InvalidCredentialsException();
     }

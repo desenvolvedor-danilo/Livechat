@@ -11,6 +11,9 @@ public class GetPhotoProfileUseCase {
   }
 public FileReference getPhotoProfile(GetPhotoProfileInput input){
 User user = loginPolicyGateway.findByEmail(input.email());
+    if(user.getFileReference()!=null){
     return user.getFileReference();
+    }
+    return null;
   }     
 }
