@@ -6,9 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,8 +41,9 @@ import com.dkmo.living_chatting.domain.model.AbstractAuthorization;
 import com.dkmo.living_chatting.domain.model.FileReference;
 import com.dkmo.living_chatting.domain.model.User;
 import com.dkmo.living_chatting.domain.model.UsersReference;
+import com.dkmo.living_chatting.infrastructure.adapters.AuthenticationGateway;
 import com.dkmo.living_chatting.infrastructure.persistence.UserEntity;
-
+@CrossOrigin(origins =  "*")
 @RestController
 @RequestMapping("/users")
 
@@ -58,7 +58,7 @@ public class UserController {
   loadUserUseCase;
   private final GenerateTokenUseCase generateTokenUseCase;
   @Autowired
-  private AuthenticationManager authenticationManager;
+  private AuthenticationGateway authenticationManager;
   private final FcmTokenUseCase fcmTokenUseCase;
   @Autowired
   private UserMapper userMapper; 
@@ -85,19 +85,13 @@ public class UserController {
 
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDTO request){
-    try{
-
+    Authentication authentication =  authenticationManager.authentication(request.email(), request.password()); 
    AbstractAuthorization abstractAuthorization = generateTokenUseCase.execute(request.email());
-    Authentication authentication =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
       UserEntity userEntity = (UserEntity) authentication.getPrincipal();
   LoginResponseDto loginResponseDto = new LoginResponseDto(userEntity.getName());
       generateCookieGateway.write("token", abstractAuthorization.token());
       generateCookieGateway.write("refresh-token", abstractAuthorization.refreshToken());
-    return ResponseEntity.ok(loginResponseDto);
-    }catch(Exception e){
-      e.printStackTrace();
-    }
-    return null;
+    return ResponseEntity.ok(loginResponseDto); 
   }
 
   @GetMapping("findall")

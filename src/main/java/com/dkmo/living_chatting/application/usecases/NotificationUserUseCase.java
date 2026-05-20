@@ -12,7 +12,7 @@ public NotificationUserUseCase(NotificationGateway notificationGateway) {
   this.notificationGateway = notificationGateway;
 }
 
-public void execute(String tokenTarget,String title,String body){
-notificationGateway.sendNotification(tokenTarget,title,body);
+public void execute(String tokenTarget,String title,String body,String email){
+notificationGateway.sendNotification(tokenTarget,title,body,email);
   }    
 }

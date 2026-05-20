@@ -30,18 +30,29 @@ public class NotificationGatewayImpl implements NotificationGateway {
     }
 
   @Override
-  public void sendNotification(String tokenTarget, String title, String body) {
+  public void sendNotification(String tokenTarget, String title, String body,String email) {
        try{
+            
         Map<String, Object> notification = new HashMap<>();
+        //
         notification.put("title", title);
+        if(body.startsWith("http://")){
+        notification.put("image", body);
+            }else{
         notification.put("body", body);
-
+            }
         Map<String, Object> message = new HashMap<>();
+            Map<String,Object> fcmOptions = new HashMap<>();
+            fcmOptions.put("link", "/redirect/page?user="+email);
+            Map<String,Object> webPush = new HashMap<>();
+            webPush.put("fcm_options", fcmOptions);
         message.put("token", tokenTarget);
         message.put("notification", notification);
-
-        Map<String, Object> request = new HashMap<>();
+         message.put("webpush", webPush);
+            // message.put("data", data);
+            Map<String, Object> request = new HashMap<>();
         request.put("message", message);
+            System.out.println(request);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

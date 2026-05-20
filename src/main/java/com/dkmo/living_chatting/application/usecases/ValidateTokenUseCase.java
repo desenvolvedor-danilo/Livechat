@@ -1,5 +1,6 @@
 package com.dkmo.living_chatting.application.usecases;
 
+import com.dkmo.living_chatting.application.exceptions.InvalidCredentialsException;
 import com.dkmo.living_chatting.application.gateway.ValidateTokenGateway;
 
 public class ValidateTokenUseCase {
@@ -10,7 +11,8 @@ public ValidateTokenUseCase(ValidateTokenGateway validateTokenGateway) {
 }
  
 public String execute(String token){
-    return validateTokenGateway.validateToken(token);
+    String tokenValidate = validateTokenGateway.validateToken(token);
+    return tokenValidate;
   }
 
 }

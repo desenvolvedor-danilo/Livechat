@@ -68,6 +68,7 @@ public MessageUseCase(MessageGateway messageGateway, InstantGateway instantGatew
     Conversation conversation = conversationGateway.findConversation(msg);
     if(conversation==null){ 
     conversation = conversationCreateGateway.createConversation(msg);
+    conversation.defineRecipient(recipient.nome());
    conversationSaveGateway.saveConversation(conversation); 
     }else{
       conversationEditGateway.editConversation(conversation, msg);
@@ -76,9 +77,9 @@ public MessageUseCase(MessageGateway messageGateway, InstantGateway instantGatew
       throw new NotificationUnauthorizedException();
     }
     if(message!=null){
-    notificationGateway.sendNotification(recipient.token(), "Nova mensagem de: " +sender.nome(),message);
+    notificationGateway.sendNotification(recipient.token(), "Nova mensagem de: " +sender.nome(),message,to);
     }else{
-    notificationGateway.sendNotification(recipient.token(), "Nova foto de: " +sender.nome(),null);
-    }
+    notificationGateway.sendNotification(recipient.token(), "Nova foto de: " +sender.nome(),urlFile,to);
+  }
   }
 } 

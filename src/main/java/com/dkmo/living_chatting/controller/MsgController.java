@@ -18,7 +18,8 @@ public class MsgController {
     this.messageUseCase= messageUseCase;
   }
 @MessageMapping("/chat/private/") 
-public ResponseEntity<?> sendMessage(@Payload MessageRequestDTO message,Principal principal){    
+public ResponseEntity<?> sendMessage(@Payload MessageRequestDTO message,Principal principal){ 
+    System.out.println(message);
     messageUseCase.execute(message.message(),principal.getName(),message.to(),message.user(),message.urlFile());
     return ResponseEntity.status(HttpStatus.CREATED).build();
   }

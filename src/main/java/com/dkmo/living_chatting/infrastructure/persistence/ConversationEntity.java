@@ -18,6 +18,7 @@ public class ConversationEntity {
   private String lastSender;
   private String name;
   private Instant updatedAt;
+  private String recipient;
   public void addParticipantes(String from,String to){
     this.participantes.add(from);
     this.participantes.add(to);
@@ -31,13 +32,14 @@ public class ConversationEntity {
    * @param updatedAt
    */
   public ConversationEntity(String id, List<String> participantes, String lastMessage, String lastSender, String name,
-      Instant updatedAt) {
+      Instant updatedAt,String recipient) {
     this.id = id;
     this.participantes = participantes;
     this.lastMessage = lastMessage;
     this.lastSender = lastSender;
     this.name = name;
     this.updatedAt = updatedAt;
+    this.recipient = recipient;
   }
 
 }

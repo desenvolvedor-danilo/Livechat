@@ -22,7 +22,8 @@ public class SendMessage implements MessageGateway {
   @Override
  public void sendMessage(Message message) {
     MessageToResponse AdapterMessage = MessageToResponse.send(message);
-    simpMessagingTemplate.convertAndSendToUser(message.getTo(), "/queue/message", AdapterMessage);  
+    simpMessagingTemplate.convertAndSendToUser(message.getTo(), "/queue/message", AdapterMessage);
+    simpMessagingTemplate.convertAndSendToUser(message.getFrom(), "/queue/message", AdapterMessage);
   } 
      
 } 

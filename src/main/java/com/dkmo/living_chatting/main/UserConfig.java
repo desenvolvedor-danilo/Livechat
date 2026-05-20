@@ -14,10 +14,12 @@ import com.dkmo.living_chatting.application.gateway.ConversationCreateGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationEditGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationSaveGateway;
-import com.dkmo.living_chatting.application.gateway.EncryptBase64Gateway;
+import com.dkmo.living_chatting.application.gateway.DeleteRefreshTokenGateway;
 import com.dkmo.living_chatting.application.gateway.EncryptPasswordGateway;
 import com.dkmo.living_chatting.application.gateway.FcmTokenGateway;
 import com.dkmo.living_chatting.application.gateway.FindUserGateway;
+import com.dkmo.living_chatting.application.gateway.GenerateCookieGateway;
+import com.dkmo.living_chatting.application.gateway.GenerateHashGateway;
 import com.dkmo.living_chatting.application.gateway.GenerateIdGateway;
 import com.dkmo.living_chatting.application.gateway.InstantGateway;
 import com.dkmo.living_chatting.application.gateway.LoadAllUsersGateway;
@@ -27,9 +29,9 @@ import com.dkmo.living_chatting.application.gateway.LoadNotificationGateway;
 import com.dkmo.living_chatting.application.gateway.MessageGateway;
 import com.dkmo.living_chatting.application.gateway.MessageSaveGateway;
 import com.dkmo.living_chatting.application.gateway.NotificationGateway;
+import com.dkmo.living_chatting.application.gateway.SaveRefreshTokenGateway;
 import com.dkmo.living_chatting.application.gateway.UserGateway;
 import com.dkmo.living_chatting.application.gateway.ValidateTokenGateway;
-import com.dkmo.living_chatting.application.usecases.ConverterBase64;
 import com.dkmo.living_chatting.application.usecases.CreateUserInteractor;
 import com.dkmo.living_chatting.application.usecases.FcmTokenUseCase;
 import com.dkmo.living_chatting.application.usecases.FindUserDetailsByEmail;
@@ -42,9 +44,9 @@ import com.dkmo.living_chatting.application.usecases.LoadMessageUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadNotificationsUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadUserUseCase;
 import com.dkmo.living_chatting.application.usecases.MessageUseCase;
+import com.dkmo.living_chatting.application.usecases.RefreshTokenUseCase;
 import com.dkmo.living_chatting.application.usecases.ValidateTokenUseCase;
 import com.dkmo.living_chatting.controller.adapters.UserAdapter;
-import com.dkmo.living_chatting.infrastructure.gateways.ConverterBase64Impl;
 import com.dkmo.living_chatting.infrastructure.gateways.CreateaIdHash;
 import com.dkmo.living_chatting.infrastructure.gateways.EditUserGatewayImpl;
 import com.dkmo.living_chatting.infrastructure.gateways.LoadFile;
@@ -78,8 +80,8 @@ public class UserConfig {
   }
 
   @Bean 
-  public GenerateTokenUseCase generateTokenUseCase (FindUserGateway gateway, AuthorizationGateway authorizationGateway){
-  return new GenerateTokenUseCase(authorizationGateway,gateway);
+  public GenerateTokenUseCase generateTokenUseCase (AuthorizationGateway authorizationGateway, FindUserGateway findUserGateway,SaveRefreshTokenGateway saveRefreshTokenGateway,GenerateHashGateway generateHashGateway){
+  return new GenerateTokenUseCase(authorizationGateway,findUserGateway, saveRefreshTokenGateway, generateHashGateway);
   }
  
   @Bean
@@ -87,22 +89,16 @@ public class UserConfig {
     return new ValidateTokenUseCase(validateTokenGateway);
   }
 
-
-  @Bean
-  public ConverterBase64 converterBase64(EncryptBase64Gateway encryptBase64Gateway){
-  return new ConverterBase64(encryptBase64Gateway);
-  }
- 
-  @Bean
-  public EncryptBase64Gateway encryptBase64Gateway(){
-  return new ConverterBase64Impl();
-  }
-
   @Bean
   public LoadUserGateway loadUser(UsersRepository usersRepository, UserEntityMapper userEntityMapper){
 return new LoadUserGateway(userEntityMapper, usersRepository);
   }
   @Bean
+  public RefreshTokenUseCase refreshTokenUseCase(ValidateTokenGateway validateTokenGateway,FindUserGateway findUserGateway,AuthorizationGateway authorizationGateway,GenerateCookieGateway generateCookieGateway,SaveRefreshTokenGateway saveRefreshTokenGateway,GenerateHashGateway generateHashGateway,DeleteRefreshTokenGateway deleteRefreshTokenGateway) {
+  return new RefreshTokenUseCase(validateTokenGateway, findUserGateway, authorizationGateway, generateCookieGateway, saveRefreshTokenGateway, generateHashGateway,deleteRefreshTokenGateway);
+  }
+  
+   @Bean
   public SendMessage sendMessage(SimpMessagingTemplate simpMessagingTemplate){
     return new SendMessage(simpMessagingTemplate);
   }

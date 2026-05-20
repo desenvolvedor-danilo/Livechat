@@ -11,6 +11,7 @@ public class Conversation {
   private String lastSender;
   private String name;
   private Instant updatedAt;
+  private String recipient;
   
 
   /**
@@ -32,13 +33,16 @@ public class Conversation {
   }
   public static Conversation create(String id, List<String> participantes, String lastMessage, String lastSender, String name,
       Instant updatedAt){
-    return new Conversation(id, participantes, lastMessage, lastSender, name, updatedAt);
+    return new Conversation(id, participantes, lastMessage, lastSender, name, updatedAt );
   }
   /**
    * @return the id
    */
   public String  getId() {
     return id;
+  }
+  public void defineRecipient(String recipient){
+    this.recipient = recipient;
   }
   /**
    * @return the participantes
@@ -70,5 +74,12 @@ public class Conversation {
   public Instant getUpdatedAt() {
     return updatedAt;
   }
+  /**
+   * @return the recipient
+   */
+  public String getRecipient() {
+    return recipient;
+  }
+
 
 }

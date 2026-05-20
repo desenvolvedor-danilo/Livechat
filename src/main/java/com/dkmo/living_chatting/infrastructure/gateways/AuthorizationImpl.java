@@ -1,7 +1,7 @@
 package com.dkmo.living_chatting.infrastructure.gateways;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.Instant;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -23,13 +23,13 @@ try{
   Algorithm algorithm = Algorithm.HMAC256(key);
    String token = JWT.create().withIssuer("living_chatting")
   .withSubject(user.email())
-  .withExpiresAt(LocalDateTime.now().plusHours(1).toInstant(ZoneOffset.of("-03:00")))
+  .withExpiresAt(Date.from(Instant.now().plusSeconds(60*60)))
   .sign(algorithm);
-
-
+  
+ // System.out.println(token);
    String refreshToken = JWT.create().withIssuer("living_chatting")
   .withSubject(user.email())
-  .withExpiresAt(LocalDateTime.now().plusHours(720).toInstant(ZoneOffset.of("-03:00")))
+  .withExpiresAt(Date.from(Instant.now().plusSeconds(60*60*24*30)))
   .sign(algorithm); 
 
   return new AbstractAuthorization(token,refreshToken);

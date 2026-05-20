@@ -5,9 +5,12 @@ import com.dkmo.living_chatting.infrastructure.persistence.ConversationEntity;
 
 public class ConversationAdapter {
 public static ConversationEntity toConversationEntity(Conversation conversation){
-return new ConversationEntity(conversation.getId(),conversation.getParticipantes(),conversation.getLastMessage(),conversation.getLastSender(),conversation.getName(),conversation.getUpdatedAt());
+return new ConversationEntity(conversation.getId(),conversation.getParticipantes(),conversation.getLastMessage(),conversation.getLastSender(),conversation.getName(),conversation.getUpdatedAt(),conversation.getRecipient());
   }
   public Conversation toConversation(ConversationEntity conversationEntity){
-    return Conversation.create(conversationEntity.getId(), conversationEntity.getParticipantes(), conversationEntity.getLastMessage(), conversationEntity.getName(), conversationEntity.getName(), conversationEntity.getUpdatedAt());
+    Conversation conversation = Conversation.create(conversationEntity.getId(), conversationEntity.getParticipantes(), conversationEntity.getLastMessage(), conversationEntity.getName(),conversationEntity.getLastSender(), conversationEntity.getUpdatedAt());
+    conversation.defineRecipient(conversationEntity.getRecipient());
+    return conversation;
+    
   }
 }

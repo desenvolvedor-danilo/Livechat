@@ -3,15 +3,16 @@ import { error } from "../ui/errorComponent.js";
 import { hideElement } from "../ui/transforms/hideElements.js";
 import { storage } from "../utils/storage.js";
 
-eventListener("blur", () => {
-  const isValid = /^[a-zA-Z0-9._-]+@[a-z]+\.[a-z]+(\.[a-z]+)?$/.test($("#email").val())
-  if (!isValid) {
-    error("Formato de e-mail inválido", "container-email")
-  } else {
-    hideElement("error");
-  }
-}, "email")
+
 export const handleCadastro = () => {
+  eventListener("blur", () => {
+    const isValid = /^[a-zA-Z0-9._-]+@[a-z]+\.[a-z]+(\.[a-z]+)?$/.test($("#email").val())
+    if (!isValid) {
+      error("Formato de e-mail inválido", "container-email")
+    } else {
+      hideElement("error");
+    }
+  }, "email")
   fetch("/users/create", {
     headers: { "Content-Type": "application/json; charset=UTF-8" },
     method: "POST",
@@ -24,6 +25,7 @@ export const handleCadastro = () => {
 
     })
   }).then((res) => {
+    console.log(res.status)
     if (res.status == 200) {
       window.location.href = "/login.html";
     }
@@ -41,6 +43,7 @@ export const handleLogin = () => {
   })
     .then((res) => {
       if (!res.ok) {
+        console.log(res.status)
       }
       return res.json();
     })

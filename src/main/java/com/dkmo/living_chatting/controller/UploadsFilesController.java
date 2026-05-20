@@ -31,8 +31,10 @@ public UploadsFilesController(ImagesUseCases imagesUseCases) {
 }
 
 @PostMapping("/save") 
-public UserProfileResponseDto messageImageUpload(@RequestParam(name = "file")MultipartFile multipartFile) throws IOException{ 
+public UserProfileResponseDto messageImageUpload(@RequestParam(name = "file")MultipartFile multipartFile) throws IOException{
+System.out.println("Bateu no endpoint");  
    ImageInput profileInput = new ImageInput(multipartFile.getBytes(),null, multipartFile.getOriginalFilename(),"imagens/");
+   System.out.println(profileInput);
    FileReference fileReference = imagesUseCases.execute(profileInput);
     System.out.println(fileReference.url());
     return userMapper.toUserProfileResponseDto(fileReference);

@@ -17,6 +17,20 @@ export const getData = async (target, nameParam = "", valueParam = "") => {
     // headers: { Authorization: headers }
     credentials: "include"
   })
+  if (res.status === 401) {
+    const refresh = await fetch("/refresh/token", {
+      method: "POST",
+      credentials: "include"
+    })
+    if (!refresh.ok) {
+      window.location.href = "/login"
+      return;
+    }
+    return fetch(`${target}${url}`, {
+      credentials: "include"
+    })
+
+  }
   return parseResponse(res)
 }
 const parseResponse = async (res) => {

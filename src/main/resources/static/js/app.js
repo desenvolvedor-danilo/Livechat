@@ -13,9 +13,9 @@ import { searchPhotoProfile } from "./services/profileService.js";
 document.addEventListener
   ("DOMContentLoaded", () => {
     const email = localStorage.getItem("email");
-    const stompClient = createStompClient(email);
-    stompClient.activate();
-    connectStomp(stompClient, handlePrivate)
+    //   const stompClient = createStompClient(email);
+    // stompClient.activate();
+    //    connectStomp(stompClient, handlePrivate)
     $(document).ready(() => allMessagesPrivate())
     $(document).ready(() => notifications())
     $(document).ready(() => searchPhotoProfile())
@@ -24,5 +24,5 @@ document.addEventListener
     $("#login").click(() => handleLogin());
     $("#cadastro").click(() => handleCadastro());
     $("#logout").click(() => logout());
-    $("#sendPrivate").click(() => sendMsgPrivate(stompClient));
+    //    $("#sendPrivate").click(() => sendMsgPrivate(stompClient));
   });

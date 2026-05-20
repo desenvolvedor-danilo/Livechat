@@ -29,29 +29,41 @@ private FindUserGateway findUserGateway;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{ 
-    String token = extractToken(request);
     try{
-    if (token == null) {
-    filterChain.doFilter(request, response);
-    return;
-    }
-      String email = validateTokenGateway.validateToken(token);
-    User user = findUserGateway.findByEmail(email);
-    UserEntity userEntity = UserEntityAdapter.toUserEntity(user); 
-    // if(userEntity==null){
-    //     SecurityContextHolder.clearContext();
-    //   }
-    Authentication authentication = new UsernamePasswordAuthenticationToken(userEntity,token,userEntity.getAuthorities());
 
+    String token = extractToken(request);
+    //   if (token == null) {
+    //  filterChain.doFilter(request, response);
+    // return;
+    //   }
+     System.out.println("Token enviado: "+token); 
+      if(token!=null){
+      String email = validateTokenGateway.validateToken(token);
+   if(email!=null&&!email.isEmpty()){
+    User user = findUserGateway.findByEmail(email);
+    if(user!=null){
+    UserEntity userEntity = UserEntityAdapter.toUserEntity(user); 
+    Authentication authentication = new UsernamePasswordAuthenticationToken(userEntity,null,userEntity.getAuthorities());
      SecurityContextHolder.getContext().setAuthentication(authentication);
-    
+     }
+        }
+//filterChain.doFilter(request, response);
+      }
     }catch(Exception exception){
-    SecurityContextHolder.clearContext();
+      // response.setStatus(401);
+      // response.setContentType("application/json");
+      // response.getWriter().write("{\"error\":\"unauthorized\"}");
+ //      return;
+
+  SecurityContextHolder.clearContext();
     }
-    filterChain.doFilter(request, response);
+
+
+   filterChain.doFilter(request, response);
 }
 
   private String extractToken(HttpServletRequest request){
+    
     if(request.getCookies()==null){
       return null;
     }

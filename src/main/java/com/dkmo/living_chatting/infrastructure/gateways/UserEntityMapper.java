@@ -1,5 +1,7 @@
 package com.dkmo.living_chatting.infrastructure.gateways;
 
+import java.util.UUID;
+
 import com.dkmo.living_chatting.domain.model.FileReference;
 import com.dkmo.living_chatting.domain.model.User;
 import com.dkmo.living_chatting.infrastructure.persistence.UserEntity;
@@ -12,6 +14,7 @@ UserEntity toEntity(User userDomainObject){
   }   
   User toDomain(UserEntity userEntity){
     User user = User.create(userEntity.getName(), userEntity.getEmail(), userEntity.getSenha(), userEntity.getUsuario());
+    user.defineId(UUID.fromString(userEntity.getId()));
     if(userEntity.getPhotoProfile()!=null){
     user.definePhotoProfile(new FileReference(userEntity.getPhotoProfile()));
     }
