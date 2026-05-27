@@ -7,19 +7,21 @@ import com.dkmo.living_chatting.domain.model.User;
 import com.dkmo.living_chatting.infrastructure.persistence.UserEntity;
 
 public class UserEntityMapper {
-UserEntity toEntity(User userDomainObject){
-   UserEntity userEntity = new UserEntity(userDomainObject.nome(),   userDomainObject.email(), userDomainObject.senha(),userDomainObject.usuario());
+  UserEntity toEntity(User userDomainObject) {
+    UserEntity userEntity = new UserEntity(userDomainObject.nome(), userDomainObject.email(), userDomainObject.senha(),
+        userDomainObject.usuario());
     userEntity.setId(userDomainObject.id().toString());
     return userEntity;
-  }   
-  User toDomain(UserEntity userEntity){
-    User user = User.create(userEntity.getName(), userEntity.getEmail(), userEntity.getSenha(), userEntity.getUsuario());
+  }
+
+  User toDomain(UserEntity userEntity) {
+    User user = User.create(userEntity.getName(), userEntity.getEmail(), userEntity.getSenha(),
+        userEntity.getUsuario());
     user.defineId(UUID.fromString(userEntity.getId()));
-    if(userEntity.getPhotoProfile()!=null){
-    user.definePhotoProfile(new FileReference(userEntity.getPhotoProfile()));
+    if (userEntity.getPhotoProfile() != null) {
+      user.definePhotoProfile(new FileReference(userEntity.getPhotoProfile()));
     }
     user.defineToken(userEntity.getFcmToken());
     return user;
   }
 }
-  
