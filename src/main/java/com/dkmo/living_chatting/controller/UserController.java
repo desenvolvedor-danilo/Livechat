@@ -43,6 +43,7 @@ import com.dkmo.living_chatting.domain.model.User;
 import com.dkmo.living_chatting.domain.model.UsersReference;
 import com.dkmo.living_chatting.infrastructure.adapters.AuthenticationGateway;
 import com.dkmo.living_chatting.infrastructure.persistence.UserEntity;
+
 //@CrossOrigin(origins =  "*")
 @RestController
 @RequestMapping("/users")
@@ -50,22 +51,22 @@ import com.dkmo.living_chatting.infrastructure.persistence.UserEntity;
 public class UserController {
   private final GenerateCookieGateway generateCookieGateway;
   private final CreateUserInteractor createUserInteractor;
-  private final UserAdapter userDTOMapper; 
+  private final UserAdapter userDTOMapper;
   private final LoadAllUsersUseCase loadAllUsersUseCase;
   private final LoadFilesUseCase loadFilesUseCase;
   private final GetPhotoProfileUseCase getPhotoProfileUseCase;
-  private final LoadUserUseCase
-  loadUserUseCase;
+  private final LoadUserUseCase loadUserUseCase;
   private final GenerateTokenUseCase generateTokenUseCase;
   @Autowired
   private AuthenticationGateway authenticationManager;
   private final FcmTokenUseCase fcmTokenUseCase;
   @Autowired
-  private UserMapper userMapper; 
+  private UserMapper userMapper;
 
-
-  public UserController(CreateUserInteractor createUserInteractor,UserAdapter userDTOMapper,LoadAllUsersUseCase loadAllUsersUseCase,LoadFilesUseCase
-  loadFilesUseCase,GetPhotoProfileUseCase getPhotoProfileUseCase,LoadUserUseCase loadUserUseCase,FcmTokenUseCase fcmTokenUseCase,GenerateTokenUseCase generateTokenUseCase,GenerateCookieGateway generateCookieGateway) {
+  public UserController(CreateUserInteractor createUserInteractor, UserAdapter userDTOMapper,
+      LoadAllUsersUseCase loadAllUsersUseCase, LoadFilesUseCase loadFilesUseCase,
+      GetPhotoProfileUseCase getPhotoProfileUseCase, LoadUserUseCase loadUserUseCase, FcmTokenUseCase fcmTokenUseCase,
+      GenerateTokenUseCase generateTokenUseCase, GenerateCookieGateway generateCookieGateway) {
     this.createUserInteractor = createUserInteractor;
     this.userDTOMapper = userDTOMapper;
     this.loadAllUsersUseCase = loadAllUsersUseCase;
@@ -76,56 +77,60 @@ public class UserController {
     this.generateTokenUseCase = generateTokenUseCase;
     this.generateCookieGateway = generateCookieGateway;
   }
+
   @PostMapping("/create")
-  public UserResponseDTO  create(@RequestBody UserRequestDTO request){
-    InputCreateUser user = new InputCreateUser(request.nome(),request.email(),request.password(),request.username());
+  public UserResponseDTO create(@RequestBody UserRequestDTO request) {
+    InputCreateUser user = new InputCreateUser(request.nome(), request.email(), request.password(), request.username());
     User userInteractor = createUserInteractor.createUser(user);
-    return userDTOMapper.toResponse(userInteractor); 
+    return userDTOMapper.toResponse(userInteractor);
   }
 
   @PostMapping("/login")
-  public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDTO request){
-    Authentication authentication =  authenticationManager.authentication(request.email(), request.password()); 
-   AbstractAuthorization abstractAuthorization = generateTokenUseCase.execute(request.email());
-      UserEntity userEntity = (UserEntity) authentication.getPrincipal();
-  LoginResponseDto loginResponseDto = new LoginResponseDto(userEntity.getName());
-      generateCookieGateway.write("token", abstractAuthorization.token());
-      generateCookieGateway.write("refresh-token", abstractAuthorization.refreshToken());
-    return ResponseEntity.ok(loginResponseDto); 
+  public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDTO request) {
+    System.out.println("chamou o endpoint");
+    Authentication authentication = authenticationManager.authentication(request.email(), request.password());
+    AbstractAuthorization abstractAuthorization = generateTokenUseCase.execute(request.email());
+    UserEntity userEntity = (UserEntity) authentication.getPrincipal();
+    LoginResponseDto loginResponseDto = new LoginResponseDto(userEntity.getName());
+    generateCookieGateway.write("token", abstractAuthorization.token());
+    generateCookieGateway.write("refresh-token", abstractAuthorization.refreshToken());
+    return ResponseEntity.ok(loginResponseDto);
   }
 
   @GetMapping("findall")
-  public ResponseEntity<List<UserResponseDTO>> findAllUsers(){
-    try {     
-  List<User> user = loadAllUsersUseCase.execute();
-   return ResponseEntity.ok().body(userDTOMapper.listToResponse(user));
+  public ResponseEntity<List<UserResponseDTO>> findAllUsers() {
+    try {
+      List<User> user = loadAllUsersUseCase.execute();
+      return ResponseEntity.ok().body(userDTOMapper.listToResponse(user));
     } catch (Exception e) {
-    return ResponseEntity.noContent().build();
-    }    
+      return ResponseEntity.noContent().build();
+    }
   }
-@PostMapping("/photo-profile") 
-public UserProfileResponseDto updatePhotoProfile(@RequestParam(name = "file")MultipartFile multipartFile,@RequestParam(name = "email")String email)throws IOException{ 
-   ImageInput profileInput = new ImageInput(multipartFile.getBytes(),email, multipartFile.getOriginalFilename(),"uploads/photos-profiles/");
-   FileReference fileReference = loadFilesUseCase.execute(profileInput);
+
+  @PostMapping("/photo-profile")
+  public UserProfileResponseDto updatePhotoProfile(@RequestParam(name = "file") MultipartFile multipartFile,
+      @RequestParam(name = "email") String email) throws IOException {
+    ImageInput profileInput = new ImageInput(multipartFile.getBytes(), email, multipartFile.getOriginalFilename(),
+        "uploads/photos-profiles/");
+    FileReference fileReference = loadFilesUseCase.execute(profileInput);
     return userMapper.toUserProfileResponseDto(fileReference);
   }
 
-@GetMapping("/get-photo-profile")
-public PhotoProfileDto getPhotoProfile(@RequestParam(name = "email") String email){
-GetPhotoProfileInput getPhotoProfileInput = new GetPhotoProfileInput(email);
- FileReference fileReference =  getPhotoProfileUseCase.getPhotoProfile(getPhotoProfileInput);
-    return new PhotoProfileDto(fileReference.url()); 
+  @GetMapping("/get-photo-profile")
+  public PhotoProfileDto getPhotoProfile(@RequestParam(name = "email") String email) {
+    GetPhotoProfileInput getPhotoProfileInput = new GetPhotoProfileInput(email);
+    FileReference fileReference = getPhotoProfileUseCase.getPhotoProfile(getPhotoProfileInput);
+    return new PhotoProfileDto(fileReference.url());
   }
 
-
   @GetMapping("/find-users")
-  public GetNameUserDto getNameUserDto(@RequestParam("email") String email){
+  public GetNameUserDto getNameUserDto(@RequestParam("email") String email) {
     UsersReference usersReference = loadUserUseCase.execute(email);
-    return new GetNameUserDto(usersReference.name(),usersReference.urlPhotoProfile());
+    return new GetNameUserDto(usersReference.name(), usersReference.urlPhotoProfile());
   }
 
   @PostMapping("/save-token")
-  public void setToken(@RequestBody UpdateUserDto updateUserDto){
-  fcmTokenUseCase.execute(updateUserDto.email(), updateUserDto.token());
+  public void setToken(@RequestBody UpdateUserDto updateUserDto) {
+    fcmTokenUseCase.execute(updateUserDto.email(), updateUserDto.token());
   }
- }  
+}
