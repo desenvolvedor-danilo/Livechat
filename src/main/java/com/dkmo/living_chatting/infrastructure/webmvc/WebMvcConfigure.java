@@ -29,8 +29,8 @@ public class WebMvcConfigure implements WebMvcConfigurer {
 
   @Override
   public void addCorsMappings(CorsRegistry corsRegistry) {
-    corsRegistry.addMapping("/**")
-        .allowedOriginPatterns("https://*.vercel.app")
+    corsRegistry.addMapping("*")
+        .allowedOriginPatterns("*")
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*").allowCredentials(true);
   }
 }
