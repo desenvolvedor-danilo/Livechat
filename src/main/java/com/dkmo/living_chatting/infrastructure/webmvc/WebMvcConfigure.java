@@ -13,22 +13,23 @@ public class WebMvcConfigure implements WebMvcConfigurer {
     registry.addViewController("/login").setViewName("/login.html");
     registry.addViewController("/register").setViewName("/cadastro.html");
     registry.addViewController("/notifications")
-      .setViewName("/notifications.html"); 
+        .setViewName("/notifications.html");
     registry.addViewController("/contacts")
-      .setViewName("/list-contacts.html");
+        .setViewName("/list-contacts.html");
     registry.addRedirectViewController("/", "/notifications");
   }
-@Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/photos-profiles/**")
-                .addResourceLocations("file:uploads/photos-profiles/");
-    registry.addResourceHandler("/imagens/**")
-      .addResourceLocations("file:imagens/");
-    }
+
   @Override
-  public void addCorsMappings(CorsRegistry corsRegistry){
-    corsRegistry.addMapping("*").allowedOriginPatterns("*").allowedMethods("GET","POST","PUT","DELETE").
-     allowedHeaders("*").
-    allowCredentials(true);
+  public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/photos-profiles/**")
+        .addResourceLocations("file:uploads/photos-profiles/");
+    registry.addResourceHandler("/imagens/**")
+        .addResourceLocations("file:imagens/");
+  }
+
+  @Override
+  public void addCorsMappings(CorsRegistry corsRegistry) {
+    corsRegistry.addMapping("*").allowedOrigins("https://livechat-front-end-73fl.vercel.app/")
+        .allowedMethods("GET", "POST", "PUT", "DELETE").allowedHeaders("*").allowCredentials(true);
   }
 }
