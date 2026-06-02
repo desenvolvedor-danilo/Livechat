@@ -43,7 +43,7 @@ import com.dkmo.living_chatting.domain.model.User;
 import com.dkmo.living_chatting.domain.model.UsersReference;
 import com.dkmo.living_chatting.infrastructure.adapters.AuthenticationGateway;
 import com.dkmo.living_chatting.infrastructure.persistence.UserEntity;
-@CrossOrigin(origins =  "*")
+//@CrossOrigin(origins =  "*")
 @RestController
 @RequestMapping("/users")
 
