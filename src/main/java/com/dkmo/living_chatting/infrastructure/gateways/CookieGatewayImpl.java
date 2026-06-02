@@ -35,7 +35,7 @@ public class CookieGatewayImpl implements GenerateCookieGateway {
         .sameSite("None")
         .maxAge(1000000)
         .build();
-    response.setHeader("Set-Cookie", cookie.toString());
+    response.addHeader("Set-Cookie", cookie.toString());
   }
 
 }
