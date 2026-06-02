@@ -30,7 +30,7 @@ public class WebMvcConfigure implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry corsRegistry) {
     corsRegistry.addMapping("/**")
-        .allowedOrigins("https://livechat-front-end-73fl.vercel.app")
+        .allowedOrigins("https://*.vercel.app")
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*").allowCredentials(true);
   }
 }
