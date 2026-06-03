@@ -23,21 +23,23 @@ public class CookieGatewayImpl implements GenerateCookieGateway {
 
   @Override
   public void write(String name, String value) {
-    Cookie cookie = new Cookie(name, value);
-    cookie.setHttpOnly(true);
-    cookie.setSecure(true);
-    cookie.setPath("/");
-    cookie.setMaxAge(1000000);
-    response.addCookie(cookie);
+    // Cookie cookie = new Cookie(name, value);
+    // cookie.setHttpOnly(true);
+    // cookie.setSecure(true);
+    // cookie.setPath("/");
+    // cookie.setMaxAge(1000000);
+    // response.addCookie(cookie);
+    // System.out.println(response.isCommitted());
+    ResponseCookie cookie = ResponseCookie.from(name, value)
+        .secure(true)
+        .path("/")
+        .httpOnly(true)
+        .sameSite("None")
+        .maxAge(1000000)
+        .build();
+    response.addHeader("Set-Cookie", cookie.toString());
+    System.out.println(response.containsHeader("Set-Cookie"));
     System.out.println(response.isCommitted());
-    // ResponseCookie cookie = ResponseCookie.from(name, value)
-    // .secure(true)
-    // .path("/")
-    // .httpOnly(true)
-    // .sameSite("None")
-    // .maxAge(1000000)
-    // .build();
-    // response.addHeader("Set-Cookie", cookie.toString());
   }
 
 }
