@@ -61,6 +61,7 @@ public class SpringSecurityConfig {
                                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                                 .exceptionHandling(ex -> ex
                                                 .authenticationEntryPoint((request, response, authException) -> {
+                                                        authException.printStackTrace();
                                                         response.setStatus(401);
                                                 }))
                                 .httpBasic(Customizer.withDefaults())
