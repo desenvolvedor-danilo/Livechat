@@ -93,6 +93,7 @@ public class UserController {
     UserEntity userEntity = (UserEntity) authentication.getPrincipal();
     LoginResponseDto loginResponseDto = new LoginResponseDto(userEntity.getName());
     generateCookieGateway.write("token", abstractAuthorization.token());
+    System.out.println(abstractAuthorization.token());
     generateCookieGateway.write("refresh-token", abstractAuthorization.refreshToken());
     return ResponseEntity.ok(loginResponseDto);
   }

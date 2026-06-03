@@ -29,6 +29,7 @@ public class CookieGatewayImpl implements GenerateCookieGateway {
     cookie.setPath("/");
     cookie.setMaxAge(1000000);
     response.addCookie(cookie);
+    System.out.println(response.isCommitted());
     // ResponseCookie cookie = ResponseCookie.from(name, value)
     // .secure(true)
     // .path("/")
