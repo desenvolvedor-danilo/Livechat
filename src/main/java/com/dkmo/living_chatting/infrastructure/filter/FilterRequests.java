@@ -20,58 +20,61 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 @Component
-public class FilterRequests extends OncePerRequestFilter{
-@Autowired
-private ValidateTokenGateway validateTokenGateway;
-@Autowired
-private FindUserGateway findUserGateway;
+public class FilterRequests extends OncePerRequestFilter {
+  @Autowired
+  private ValidateTokenGateway validateTokenGateway;
+  @Autowired
+  private FindUserGateway findUserGateway;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{ 
-    try{
+  @Override
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    try {
 
-    String token = extractToken(request);
-    //   if (token == null) {
-    //  filterChain.doFilter(request, response);
-    // return;
-    //   }
-     System.out.println("Token enviado: "+token); 
-      if(token!=null){
-      String email = validateTokenGateway.validateToken(token);
-   if(email!=null&&!email.isEmpty()){
-    User user = findUserGateway.findByEmail(email);
-    if(user!=null){
-    UserEntity userEntity = UserEntityAdapter.toUserEntity(user); 
-    Authentication authentication = new UsernamePasswordAuthenticationToken(userEntity,null,userEntity.getAuthorities());
-     SecurityContextHolder.getContext().setAuthentication(authentication);
-     }
+      String token = extractToken(request);
+      // if (token == null) {
+      // filterChain.doFilter(request, response);
+      // return;
+      // }
+      System.out.println("Token enviado: " + token);
+      if (token != null) {
+        String email = validateTokenGateway.validateToken(token);
+        if (email != null && !email.isEmpty()) {
+          User user = findUserGateway.findByEmail(email);
+          if (user != null) {
+            UserEntity userEntity = UserEntityAdapter.toUserEntity(user);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(userEntity, null,
+                userEntity.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+          }
         }
-//filterChain.doFilter(request, response);
+        // filterChain.doFilter(request, response);
       }
-    }catch(Exception exception){
+    } catch (Exception exception) {
       // response.setStatus(401);
       // response.setContentType("application/json");
       // response.getWriter().write("{\"error\":\"unauthorized\"}");
- //      return;
+      // return;
 
-  SecurityContextHolder.clearContext();
+      SecurityContextHolder.clearContext();
     }
 
+    filterChain.doFilter(request, response);
+  }
 
-   filterChain.doFilter(request, response);
-}
+  private String extractToken(HttpServletRequest request) {
 
-  private String extractToken(HttpServletRequest request){
-    
-    if(request.getCookies()==null){
+    if (request.getCookies() == null) {
       return null;
     }
-    for(Cookie cookie : request.getCookies()){
-      if("token".equals(cookie.getName())){
-      return cookie.getValue();
+    for (Cookie cookie : request.getCookies()) {
+      if ("token".equals(cookie.getName())) {
+        System.out.println(cookie.getValue());
+        return cookie.getValue();
       }
     }
-   return null;
-}
+    return null;
+  }
 }
