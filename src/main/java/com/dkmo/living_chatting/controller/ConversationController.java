@@ -17,10 +17,15 @@ import com.dkmo.living_chatting.domain.model.Conversation;
 public class ConversationController {
   @Autowired
   private LoadNotificationsUseCase loadNotificationsUseCase;
+
   @GetMapping("/private")
- public List<ConversationResponseDto>
-loadConversation(@RequestParam(name = "from") String sender){
-  List<Conversation> conversations = loadNotificationsUseCase.loadConversation(sender);
-    return conversations.stream().map(ConversationResponseDto::create).toList();
+  public List<ConversationResponseDto> loadConversation(@RequestParam(name = "from") String sender) {
+    try {
+      List<Conversation> conversations = loadNotificationsUseCase.loadConversation(sender);
+      return conversations.stream().map(ConversationResponseDto::create).toList();
+    } catch (Exception e) {
+      System.out.println("Erro ocorrido: " + e.getMessage());
+      return List.of();
+    }
   }
 }
