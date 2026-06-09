@@ -12,10 +12,9 @@ public class CustomHandshakerHandler extends DefaultHandshakeHandler {
   @Override
   public Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler,
       Map<String, Object> atributtes) {
-    String query = request.getURI().getQuery();
-    if (query != null && query.startsWith("user=")) {
-      String username = query.substring(5);
-      return () -> username;
+    String query = (String) atributtes.get("user");
+    if (query != null) {
+      return () -> query;
     }
     return () -> "anon-" + UUID.randomUUID();
   }
