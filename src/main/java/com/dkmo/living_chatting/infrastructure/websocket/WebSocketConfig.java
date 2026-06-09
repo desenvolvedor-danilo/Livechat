@@ -24,7 +24,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setAllowedOriginPatterns("*").withSockJS();
     }
 
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new AuthChannelInterceptor());
-    }
+    // public void configureClientInboundChannel(ChannelRegistration registration) {
+    // registration.interceptors(new AuthChannelInterceptor());
+    // }
 }

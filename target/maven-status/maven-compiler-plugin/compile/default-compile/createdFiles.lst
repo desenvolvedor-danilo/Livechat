@@ -44,7 +44,6 @@ com/dkmo/living_chatting/controller/DTOs/UserResponseDTO.class
 com/dkmo/living_chatting/infrastructure/gateways/SaveConversation.class
 com/dkmo/living_chatting/infrastructure/gateways/LoadAllUsers.class
 com/dkmo/living_chatting/application/gateway/ConversationEditGateway.class
-com/dkmo/living_chatting/infrastructure/websocket/AuthChannelInterceptor.class
 com/dkmo/living_chatting/infrastructure/gateways/LoadConversationGatewayImpl.class
 com/dkmo/living_chatting/application/gateway/GenerateIdGateway.class
 com/dkmo/living_chatting/application/exceptions/ApplicationException.class

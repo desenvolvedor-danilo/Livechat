@@ -136,7 +136,6 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/repositories/UsersRepository.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/security/SpringSecurityConfig.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/webmvc/WebMvcConfigure.java
-/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/websocket/AuthChannelInterceptor.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/websocket/CustomHandshakerHandler.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/websocket/WebSocketConfig.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/main/UserConfig.java
