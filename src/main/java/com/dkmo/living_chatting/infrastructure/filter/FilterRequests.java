@@ -34,10 +34,10 @@ public class FilterRequests extends OncePerRequestFilter {
     try {
 
       String token = extractToken(request);
-      // if (token == null) {
-      // filterChain.doFilter(request, response);
-      // return;
-      // }
+      if (token == null) {
+        filterChain.doFilter(request, response);
+        return;
+      }
       System.out.println("Token enviado: " + token);
       if (token != null) {
         String email = validateTokenGateway.validateToken(token);
