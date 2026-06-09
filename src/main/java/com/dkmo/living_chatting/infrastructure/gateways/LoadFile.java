@@ -9,7 +9,7 @@ import com.dkmo.living_chatting.application.gateway.LoadFileGateway;
 import com.dkmo.living_chatting.infrastructure.exceptions.FileStorageException;
 
 public class LoadFile implements LoadFileGateway {
-  private final String BASE_URL = "https://livechat-0380.onrender.com/";
+  private final String BASE_URL = "https://speakflow.ddns.net/";
 
   @Override
   // @Cacheable
