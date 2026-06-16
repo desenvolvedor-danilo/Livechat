@@ -26,6 +26,7 @@ import com.dkmo.living_chatting.application.gateway.LoadAllUsersGateway;
 import com.dkmo.living_chatting.application.gateway.LoadFileGateway;
 import com.dkmo.living_chatting.application.gateway.LoadMessagesGateway;
 import com.dkmo.living_chatting.application.gateway.LoadNotificationGateway;
+import com.dkmo.living_chatting.application.gateway.LogoutGateway;
 import com.dkmo.living_chatting.application.gateway.MessageGateway;
 import com.dkmo.living_chatting.application.gateway.MessageSaveGateway;
 import com.dkmo.living_chatting.application.gateway.NotificationGateway;
@@ -43,6 +44,7 @@ import com.dkmo.living_chatting.application.usecases.LoadFilesUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadMessageUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadNotificationsUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadUserUseCase;
+import com.dkmo.living_chatting.application.usecases.LogoutUseCase;
 import com.dkmo.living_chatting.application.usecases.MessageUseCase;
 import com.dkmo.living_chatting.application.usecases.RefreshTokenUseCase;
 import com.dkmo.living_chatting.application.usecases.ValidateTokenUseCase;
@@ -58,113 +60,146 @@ import com.dkmo.living_chatting.infrastructure.repositories.UsersRepository;
 
 @Configuration
 public class UserConfig {
-    @Bean
-  public CreateUserInteractor createUseCase(UserGateway userGateway,EncryptPasswordGateway encryptPasswordGateway,GenerateIdGateway generateIdGateway){
-  return new CreateUserInteractor(userGateway,encryptPasswordGateway,generateIdGateway);
-  }
   @Bean
-  public ImagesUseCases imagesUseCases(LoadFileGateway loadFileGateway){
+  public CreateUserInteractor createUseCase(UserGateway userGateway, EncryptPasswordGateway encryptPasswordGateway,
+      GenerateIdGateway generateIdGateway) {
+    return new CreateUserInteractor(userGateway, encryptPasswordGateway, generateIdGateway);
+  }
+
+  @Bean
+  public ImagesUseCases imagesUseCases(LoadFileGateway loadFileGateway) {
     return new ImagesUseCases(loadFileGateway);
   }
+
   @Bean
-  public UserGateway userGateway(UsersRepository usersRepository,UserEntityMapper userEntityMapper){
+  public UserGateway userGateway(UsersRepository usersRepository, UserEntityMapper userEntityMapper) {
     return new UserRepositoryGateway(usersRepository, userEntityMapper);
   }
+
   @Bean
-  public UserEntityMapper userEntityMapper(){
+  public UserEntityMapper userEntityMapper() {
     return new UserEntityMapper();
-  } 
-  @Bean 
- public UserAdapter userDTOMapper(){
+  }
+
+  @Bean
+  public UserAdapter userDTOMapper() {
     return new UserAdapter();
   }
 
-  @Bean 
-  public GenerateTokenUseCase generateTokenUseCase (AuthorizationGateway authorizationGateway, FindUserGateway findUserGateway,SaveRefreshTokenGateway saveRefreshTokenGateway,GenerateHashGateway generateHashGateway){
-  return new GenerateTokenUseCase(authorizationGateway,findUserGateway, saveRefreshTokenGateway, generateHashGateway);
-  }
- 
   @Bean
-  public ValidateTokenUseCase validateTokenUseCase(ValidateTokenGateway validateTokenGateway){
+  public GenerateTokenUseCase generateTokenUseCase(AuthorizationGateway authorizationGateway,
+      FindUserGateway findUserGateway, SaveRefreshTokenGateway saveRefreshTokenGateway,
+      GenerateHashGateway generateHashGateway) {
+    return new GenerateTokenUseCase(authorizationGateway, findUserGateway, saveRefreshTokenGateway,
+        generateHashGateway);
+  }
+
+  @Bean
+  public ValidateTokenUseCase validateTokenUseCase(ValidateTokenGateway validateTokenGateway) {
     return new ValidateTokenUseCase(validateTokenGateway);
   }
 
   @Bean
-  public LoadUserGateway loadUser(UsersRepository usersRepository, UserEntityMapper userEntityMapper){
-return new LoadUserGateway(userEntityMapper, usersRepository);
+  public LoadUserGateway loadUser(UsersRepository usersRepository, UserEntityMapper userEntityMapper) {
+    return new LoadUserGateway(userEntityMapper, usersRepository);
   }
+
   @Bean
-  public RefreshTokenUseCase refreshTokenUseCase(ValidateTokenGateway validateTokenGateway,FindUserGateway findUserGateway,AuthorizationGateway authorizationGateway,GenerateCookieGateway generateCookieGateway,SaveRefreshTokenGateway saveRefreshTokenGateway,GenerateHashGateway generateHashGateway,DeleteRefreshTokenGateway deleteRefreshTokenGateway) {
-  return new RefreshTokenUseCase(validateTokenGateway, findUserGateway, authorizationGateway, generateCookieGateway, saveRefreshTokenGateway, generateHashGateway,deleteRefreshTokenGateway);
+  public RefreshTokenUseCase refreshTokenUseCase(ValidateTokenGateway validateTokenGateway,
+      FindUserGateway findUserGateway, AuthorizationGateway authorizationGateway,
+      GenerateCookieGateway generateCookieGateway, SaveRefreshTokenGateway saveRefreshTokenGateway,
+      GenerateHashGateway generateHashGateway, DeleteRefreshTokenGateway deleteRefreshTokenGateway) {
+    return new RefreshTokenUseCase(validateTokenGateway, findUserGateway, authorizationGateway, generateCookieGateway,
+        saveRefreshTokenGateway, generateHashGateway, deleteRefreshTokenGateway);
   }
-  
-   @Bean
-  public SendMessage sendMessage(SimpMessagingTemplate simpMessagingTemplate){
+
+  @Bean
+  public SendMessage sendMessage(SimpMessagingTemplate simpMessagingTemplate) {
     return new SendMessage(simpMessagingTemplate);
   }
+
   @Bean
-  public CreateaIdHash createaIdHash(){
+  public CreateaIdHash createaIdHash() {
     return new CreateaIdHash();
   }
-  @Bean 
-public  MessageUseCase messageUseCase(MessageGateway
-  messageGateway,InstantGateway instantGateway,FindUserGateway loginPolicyGateway,MessageSaveGateway messageSaveGateway,CreateaIdHash createaIdHash,ConversationGateway conversationGateway,ConversationCreateGateway conversationCreateGateway, ConversationSaveGateway conversationSaveGateway,ConversationEditGateway conversationEditGateway,NotificationGateway notificationGateway,GenerateIdGateway generateIdGateway
-){
-    return new MessageUseCase(messageGateway, instantGateway,loginPolicyGateway, messageSaveGateway,createaIdHash,conversationGateway,conversationCreateGateway,conversationSaveGateway,conversationEditGateway,notificationGateway, generateIdGateway);
+
+  @Bean
+  public MessageUseCase messageUseCase(MessageGateway messageGateway, InstantGateway instantGateway,
+      FindUserGateway loginPolicyGateway, MessageSaveGateway messageSaveGateway, CreateaIdHash createaIdHash,
+      ConversationGateway conversationGateway, ConversationCreateGateway conversationCreateGateway,
+      ConversationSaveGateway conversationSaveGateway, ConversationEditGateway conversationEditGateway,
+      NotificationGateway notificationGateway, GenerateIdGateway generateIdGateway) {
+    return new MessageUseCase(messageGateway, instantGateway, loginPolicyGateway, messageSaveGateway, createaIdHash,
+        conversationGateway, conversationCreateGateway, conversationSaveGateway, conversationEditGateway,
+        notificationGateway, generateIdGateway);
 
   }
+
   @Bean
-  public LoadMessageUseCase loadMessageUseCase(LoadMessagesGateway loadMessagesGateway){
+  public LoadMessageUseCase loadMessageUseCase(LoadMessagesGateway loadMessagesGateway) {
     return new LoadMessageUseCase(loadMessagesGateway);
 
   }
-  @Bean 
-  public FcmTokenUseCase fcmTokenUseCase(FcmTokenGateway fcmTokenGateway){
-  return new FcmTokenUseCase(fcmTokenGateway); 
+
+  @Bean
+  public FcmTokenUseCase fcmTokenUseCase(FcmTokenGateway fcmTokenGateway) {
+    return new FcmTokenUseCase(fcmTokenGateway);
   }
-  @Bean 
-  public LoadAllUsersUseCase loadAllUsersUseCase(LoadAllUsersGateway loadAllUsersGateway){
+
+  @Bean
+  public LoadAllUsersUseCase loadAllUsersUseCase(LoadAllUsersGateway loadAllUsersGateway) {
     return new LoadAllUsersUseCase(loadAllUsersGateway);
   }
+
   @Bean
-  public LoadUserUseCase loadUserUseCase(com.dkmo.living_chatting.application.gateway.LoadUserGateway loadUserGateway){
+  public LoadUserUseCase loadUserUseCase(com.dkmo.living_chatting.application.gateway.LoadUserGateway loadUserGateway) {
     return new LoadUserUseCase(loadUserGateway);
   }
+
   @Bean
-  EditUserGatewayImpl editUserGatewayImpl(MongoTemplate mongoTemplate){
+  EditUserGatewayImpl editUserGatewayImpl(MongoTemplate mongoTemplate) {
     return new EditUserGatewayImpl(mongoTemplate);
   }
+
   @Bean
-  public LoadNotificationsUseCase loadNotificationsUseCase(LoadNotificationGateway loadNotificationGateway){
+  public LoadNotificationsUseCase loadNotificationsUseCase(LoadNotificationGateway loadNotificationGateway) {
     return new LoadNotificationsUseCase(loadNotificationGateway);
   }
-  @Bean 
-  public LoadFilesUseCase loadFilesUseCase(LoadFileGateway loadFileGateway,LoadUserGateway loadUserGateway,EditUserGatewayImpl
-    editUserGateway){
-  return new LoadFilesUseCase(loadFileGateway, loadUserGateway,editUserGateway);
-  }
+
   @Bean
-  public LoadFile loadFileGateway(){
+  public LoadFilesUseCase loadFilesUseCase(LoadFileGateway loadFileGateway, LoadUserGateway loadUserGateway,
+      EditUserGatewayImpl editUserGateway) {
+    return new LoadFilesUseCase(loadFileGateway, loadUserGateway, editUserGateway);
+  }
+
+  @Bean
+  public LoadFile loadFileGateway() {
     return new LoadFile();
   }
+
   @Bean
-  public GetPhotoProfileUseCase getPhotoProfileUseCase(FindUserGateway loginPolicyGateway){
+  public GetPhotoProfileUseCase getPhotoProfileUseCase(FindUserGateway loginPolicyGateway) {
     return new GetPhotoProfileUseCase(loginPolicyGateway);
   }
 
-   
   @Bean
-  public PasswordEncoder passwordEncoder(){
+  public LogoutUseCase logoutUseCase(LogoutGateway logoutGateway) {
+    return new LogoutUseCase(logoutGateway);
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)throws Exception{
-      return authenticationConfiguration.getAuthenticationManager();
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+      throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
   }
+
   @Bean
-  public FindUserDetailsByEmail findUserDetailsByEmail
-  (FindUserGateway findUserGateway){
+  public FindUserDetailsByEmail findUserDetailsByEmail(FindUserGateway findUserGateway) {
     return new FindUserDetailsByEmail(findUserGateway);
   }
 }

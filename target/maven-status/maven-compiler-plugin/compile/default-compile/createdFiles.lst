@@ -35,6 +35,7 @@ com/dkmo/living_chatting/application/usecases/GetPhotoProfileInput.class
 com/dkmo/living_chatting/application/usecases/FindUserDetailsByEmail.class
 com/dkmo/living_chatting/infrastructure/adapters/CustomUserDetailsMapper.class
 com/dkmo/living_chatting/domain/exceptions/EmptyMessageException.class
+com/dkmo/living_chatting/infrastructure/gateways/LogoutImpl.class
 com/dkmo/living_chatting/infrastructure/gateways/DeleteHashRefreshToken.class
 com/dkmo/living_chatting/infrastructure/persistence/MessagesPrivate.class
 com/dkmo/living_chatting/infrastructure/adapters/MessagesPrivateMappers.class
@@ -67,6 +68,7 @@ com/dkmo/living_chatting/infrastructure/gateways/CookieGatewayImpl.class
 com/dkmo/living_chatting/application/gateway/NotificationGateway.class
 com/dkmo/living_chatting/application/usecases/MessageUseCase.class
 com/dkmo/living_chatting/infrastructure/gateways/GenerateIdImpl.class
+com/dkmo/living_chatting/application/gateway/LogoutGateway.class
 com/dkmo/living_chatting/infrastructure/persistence/ConversationEntity.class
 com/dkmo/living_chatting/application/gateway/LoadUserGateway.class
 com/dkmo/living_chatting/application/usecases/CreateUserInteractor.class
@@ -105,6 +107,7 @@ com/dkmo/living_chatting/controller/adapters/UserAdapter.class
 com/dkmo/living_chatting/application/gateway/SaveRefreshTokenGateway.class
 com/dkmo/living_chatting/infrastructure/adapters/ConversationAdapter.class
 com/dkmo/living_chatting/infrastructure/gateways/FindConversation.class
+com/dkmo/living_chatting/application/usecases/LogoutUseCase.class
 com/dkmo/living_chatting/infrastructure/websocket/CustomHandshakerHandler.class
 com/dkmo/living_chatting/infrastructure/gateways/LoadUserGatewayImpl.class
 com/dkmo/living_chatting/domain/model/UsersReference.class

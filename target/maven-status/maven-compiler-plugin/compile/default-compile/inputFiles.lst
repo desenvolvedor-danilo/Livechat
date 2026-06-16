@@ -27,6 +27,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/LoadMessagesGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/LoadNotificationGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/LoadUserGateway.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/LogoutGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/MessageGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/MessageSaveGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/NotificationGateway.java
@@ -50,6 +51,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/LoadNotificationsUseCase.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/LoadUserUseCase.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/LoginPolicyInteractor.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/LogoutUseCase.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/MessageUseCase.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/NotificationUserUseCase.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/RefreshTokenUseCase.java
@@ -118,6 +120,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/LoadMessages.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/LoadUserGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/LoadUserGatewayImpl.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/LogoutImpl.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/NotificationGatewayImpl.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/SaveConversation.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/SaveMessages.java

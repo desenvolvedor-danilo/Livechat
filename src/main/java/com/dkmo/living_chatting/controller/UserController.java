@@ -26,6 +26,7 @@ import com.dkmo.living_chatting.application.usecases.GetPhotoProfileUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadAllUsersUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadFilesUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadUserUseCase;
+import com.dkmo.living_chatting.application.usecases.LogoutUseCase;
 import com.dkmo.living_chatting.controller.DTOs.GetNameUserDto;
 import com.dkmo.living_chatting.controller.DTOs.LoginRequestDTO;
 import com.dkmo.living_chatting.controller.DTOs.LoginResponseDto;
@@ -61,11 +62,13 @@ public class UserController {
   private final FcmTokenUseCase fcmTokenUseCase;
   @Autowired
   private UserMapper userMapper;
+  private final LogoutUseCase logoutUseCase;
 
   public UserController(CreateUserInteractor createUserInteractor, UserAdapter userDTOMapper,
       LoadAllUsersUseCase loadAllUsersUseCase, LoadFilesUseCase loadFilesUseCase,
       GetPhotoProfileUseCase getPhotoProfileUseCase, LoadUserUseCase loadUserUseCase, FcmTokenUseCase fcmTokenUseCase,
-      GenerateTokenUseCase generateTokenUseCase, GenerateCookieGateway generateCookieGateway) {
+      GenerateTokenUseCase generateTokenUseCase, GenerateCookieGateway generateCookieGateway,
+      LogoutUseCase logoutUseCase) {
     this.createUserInteractor = createUserInteractor;
     this.userDTOMapper = userDTOMapper;
     this.loadAllUsersUseCase = loadAllUsersUseCase;
@@ -75,6 +78,7 @@ public class UserController {
     this.fcmTokenUseCase = fcmTokenUseCase;
     this.generateTokenUseCase = generateTokenUseCase;
     this.generateCookieGateway = generateCookieGateway;
+    this.logoutUseCase = logoutUseCase;
   }
 
   @PostMapping("/create")
@@ -131,5 +135,10 @@ public class UserController {
   @PostMapping("/save-token")
   public void setToken(@RequestBody UpdateUserDto updateUserDto) {
     fcmTokenUseCase.execute(updateUserDto.email(), updateUserDto.token());
+  }
+
+  @PostMapping("/logout")
+  public void logout() {
+    logoutUseCase.execute();
   }
 }
