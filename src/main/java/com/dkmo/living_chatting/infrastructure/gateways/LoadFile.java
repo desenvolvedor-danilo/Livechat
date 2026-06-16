@@ -14,10 +14,10 @@ public class LoadFile implements LoadFileGateway {
   @Override
   // @Cacheable
   public String loadFile(byte[] file, String originalFileName, String folder) {
+
     try {
       Path path = Paths.get(folder + originalFileName);
       Files.write(path, file);
-      System.out.println(BASE_URL + folder + originalFileName);
       return BASE_URL + folder + originalFileName;
     } catch (IOException io) {
       throw new FileStorageException();
