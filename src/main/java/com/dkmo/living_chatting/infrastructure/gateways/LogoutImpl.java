@@ -25,12 +25,12 @@ public class LogoutImpl implements LogoutGateway {
     cookie.setPath("/");
     cookie.setHttpOnly(true);
     cookie.setMaxAge(0);
-    response.addCookie(cookie);
 
     Cookie cookieRefresh = new Cookie("refresh-token", null);
-    cookie.setPath("/");
-    cookie.setHttpOnly(true);
-    cookie.setMaxAge(0);
+    cookieRefresh.setPath("/");
+    cookieRefresh.setHttpOnly(true);
+    cookieRefresh.setMaxAge(0);
+    response.addCookie(cookie);
     response.addCookie(cookieRefresh);
 
   }

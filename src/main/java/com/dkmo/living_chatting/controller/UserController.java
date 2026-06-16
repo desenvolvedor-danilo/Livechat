@@ -138,7 +138,9 @@ public class UserController {
   }
 
   @PostMapping("/logout")
-  public void logout() {
+  public ResponseEntity<Void> logout() {
+    System.out.println("chamou o logout");
     logoutUseCase.execute();
+    return ResponseEntity.ok().build();
   }
 }
