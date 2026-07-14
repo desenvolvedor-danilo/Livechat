@@ -83,7 +83,7 @@ public class NotificationGatewayImpl implements NotificationGateway {
 
             Map<String, String> data = new HashMap<>();
             data.put("title", title);
-            data.put(body.contains("https://") ? "image" : "body", body);
+            data.put(body.startsWith("https://") ? "image" : "body", body);
             data.put("link", link);
 
             Map<String, Object> message = new HashMap<>();
