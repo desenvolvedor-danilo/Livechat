@@ -114,7 +114,7 @@ public class UserController {
   public UserProfileResponseDto updatePhotoProfile(@RequestParam(name = "file") MultipartFile multipartFile,
       @RequestParam(name = "email") String email) throws IOException {
     ImageInput profileInput = new ImageInput(multipartFile.getBytes(), email, multipartFile.getOriginalFilename(),
-        "uploads/photos-profiles/");
+        "photos-profiles/");
     FileReference fileReference = loadFilesUseCase.execute(profileInput);
     return userMapper.toUserProfileResponseDto(fileReference);
   }

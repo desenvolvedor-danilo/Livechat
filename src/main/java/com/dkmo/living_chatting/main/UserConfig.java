@@ -14,9 +14,12 @@ import com.dkmo.living_chatting.application.gateway.ConversationCreateGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationEditGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationSaveGateway;
+import com.dkmo.living_chatting.application.gateway.DeleteMessageCallbackGateway;
+import com.dkmo.living_chatting.application.gateway.DeleteMessageGateway;
 import com.dkmo.living_chatting.application.gateway.DeleteRefreshTokenGateway;
 import com.dkmo.living_chatting.application.gateway.EncryptPasswordGateway;
 import com.dkmo.living_chatting.application.gateway.FcmTokenGateway;
+import com.dkmo.living_chatting.application.gateway.FindMessageByIdGateway;
 import com.dkmo.living_chatting.application.gateway.FindUserGateway;
 import com.dkmo.living_chatting.application.gateway.GenerateCookieGateway;
 import com.dkmo.living_chatting.application.gateway.GenerateHashGateway;
@@ -33,7 +36,9 @@ import com.dkmo.living_chatting.application.gateway.NotificationGateway;
 import com.dkmo.living_chatting.application.gateway.SaveRefreshTokenGateway;
 import com.dkmo.living_chatting.application.gateway.UserGateway;
 import com.dkmo.living_chatting.application.gateway.ValidateTokenGateway;
+// import com.dkmo.living_chatting.application.gateway.DeleteMessageCallbackGateway;
 import com.dkmo.living_chatting.application.usecases.CreateUserInteractor;
+import com.dkmo.living_chatting.application.usecases.DeleteMessageUseCase;
 import com.dkmo.living_chatting.application.usecases.FcmTokenUseCase;
 import com.dkmo.living_chatting.application.usecases.FindUserDetailsByEmail;
 import com.dkmo.living_chatting.application.usecases.GenerateTokenUseCase;
@@ -69,6 +74,12 @@ public class UserConfig {
   @Bean
   public ImagesUseCases imagesUseCases(LoadFileGateway loadFileGateway) {
     return new ImagesUseCases(loadFileGateway);
+  }
+
+  @Bean
+  public DeleteMessageUseCase deleteMessageUseCase(FindMessageByIdGateway findMessageByIdGateway,
+      DeleteMessageGateway deleteMessageGateway, DeleteMessageCallbackGateway deleteMessageCallbackGateway) {
+    return new DeleteMessageUseCase(deleteMessageGateway, findMessageByIdGateway, deleteMessageCallbackGateway);
   }
 
   @Bean

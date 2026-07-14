@@ -3,6 +3,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/EmailInvalidException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/InvalidCredentialsException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/InvalidSenderException.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/NotFoundMessageException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/NotificationUnauthorizedException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/NullObjectException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/UserNotFoundExceptions.java
@@ -12,10 +13,13 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/ConversationGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/ConversationSaveGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/CreateIdGateway.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/DeleteMessageCallbackGateway.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/DeleteMessageGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/DeleteRefreshTokenGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/EditUserGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/EncryptPasswordGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/FcmTokenGateway.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/FindMessageByIdGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/FindUserGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/GenerateCookieGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/gateway/GenerateHashGateway.java
@@ -39,6 +43,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/inputs/ImageInput.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/inputs/InputCreateUser.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/CreateUserInteractor.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/DeleteMessageUseCase.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/FcmTokenUseCase.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/FindUserDetailsByEmail.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/usecases/GenerateTokenUseCase.java
@@ -70,7 +75,6 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/DTOs/UserResponseDTO.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/MessagePrivateController.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/MsgController.java
-/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/Redirect.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/RefreshTokenController.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/UploadsFilesController.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/controller/UserController.java
@@ -99,6 +103,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/adapters/MessagesPrivateMappers.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/adapters/RefreshTokenMappers.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/adapters/UserEntityAdapter.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/dto/MessageDeleteEvent.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/exceptions/FileStorageException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/filter/FilterRequests.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/AuthorizationImpl.java
@@ -106,11 +111,13 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/CreateConversation.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/CreateaIdHash.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/DeleteHashRefreshToken.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/DeleteMessage.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/EditConversation.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/EditUserGatewayImpl.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/EncryptPasswordImpl.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/FcmTokenGatewayImpl.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/FindConversation.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/FindMessageById.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/GenerateHashImpl.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/GenerateIdImpl.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/LoadAllUsers.java
@@ -129,6 +136,7 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/UserEntityMapper.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/UserRepositoryGateway.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/ValidateTokenImpl.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/gateways/deleteMessageCallbackImpl.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/persistence/ConversationEntity.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/persistence/MessagesPrivate.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/infrastructure/persistence/RefreshTokenEntity.java

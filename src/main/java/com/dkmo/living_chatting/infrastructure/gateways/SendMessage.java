@@ -1,6 +1,5 @@
 package com.dkmo.living_chatting.infrastructure.gateways;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
@@ -9,7 +8,7 @@ import com.dkmo.living_chatting.domain.model.Message;
 import com.dkmo.living_chatting.infrastructure.adapters.MessageToResponse;
 
 public class SendMessage implements MessageGateway {
-  @Autowired 
+  @Autowired
   private final SimpMessagingTemplate simpMessagingTemplate;
 
   /**
@@ -20,10 +19,12 @@ public class SendMessage implements MessageGateway {
   }
 
   @Override
- public void sendMessage(Message message) {
+  public void sendMessage(Message message) {
     MessageToResponse AdapterMessage = MessageToResponse.send(message);
+    System.out.println(AdapterMessage);
+    System.out.println(MessageToResponse.send(message));
     simpMessagingTemplate.convertAndSendToUser(message.getTo(), "/queue/message", AdapterMessage);
     simpMessagingTemplate.convertAndSendToUser(message.getFrom(), "/queue/message", AdapterMessage);
-  } 
-     
-} 
+  }
+
+}

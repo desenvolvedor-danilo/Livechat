@@ -79,9 +79,9 @@ public class MessageUseCase {
       throw new NotificationUnauthorizedException();
     }
     if (message != null) {
-      notificationGateway.sendNotification(recipient.token(), "Nova mensagem de: " + sender.nome(), message, to);
+      notificationGateway.sendNotification(recipient.token(), "Nova mensagem de: " + sender.nome(), message, from);
     } else {
-      notificationGateway.sendNotification(recipient.token(), "Nova foto de: " + sender.nome(), urlFile, to);
+      notificationGateway.sendNotification(recipient.token(), "Nova foto de: " + sender.nome(), urlFile, from);
     }
   }
 }
