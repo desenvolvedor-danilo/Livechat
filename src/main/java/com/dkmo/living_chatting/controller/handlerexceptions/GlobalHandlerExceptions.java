@@ -9,9 +9,8 @@ import com.dkmo.living_chatting.controller.DTOs.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalHandlerExceptions {
-@ExceptionHandler(ApplicationException.class)
- public ResponseEntity<ErrorResponse> handleApplication(ApplicationException ex){
-    return ResponseEntity.status(401).body(new ErrorResponse(ex.getMessage()));
+  @ExceptionHandler(ApplicationException.class)
+  public ResponseEntity<ErrorResponse> handleApplication(ApplicationException ex) {
+    return ResponseEntity.status(400).body(new ErrorResponse(ex.getMessage()));
   }
 }
- 

@@ -69,6 +69,54 @@ public class NotificationGatewayImpl implements NotificationGateway {
     // System.out.println("Erro na notificacao: " + e);
     // }
     // }
+    // @Override
+    // public void sendNotification(
+    // String tokenTarget,
+    // String title,
+    // String body,
+    // String email) {
+    // try {
+    // String link = "https://speakflowchat.vercel.app/chat?user="
+    // + email
+    // + "&openAt="
+    // + System.currentTimeMillis();
+    // Map<String, String> headersWebPush = new HashMap<>();
+    //
+    // headersWebPush.put("Urgency", "high");
+    // headersWebPush.put("TTL", "60");
+    //
+    // Map<String, Object> webPush = new HashMap<>();
+    // webPush.put("headers", headersWebPush);
+    // Map<String, String> data = new HashMap<>();
+    // data.put("title", title);
+    // data.put(body.startsWith("https://") ? "image" : "body", body);
+    // data.put("link", link);
+    //
+    // Map<String, Object> message = new HashMap<>();
+    // message.put("token", tokenTarget);
+    // message.put("data", data);
+    //
+    // message.put("webpush", webPush);
+    //
+    // Map<String, Object> request = new HashMap<>();
+    // request.put("message", message);
+    //
+    // HttpHeaders headers = new HttpHeaders();
+    // headers.setContentType(MediaType.APPLICATION_JSON);
+    // headers.setBearerAuth(getAccessToken());
+    //
+    // HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
+    //
+    // restTemplate.postForEntity(
+    // FCM_URL,
+    // entity,
+    // String.class);
+    //
+    // } catch (Exception e) {
+    // System.out.println(
+    // "Erro na notificação: " + e.getMessage());
+    // }
+    // }
     @Override
     public void sendNotification(
             String tokenTarget,
@@ -76,37 +124,96 @@ public class NotificationGatewayImpl implements NotificationGateway {
             String body,
             String email) {
         try {
+            boolean isImage = body.startsWith("https://")
+                    || body.startsWith("http://");
+
             String link = "https://speakflowchat.vercel.app/chat?user="
                     + email
                     + "&openAt="
                     + System.currentTimeMillis();
 
-            Map<String, String> data = new HashMap<>();
-            data.put("title", title);
-            data.put(body.startsWith("https://") ? "image" : "body", body);
-            data.put("link", link);
+            /*
+             * Conteúdo padrão da notificação.
+             * O Firebase/Chrome fará a exibição automaticamente.
+             */
+            Map<String, Object> notification = new HashMap<>();
 
+            notification.put("title", title);
+            notification.put(
+                    "body",
+                    isImage
+                            ? "Você recebeu uma nova imagem"
+                            : body);
+
+            /*
+             * Configuração específica para Web Push.
+             */
+            Map<String, Object> webNotification = new HashMap<>();
+
+            webNotification.put(
+                    "icon",
+                    "https://speakflowchat.vercel.app/speakflow.png");
+
+            webNotification.put(
+                    "badge",
+                    "https://speakflowchat.vercel.app/icon-192-round.png");
+
+            if (isImage) {
+                webNotification.put("image", body);
+            }
+
+            /*
+             * Cabeçalhos de prioridade e validade.
+             */
+            Map<String, String> headersWebPush = new HashMap<>();
+
+            headersWebPush.put("Urgency", "high");
+            headersWebPush.put("TTL", "60");
+
+            /*
+             * Link aberto ao tocar na notificação.
+             */
+            Map<String, Object> fcmOptions = new HashMap<>();
+            fcmOptions.put("link", link);
+
+            Map<String, Object> webPush = new HashMap<>();
+
+            webPush.put("headers", headersWebPush);
+            webPush.put("notification", webNotification);
+            webPush.put("fcm_options", fcmOptions);
+
+            /*
+             * Mensagem enviada ao Firebase.
+             */
             Map<String, Object> message = new HashMap<>();
+
             message.put("token", tokenTarget);
-            message.put("data", data);
+            message.put("notification", notification);
+            message.put("webpush", webPush);
 
             Map<String, Object> request = new HashMap<>();
             request.put("message", message);
 
             HttpHeaders headers = new HttpHeaders();
+
             headers.setContentType(MediaType.APPLICATION_JSON);
             headers.setBearerAuth(getAccessToken());
 
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(request, headers);
 
-            restTemplate.postForEntity(
+            var response = restTemplate.postForEntity(
                     FCM_URL,
                     entity,
                     String.class);
 
+            System.out.println(
+                    "FCM enviado: " + response.getStatusCode());
+
         } catch (Exception e) {
             System.out.println(
                     "Erro na notificação: " + e.getMessage());
+
+            e.printStackTrace();
         }
     }
 }

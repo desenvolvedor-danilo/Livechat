@@ -67,8 +67,8 @@ import com.dkmo.living_chatting.infrastructure.repositories.UsersRepository;
 public class UserConfig {
   @Bean
   public CreateUserInteractor createUseCase(UserGateway userGateway, EncryptPasswordGateway encryptPasswordGateway,
-      GenerateIdGateway generateIdGateway) {
-    return new CreateUserInteractor(userGateway, encryptPasswordGateway, generateIdGateway);
+      GenerateIdGateway generateIdGateway, FindUserGateway findUserGateway) {
+    return new CreateUserInteractor(userGateway, encryptPasswordGateway, generateIdGateway, findUserGateway);
   }
 
   @Bean

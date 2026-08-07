@@ -40,6 +40,7 @@ com/dkmo/living_chatting/domain/exceptions/EmptyMessageException.class
 com/dkmo/living_chatting/infrastructure/gateways/LogoutImpl.class
 com/dkmo/living_chatting/infrastructure/gateways/DeleteHashRefreshToken.class
 com/dkmo/living_chatting/infrastructure/persistence/MessagesPrivate.class
+com/dkmo/living_chatting/application/exceptions/EmailAlreadyExistsException.class
 com/dkmo/living_chatting/infrastructure/adapters/MessagesPrivateMappers.class
 com/dkmo/living_chatting/application/gateway/MessageSaveGateway.class
 com/dkmo/living_chatting/controller/UploadsFilesController.class

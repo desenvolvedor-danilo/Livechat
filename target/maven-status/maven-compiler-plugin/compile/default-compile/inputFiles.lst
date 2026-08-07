@@ -1,5 +1,6 @@
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/LivingChattingApplication.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/ApplicationException.java
+/data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/EmailAlreadyExistsException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/EmailInvalidException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/InvalidCredentialsException.java
 /data/data/com.termux/files/home/living-chatting/src/main/java/com/dkmo/living_chatting/application/exceptions/InvalidSenderException.java
