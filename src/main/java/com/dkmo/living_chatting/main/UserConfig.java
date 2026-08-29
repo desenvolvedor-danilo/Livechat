@@ -8,17 +8,21 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestClient;
 
 import com.dkmo.living_chatting.application.gateway.AuthorizationGateway;
+import com.dkmo.living_chatting.application.gateway.CodeEmailVerifiedGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationCreateGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationEditGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationGateway;
 import com.dkmo.living_chatting.application.gateway.ConversationSaveGateway;
+import com.dkmo.living_chatting.application.gateway.DeleteHashByIdGateway;
 import com.dkmo.living_chatting.application.gateway.DeleteMessageCallbackGateway;
 import com.dkmo.living_chatting.application.gateway.DeleteMessageGateway;
 import com.dkmo.living_chatting.application.gateway.DeleteRefreshTokenGateway;
 import com.dkmo.living_chatting.application.gateway.EncryptPasswordGateway;
 import com.dkmo.living_chatting.application.gateway.FcmTokenGateway;
+import com.dkmo.living_chatting.application.gateway.FindByHashCodeGateway;
 import com.dkmo.living_chatting.application.gateway.FindMessageByIdGateway;
 import com.dkmo.living_chatting.application.gateway.FindUserGateway;
 import com.dkmo.living_chatting.application.gateway.GenerateCookieGateway;
@@ -33,9 +37,13 @@ import com.dkmo.living_chatting.application.gateway.LogoutGateway;
 import com.dkmo.living_chatting.application.gateway.MessageGateway;
 import com.dkmo.living_chatting.application.gateway.MessageSaveGateway;
 import com.dkmo.living_chatting.application.gateway.NotificationGateway;
+import com.dkmo.living_chatting.application.gateway.PasswordRedifineGateway;
+import com.dkmo.living_chatting.application.gateway.SaveHashCodeVerifyGateway;
 import com.dkmo.living_chatting.application.gateway.SaveRefreshTokenGateway;
 import com.dkmo.living_chatting.application.gateway.UserGateway;
 import com.dkmo.living_chatting.application.gateway.ValidateTokenGateway;
+import com.dkmo.living_chatting.application.usecases.ChangePasswordUseCase;
+import com.dkmo.living_chatting.application.usecases.CodeVerifiedEmailUseCase;
 // import com.dkmo.living_chatting.application.gateway.DeleteMessageCallbackGateway;
 import com.dkmo.living_chatting.application.usecases.CreateUserInteractor;
 import com.dkmo.living_chatting.application.usecases.DeleteMessageUseCase;
@@ -53,6 +61,7 @@ import com.dkmo.living_chatting.application.usecases.LogoutUseCase;
 import com.dkmo.living_chatting.application.usecases.MessageUseCase;
 import com.dkmo.living_chatting.application.usecases.RefreshTokenUseCase;
 import com.dkmo.living_chatting.application.usecases.ValidateTokenUseCase;
+import com.dkmo.living_chatting.application.usecases.VerifyCodeHashUseCase;
 import com.dkmo.living_chatting.controller.adapters.UserAdapter;
 import com.dkmo.living_chatting.infrastructure.gateways.CreateaIdHash;
 import com.dkmo.living_chatting.infrastructure.gateways.EditUserGatewayImpl;
@@ -212,5 +221,26 @@ public class UserConfig {
   @Bean
   public FindUserDetailsByEmail findUserDetailsByEmail(FindUserGateway findUserGateway) {
     return new FindUserDetailsByEmail(findUserGateway);
+  }
+
+  @Bean
+  public CodeVerifiedEmailUseCase codeVerifiedEmailUseCase(CodeEmailVerifiedGateway codeEmailVerifiedGateway,
+      GenerateHashGateway generateHashGateway, SaveHashCodeVerifyGateway saveHashCodeVerifyGateway) {
+    return new CodeVerifiedEmailUseCase(codeEmailVerifiedGateway, generateHashGateway, saveHashCodeVerifyGateway);
+  }
+
+  @Bean
+  public VerifyCodeHashUseCase verifyCodeHashUseCase(FindByHashCodeGateway findByHashCodeGateway,
+      GenerateHashGateway generateHashGateway, DeleteHashByIdGateway deleteHashByIdGateway) {
+    return new VerifyCodeHashUseCase(findByHashCodeGateway, generateHashGateway, deleteHashByIdGateway);
+  }
+
+  @Bean
+  public RestClient restClient(RestClient.Builder builder) {
+    return builder.baseUrl("http://localhost:8012").build();
+  }
+  @Bean 
+  public ChangePasswordUseCase changePasswordUseCase(PasswordRedifineGateway passwordRedifineGateway, FindUserGateway findUserGateway,EncryptPasswordGateway encryptPasswordGateway){
+ return new ChangePasswordUseCase(passwordRedifineGateway, findUserGateway,encryptPasswordGateway);
   }
 }

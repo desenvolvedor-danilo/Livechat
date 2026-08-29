@@ -1,6 +1,5 @@
 package com.dkmo.living_chatting.infrastructure.gateways;
 
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.RequestScope;
 

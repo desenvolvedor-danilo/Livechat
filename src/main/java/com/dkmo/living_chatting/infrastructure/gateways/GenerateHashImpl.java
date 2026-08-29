@@ -1,10 +1,12 @@
 package com.dkmo.living_chatting.infrastructure.gateways;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 import org.springframework.stereotype.Component;
 
 import com.dkmo.living_chatting.application.gateway.GenerateHashGateway;
+
 @Component
 public class GenerateHashImpl implements GenerateHashGateway {
 
@@ -12,16 +14,15 @@ public class GenerateHashImpl implements GenerateHashGateway {
   public String generateHash(String value) {
     try {
       MessageDigest md = MessageDigest.getInstance("SHA-256");
-      byte [] hashBytes = md.digest(value.getBytes());
+      byte[] hashBytes = md.digest(value.getBytes(StandardCharsets.UTF_8));
       StringBuilder hex = new StringBuilder();
-      for(byte b : hashBytes){
+      for (byte b : hashBytes) {
         hex.append(String.format("%02x", b));
       }
       return hex.toString();
     } catch (Exception e) {
-    throw new RuntimeException(e);
+      throw new RuntimeException(e);
     }
   }
 
-  
 }

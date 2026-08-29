@@ -18,6 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dkmo.living_chatting.application.gateway.GenerateCookieGateway;
 import com.dkmo.living_chatting.application.inputs.ImageInput;
 import com.dkmo.living_chatting.application.inputs.InputCreateUser;
+import com.dkmo.living_chatting.application.output.CodeVerifiedEmailResponseMessage;
+import com.dkmo.living_chatting.application.usecases.ChangePasswordUseCase;
+import com.dkmo.living_chatting.application.usecases.CodeVerifiedEmailUseCase;
 import com.dkmo.living_chatting.application.usecases.CreateUserInteractor;
 import com.dkmo.living_chatting.application.usecases.FcmTokenUseCase;
 import com.dkmo.living_chatting.application.usecases.GenerateTokenUseCase;
@@ -27,10 +30,12 @@ import com.dkmo.living_chatting.application.usecases.LoadAllUsersUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadFilesUseCase;
 import com.dkmo.living_chatting.application.usecases.LoadUserUseCase;
 import com.dkmo.living_chatting.application.usecases.LogoutUseCase;
+import com.dkmo.living_chatting.application.usecases.VerifyCodeHashUseCase;
 import com.dkmo.living_chatting.controller.DTOs.GetNameUserDto;
 import com.dkmo.living_chatting.controller.DTOs.LoginRequestDTO;
 import com.dkmo.living_chatting.controller.DTOs.LoginResponseDto;
 import com.dkmo.living_chatting.controller.DTOs.PhotoProfileDto;
+import com.dkmo.living_chatting.controller.DTOs.RequestChangePassword;
 import com.dkmo.living_chatting.controller.DTOs.UpdateUserDto;
 import com.dkmo.living_chatting.controller.DTOs.UserProfileResponseDto;
 import com.dkmo.living_chatting.controller.DTOs.UserRequestDTO;
@@ -63,6 +68,12 @@ public class UserController {
   @Autowired
   private UserMapper userMapper;
   private final LogoutUseCase logoutUseCase;
+  @Autowired
+  private CodeVerifiedEmailUseCase codeVerifiedEmailUseCase;
+  @Autowired
+  private VerifyCodeHashUseCase verifyCodeHashUseCase;
+  @Autowired
+  private ChangePasswordUseCase changePasswordUseCase;
 
   public UserController(CreateUserInteractor createUserInteractor, UserAdapter userDTOMapper,
       LoadAllUsersUseCase loadAllUsersUseCase, LoadFilesUseCase loadFilesUseCase,
@@ -141,6 +152,24 @@ public class UserController {
   public ResponseEntity<Void> logout() {
     System.out.println("chamou o logout");
     logoutUseCase.execute();
+    return ResponseEntity.ok().build();
+  }
+
+  @GetMapping("/get-code")
+  public ResponseEntity<CodeVerifiedEmailResponseMessage> getCodeVerifiedToChangePassword(
+      @RequestParam(name = "email") String recipient) {
+    return ResponseEntity.ok().body(codeVerifiedEmailUseCase.execute(recipient));
+  }
+
+  @PostMapping("/verify-code")
+  public ResponseEntity<Void> verifyCodePresentation(@RequestParam(name = "code") String code) {
+    verifyCodeHashUseCase.execute(code);
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/redifine-password")
+  public ResponseEntity<Void> changePassword(@RequestBody RequestChangePassword requestChangePassword) {
+    changePasswordUseCase.execute(requestChangePassword.email(), requestChangePassword.password());
     return ResponseEntity.ok().build();
   }
 }

@@ -31,9 +31,14 @@ public class SpringSecurityConfig {
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(authorize -> authorize
                                                 .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
+                                                .requestMatchers(HttpMethod.GET, "/users/get-code").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/users/verify-code").permitAll()
                                                 .requestMatchers(HttpMethod.POST, "/users/create").permitAll()
                                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                                 .requestMatchers(HttpMethod.POST, "/refresh/token").permitAll()
+
+                                                .requestMatchers(HttpMethod.POST, "/users/redifine-password")
+                                                .permitAll()
                                                 .requestMatchers(HttpMethod.DELETE, "/private-messages/delete")
                                                 .permitAll()
                                                 .requestMatchers("/photos-profiles/**")

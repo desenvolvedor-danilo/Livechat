@@ -12,7 +12,6 @@ import com.dkmo.living_chatting.infrastructure.persistence.UserEntity;
 public class EditUserGatewayImpl implements EditUserGateway {
   private final MongoTemplate mongoTemplate;
 
-
   /**
    * @param mongoTemplate
    */
@@ -20,13 +19,12 @@ public class EditUserGatewayImpl implements EditUserGateway {
     this.mongoTemplate = mongoTemplate;
   }
 
-
   @Override
   public void editPhotoProfile(User user, String url) {
-   Query query = new Query(Criteria.where("email").is(user.email()));
-   Update update = new Update();
+    Query query = new Query(Criteria.where("email").is(user.email()));
+    Update update = new Update();
     update.set("photoProfile", url);
     mongoTemplate.updateFirst(query, update, UserEntity.class);
   }
-    
+
 }
