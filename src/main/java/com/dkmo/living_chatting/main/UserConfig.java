@@ -1,5 +1,6 @@
 package com.dkmo.living_chatting.main;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -74,6 +75,9 @@ import com.dkmo.living_chatting.infrastructure.repositories.UsersRepository;
 
 @Configuration
 public class UserConfig {
+  @Value("${request.email.url}")
+  private String url;
+
   @Bean
   public CreateUserInteractor createUseCase(UserGateway userGateway, EncryptPasswordGateway encryptPasswordGateway,
       GenerateIdGateway generateIdGateway, FindUserGateway findUserGateway) {
@@ -237,10 +241,12 @@ public class UserConfig {
 
   @Bean
   public RestClient restClient(RestClient.Builder builder) {
-    return builder.baseUrl("http://localhost:8012").build();
+    return builder.baseUrl(url).build();
   }
-  @Bean 
-  public ChangePasswordUseCase changePasswordUseCase(PasswordRedifineGateway passwordRedifineGateway, FindUserGateway findUserGateway,EncryptPasswordGateway encryptPasswordGateway){
- return new ChangePasswordUseCase(passwordRedifineGateway, findUserGateway,encryptPasswordGateway);
+
+  @Bean
+  public ChangePasswordUseCase changePasswordUseCase(PasswordRedifineGateway passwordRedifineGateway,
+      FindUserGateway findUserGateway, EncryptPasswordGateway encryptPasswordGateway) {
+    return new ChangePasswordUseCase(passwordRedifineGateway, findUserGateway, encryptPasswordGateway);
   }
 }

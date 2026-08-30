@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  living-chatting:
+    image: living-chatting:1.0
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    depends_on:
+      - email-service
+
+  email-service:
+    image: email-service:1.0
+    expose:
+      - "8012"
